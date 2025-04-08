@@ -65,6 +65,8 @@ Here’s a preview of our planned pages (add screenshots here):
 - Study Session Creation
 - Calendar View
 - Leaderboard
+- Login Page
+- Registration Page
 
 ---
 
