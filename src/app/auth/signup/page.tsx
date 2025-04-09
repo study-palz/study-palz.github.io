@@ -1,111 +1,69 @@
-'use client';
+/* eslint-disable max-len */
+import Link from 'next/link';
+import styles from '../../page1.module.css';
 
-import { signIn } from 'next-auth/react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import { Card, Col, Container, Button, Form, Row } from 'react-bootstrap';
-import { createUser } from '@/lib/dbActions';
-
-type SignUpForm = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  // acceptTerms: boolean;
-};
-
-/** The sign up page. */
-const SignUp = () => {
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().required('Email is required').email('Email is invalid'),
-    password: Yup.string()
-      .required('Password is required')
-      .min(6, 'Password must be at least 6 characters')
-      .max(40, 'Password must not exceed 40 characters'),
-    confirmPassword: Yup.string()
-      .required('Confirm Password is required')
-      .oneOf([Yup.ref('password'), ''], 'Confirm Password does not match'),
-  });
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<SignUpForm>({
-    resolver: yupResolver(validationSchema),
-  });
-
-  const onSubmit = async (data: SignUpForm) => {
-    // console.log(JSON.stringify(data, null, 2));
-    await createUser(data);
-    // After creating, signIn with redirect to the add page
-    await signIn('credentials', { callbackUrl: '/add', ...data });
-  };
-
+export default function Signup() {
   return (
-    <main>
-      <Container>
-        <Row className="justify-content-center">
-          <Col xs={5}>
-            <h1 className="text-center">Sign Up</h1>
-            <Card>
-              <Card.Body>
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                  <Form.Group className="form-group">
-                    <Form.Label>Email</Form.Label>
-                    <input
-                      type="text"
-                      {...register('email')}
-                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                    />
-                    <div className="invalid-feedback">{errors.email?.message}</div>
-                  </Form.Group>
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '64px', alignItems: 'center' }}>
+          {/* Left side: Welcome Panel */}
+          <div style={{ flex: 1, textAlign: 'center' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>Join the Squad!</h1>
+            <p style={{ fontSize: '1.125rem', marginTop: '1rem' }}>
+              Create your Study-Palz account and start collaborating 🚀
+            </p>
+          </div>
 
-                  <Form.Group className="form-group">
-                    <Form.Label>Password</Form.Label>
-                    <input
-                      type="password"
-                      {...register('password')}
-                      className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                    />
-                    <div className="invalid-feedback">{errors.password?.message}</div>
-                  </Form.Group>
-                  <Form.Group className="form-group">
-                    <Form.Label>Confirm Password</Form.Label>
-                    <input
-                      type="password"
-                      {...register('confirmPassword')}
-                      className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
-                    />
-                    <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
-                  </Form.Group>
-                  <Form.Group className="form-group py-3">
-                    <Row>
-                      <Col>
-                        <Button type="submit" className="btn btn-primary">
-                          Register
-                        </Button>
-                      </Col>
-                      <Col>
-                        <Button type="button" onClick={() => reset()} className="btn btn-warning float-right">
-                          Reset
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Form.Group>
-                </Form>
-              </Card.Body>
-              <Card.Footer>
-                Already have an account?
-                <a href="/auth/signin">Sign in</a>
-              </Card.Footer>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </main>
+          {/* Right side: Signup Form */}
+          <div
+            style={{
+              flex: 1,
+              background: 'var(--gray-alpha-100)',
+              padding: '40px',
+              borderRadius: '12px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              maxWidth: '400px',
+              width: '100%',
+            }}
+          >
+            <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem', textAlign: 'center' }}>Sign Up</h2>
+            <form>
+              <div style={{ marginBottom: '1rem' }}>
+                <label htmlFor="signupName">Full Name</label>
+                <input type="text" id="signupName" placeholder="Enter full name" style={{ width: '100%', padding: '0.5rem' }} />
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label htmlFor="signupMajor">Major</label>
+                <input type="text" id="signupMajor" placeholder="Enter major" style={{ width: '100%', padding: '0.5rem' }} />
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label htmlFor="signupEmail">Email address</label>
+                <input type="email" id="signupEmail" placeholder="Enter email" style={{ width: '100%', padding: '0.5rem' }} />
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label htmlFor="signupGender">Gender</label>
+                <select id="signupGender" style={{ width: '100%', padding: '0.5rem' }}>
+                  <option value="">Select gender</option>
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                  <option value="other">Other</option>
+                  <option value="preferNotToSay">Prefer not to say</option>
+                </select>
+              </div>
+              <button type="submit" className="primary" style={{ width: '100%' }}>
+                Sign Up
+              </button>
+            </form>
+            <p style={{ textAlign: 'center', marginTop: '1rem' }}>
+              Already have an account?{' '}
+              <Link className="secondary" href="/">
+                Login
+              </Link>
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
   );
-};
-
-export default SignUp;
+}
