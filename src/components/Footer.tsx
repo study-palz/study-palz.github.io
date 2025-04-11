@@ -8,9 +8,9 @@ const Footer = () => (
     <Container>
       <Row className="justify-content-center">
         <Col xs={12} md={6} className="text-center">
-          <h5>Studymate</h5>
+          <h5>Study-Palz</h5>
           <p>
-            Studymate helps ICS students at UH Manoa connect face-to-face for real-time study sessions in ICSpace.
+            StudyPalz helps students at UH Manoa connect face-to-face for real-time study sessions in ICSpace.
           </p>
         </Col>
         <Col xs={12} md={6} className="text-center">
@@ -34,7 +34,7 @@ const Footer = () => (
             &copy;
             {new Date().getFullYear()}
             {' '}
-            Studymate | All Rights Reserved
+            StudyPalz | All Rights Reserved
           </small>
         </Col>
       </Row>

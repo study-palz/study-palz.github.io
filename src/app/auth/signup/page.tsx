@@ -34,12 +34,20 @@ export default function Signup() {
                 <input type="text" id="signupName" placeholder="Enter full name" style={{ width: '100%', padding: '0.5rem' }} />
               </div>
               <div style={{ marginBottom: '1rem' }}>
+                <label htmlFor="signupName">Username</label>
+                <input type="text" id="signupUsername" placeholder="Enter username" style={{ width: '100%', padding: '0.5rem' }} />
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
                 <label htmlFor="signupMajor">Major</label>
                 <input type="text" id="signupMajor" placeholder="Enter major" style={{ width: '100%', padding: '0.5rem' }} />
               </div>
               <div style={{ marginBottom: '1rem' }}>
                 <label htmlFor="signupEmail">Email address</label>
                 <input type="email" id="signupEmail" placeholder="Enter email" style={{ width: '100%', padding: '0.5rem' }} />
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label htmlFor="signupEmail">Password</label>
+                <input type="password" id="signupPassword" placeholder="Enter password" style={{ width: '100%', padding: '0.5rem' }} />
               </div>
               <div style={{ marginBottom: '1rem' }}>
                 <label htmlFor="signupGender">Gender</label>
