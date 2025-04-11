@@ -1,9 +1,11 @@
 'use server';
 
 import { Stuff, Condition } from '@prisma/client';
-import { hash } from 'bcrypt';
+import { hash, compare  } from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { prisma } from './prisma';
+
+
 
 /**
  * Adds a new stuff to the database.
@@ -92,3 +94,23 @@ export async function changePassword(credentials: { email: string; password: str
     },
   });
 }
+
+export async function verifyUser(email: string, password: string) {
+  // 1. Find the user by email
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  // 2. If no user is found, return null
+  if (!user) return null;
+
+  // 3. Compare the entered password with the stored hashed password
+  const isPasswordCorrect = await compare(password, user.password);
+
+  // 4. If the password doesn't match, return null
+  if (!isPasswordCorrect) return null;
+
+  // 5. If everything checks out, return the user
+  return user;
+}
+

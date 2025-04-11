@@ -1,8 +1,44 @@
+'use client'; // Marking the component as a client-side component to use hooks like useState and useEffect
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Use next/navigation for Next.js 13+ routing
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../../page1.module.css';
 
-export default function Home() {
+export default function SignIn() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSuccess('Logged in successfully!');
+        router.push('/dashboard'); // Redirect to dashboard
+      } else {
+        setError(data.error || 'Login failed');
+      }
+    } catch (err) {
+      console.error('Error in login fetch:', err);
+      setError('Something went wrong');
+    }
+  };
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -33,7 +69,13 @@ export default function Home() {
             }}
           >
             <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>Login</h2>
-            <form>
+            {error && (
+              <p style={{ color: 'red', fontSize: '1rem', marginBottom: '1rem' }}>{error}</p>
+            )}
+            {success && (
+              <p style={{ color: 'green', fontSize: '1rem', marginBottom: '1rem' }}>{success}</p>
+            )}
+            <form onSubmit={handleLogin}>
               <div style={{ marginBottom: '1rem', textAlign: 'left' }}>
                 <label htmlFor="loginEmail">Email address</label>
                 <input
@@ -41,6 +83,8 @@ export default function Home() {
                   id="loginEmail"
                   placeholder="Enter email"
                   style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div style={{ marginBottom: '1rem', textAlign: 'left' }}>
@@ -50,6 +94,8 @@ export default function Home() {
                   id="loginPassword"
                   placeholder="Password"
                   style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <button type="submit" className="primary" style={{ width: '100%' }}>

@@ -1,8 +1,59 @@
-/* eslint-disable max-len */
+'use client';
+
 import Link from 'next/link';
-import styles from '../../page1.module.css';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import styles from '../../page1.module.css'; // Adjust if your CSS is elsewhere
 
 export default function Signup() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [isClient, setIsClient] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || 'Signup failed');
+        return;
+      }
+
+      router.push('/profile'); // Redirect to profile page after signup
+    } catch (err) {
+      console.error('Signup error:', err);
+      setError('Something went wrong. Please try again.');
+    }
+  };
+
+  if (!isClient) return null;
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -28,29 +79,36 @@ export default function Signup() {
             }}
           >
             <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem', textAlign: 'center' }}>Sign Up</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="signupName">Full Name</label>
-                <input type="text" id="signupName" placeholder="Enter full name" style={{ width: '100%', padding: '0.5rem' }} />
+                <label htmlFor="email">Email address</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter email"
+                  required
+                  style={{ width: '100%', padding: '0.5rem' }}
+                />
               </div>
               <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="signupMajor">Major</label>
-                <input type="text" id="signupMajor" placeholder="Enter major" style={{ width: '100%', padding: '0.5rem' }} />
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Enter password"
+                  required
+                  style={{ width: '100%', padding: '0.5rem' }}
+                />
               </div>
-              <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="signupEmail">Email address</label>
-                <input type="email" id="signupEmail" placeholder="Enter email" style={{ width: '100%', padding: '0.5rem' }} />
-              </div>
-              <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="signupGender">Gender</label>
-                <select id="signupGender" style={{ width: '100%', padding: '0.5rem' }}>
-                  <option value="">Select gender</option>
-                  <option value="female">Female</option>
-                  <option value="male">Male</option>
-                  <option value="other">Other</option>
-                  <option value="preferNotToSay">Prefer not to say</option>
-                </select>
-              </div>
+
+              {error && (
+                <p style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</p>
+              )}
+
               <button type="submit" className="primary" style={{ width: '100%' }}>
                 Sign Up
               </button>

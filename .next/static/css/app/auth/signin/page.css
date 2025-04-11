@@ -1,0 +1,174 @@
+/*!********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/app/page1.module.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************/
+.page1_page__l3l50 {
+    --gray-rgb: 0, 0, 0;
+    --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+    --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+  
+    --button-primary-hover: #383838;
+    --button-secondary-hover: #f2f2f2;
+  
+    display: grid;
+    grid-template-rows: 20px 1fr 20px;
+    align-items: center;
+    justify-items: center;
+    min-height: 100svh;
+    padding: 80px;
+    grid-gap: 64px;
+    gap: 64px;
+    font-family: var(--font-geist-sans);
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .page1_page__l3l50 {
+      --gray-rgb: 255, 255, 255;
+      --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+      --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+  
+      --button-primary-hover: #ccc;
+      --button-secondary-hover: #1a1a1a;
+    }
+  }
+  
+  .page1_main__mGnVx {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    grid-row-start: 2;
+  }
+  
+  .page1_main__mGnVx ol {
+    font-family: var(--font-geist-mono);
+    padding-left: 0;
+    margin: 0;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: -0.01em;
+    list-style-position: inside;
+  }
+  
+  .page1_main__mGnVx li:not(:last-of-type) {
+    margin-bottom: 8px;
+  }
+  
+  .page1_main__mGnVx code {
+    font-family: inherit;
+    background: var(--gray-alpha-100);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  
+  .page1_ctas__VSwLS {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .page1_ctas__VSwLS a {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    border-radius: 128px;
+    height: 48px;
+    padding: 0 20px;
+    border: none;
+    border: 1px solid transparent;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+  }
+  
+  a.page1_primary__NDSMZ {
+    background: var(--foreground);
+    color: var(--background);
+    gap: 8px;
+  }
+  
+  a.page1_secondary__srX36 {
+    border-color: var(--gray-alpha-200);
+    min-width: 158px;
+  }
+  
+  .page1_footer__h6nuC {
+    grid-row-start: 3;
+    display: flex;
+    gap: 24px;
+  }
+  
+  .page1_footer__h6nuC a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .page1_footer__h6nuC img {
+    flex-shrink: 0;
+  }
+  
+  /* Enable hover only on non-touch devices */
+  @media (hover: hover) and (pointer: fine) {
+    a.page1_primary__NDSMZ:hover {
+      background: var(--button-primary-hover);
+      border-color: transparent;
+    }
+  
+    a.page1_secondary__srX36:hover {
+      background: var(--button-secondary-hover);
+      border-color: transparent;
+    }
+  
+    .page1_footer__h6nuC a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .page1_page__l3l50 {
+      padding: 32px;
+      padding-bottom: 80px;
+    }
+  
+    .page1_main__mGnVx {
+      align-items: center;
+    }
+  
+    .page1_main__mGnVx ol {
+      text-align: center;
+    }
+  
+    .page1_ctas__VSwLS {
+      flex-direction: column;
+    }
+  
+    .page1_ctas__VSwLS a {
+      font-size: 14px;
+      height: 40px;
+      padding: 0 16px;
+    }
+  
+    a.page1_secondary__srX36 {
+      min-width: auto;
+    }
+  
+    .page1_footer__h6nuC {
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .page1_logo__Fdjyl {
+      filter: invert();
+    }
+  }
