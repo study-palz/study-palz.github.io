@@ -1,0 +1,62 @@
+{
+  "node": {
+    "33d751b67d1ba7ce19f1170bdff343dc8431309e": {
+      "workers": {
+        "app/auth/signup/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fieatchu%2FDesktop%2FICS%20314%2Fstudy-palz.github.io%2Fsrc%2Flib%2FdbActions.ts%22%2C%5B%22signInUser%22%2C%22deleteStuff%22%2C%22createUser%22%2C%22addStuff%22%2C%22changePassword%22%2C%22saveSignupData%22%2C%22editStuff%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/auth/signup/page": "action-browser"
+      }
+    },
+    "3b12a7089986984312c389b929c92561f747d887": {
+      "workers": {
+        "app/auth/signup/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fieatchu%2FDesktop%2FICS%20314%2Fstudy-palz.github.io%2Fsrc%2Flib%2FdbActions.ts%22%2C%5B%22signInUser%22%2C%22deleteStuff%22%2C%22createUser%22%2C%22addStuff%22%2C%22changePassword%22%2C%22saveSignupData%22%2C%22editStuff%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/auth/signup/page": "action-browser"
+      }
+    },
+    "75e9e80b8551e8b59f59a977739e995ecf474da0": {
+      "workers": {
+        "app/auth/signup/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fieatchu%2FDesktop%2FICS%20314%2Fstudy-palz.github.io%2Fsrc%2Flib%2FdbActions.ts%22%2C%5B%22signInUser%22%2C%22deleteStuff%22%2C%22createUser%22%2C%22addStuff%22%2C%22changePassword%22%2C%22saveSignupData%22%2C%22editStuff%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/auth/signup/page": "action-browser"
+      }
+    },
+    "8bb9d606fe20e7c9b71c84dc800051984678d60c": {
+      "workers": {
+        "app/auth/signup/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fieatchu%2FDesktop%2FICS%20314%2Fstudy-palz.github.io%2Fsrc%2Flib%2FdbActions.ts%22%2C%5B%22signInUser%22%2C%22deleteStuff%22%2C%22createUser%22%2C%22addStuff%22%2C%22changePassword%22%2C%22saveSignupData%22%2C%22editStuff%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/auth/signup/page": "action-browser"
+      }
+    },
+    "b46c79662b1a1a5f09000472ed6aa8ba4207d55b": {
+      "workers": {
+        "app/auth/signup/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fieatchu%2FDesktop%2FICS%20314%2Fstudy-palz.github.io%2Fsrc%2Flib%2FdbActions.ts%22%2C%5B%22signInUser%22%2C%22deleteStuff%22%2C%22createUser%22%2C%22addStuff%22%2C%22changePassword%22%2C%22saveSignupData%22%2C%22editStuff%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/auth/signup/page": "action-browser"
+      }
+    },
+    "d8286ee39fcc25373e8fa8117c8c9fdfad06e249": {
+      "workers": {
+        "app/auth/signup/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fieatchu%2FDesktop%2FICS%20314%2Fstudy-palz.github.io%2Fsrc%2Flib%2FdbActions.ts%22%2C%5B%22signInUser%22%2C%22deleteStuff%22%2C%22createUser%22%2C%22addStuff%22%2C%22changePassword%22%2C%22saveSignupData%22%2C%22editStuff%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/auth/signup/page": "action-browser"
+      }
+    },
+    "f2d07972d0cbe72edf737ed8efaa6a0c35cd8edf": {
+      "workers": {
+        "app/auth/signup/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fieatchu%2FDesktop%2FICS%20314%2Fstudy-palz.github.io%2Fsrc%2Flib%2FdbActions.ts%22%2C%5B%22signInUser%22%2C%22deleteStuff%22%2C%22createUser%22%2C%22addStuff%22%2C%22changePassword%22%2C%22saveSignupData%22%2C%22editStuff%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/auth/signup/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "akdSBSitEUaBFTFtJKLDjZK1a1gcFtejAbK5aWmCCTw="
+}
