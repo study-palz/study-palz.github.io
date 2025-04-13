@@ -4,28 +4,34 @@ import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import swal from 'sweetalert';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Stuff } from '@prisma/client';
 import { EditStuffSchema } from '@/lib/validationSchemas';
 import { editStuff } from '@/lib/dbActions';
 
-const onSubmit = async (data: Stuff) => {
-  // console.log(`onSubmit data: ${JSON.stringify(data, null, 2)}`);
+interface EditStuffData {
+  id: number;
+  name: string;
+  quantity: number;
+  condition: 'excellent' | 'good' | 'fair' | 'poor';
+  owner: string;
+}
+
+const onSubmit = async (data: EditStuffData) => {
   await editStuff(data);
   swal('Success', 'Your item has been updated', 'success', {
     timer: 2000,
   });
 };
 
-const EditStuffForm = ({ stuff }: { stuff: Stuff }) => {
+const EditStuffForm = ({ stuff }: { stuff: EditStuffData }) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Stuff>({
+  } = useForm<EditStuffData>({
+    defaultValues: stuff,
     resolver: yupResolver(EditStuffSchema),
   });
-  // console.log(stuff);
 
   return (
     <Container className="py-3">
@@ -37,57 +43,66 @@ const EditStuffForm = ({ stuff }: { stuff: Stuff }) => {
           <Card>
             <Card.Body>
               <Form onSubmit={handleSubmit(onSubmit)}>
-                <input type="hidden" {...register('id')} value={stuff.id} />
-                <Form.Group>
+                <input type="hidden" {...register('id')} />
+                <input type="hidden" {...register('owner')} />
+
+                <Form.Group className="mb-3">
                   <Form.Label>Name</Form.Label>
-                  <input
+                  <Form.Control
                     type="text"
                     {...register('name')}
-                    defaultValue={stuff.name}
-                    required
-                    className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                    isInvalid={!!errors.name}
                   />
-                  <div className="invalid-feedback">{errors.name?.message}</div>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.name?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group>
+
+                <Form.Group className="mb-3">
                   <Form.Label>Quantity</Form.Label>
-                  <input
+                  <Form.Control
                     type="number"
                     {...register('quantity')}
-                    defaultValue={stuff.quantity}
-                    className={`form-control ${errors.quantity ? 'is-invalid' : ''}`}
+                    isInvalid={!!errors.quantity}
                   />
-                  <div className="invalid-feedback">{errors.quantity?.message}</div>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.quantity?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group>
+
+                <Form.Group className="mb-3">
                   <Form.Label>Condition</Form.Label>
-                  <select
+                  <Form.Select
                     {...register('condition')}
-                    className={`form-control ${errors.condition ? 'is-invalid' : ''}`}
-                    defaultValue={stuff.condition}
+                    isInvalid={!!errors.condition}
                   >
                     <option value="excellent">Excellent</option>
                     <option value="good">Good</option>
                     <option value="fair">Fair</option>
                     <option value="poor">Poor</option>
-                  </select>
-                  <div className="invalid-feedback">{errors.condition?.message}</div>
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.condition?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
-                <input type="hidden" {...register('owner')} value={stuff.owner} />
-                <Form.Group className="form-group">
-                  <Row className="pt-3">
-                    <Col>
-                      <Button type="submit" variant="primary">
-                        Submit
-                      </Button>
-                    </Col>
-                    <Col>
-                      <Button type="button" onClick={() => reset()} variant="warning" className="float-right">
-                        Reset
-                      </Button>
-                    </Col>
-                  </Row>
-                </Form.Group>
+
+                <Row className="pt-3">
+                  <Col>
+                    <Button type="submit" variant="primary">
+                      Submit
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button
+                      type="button"
+                      onClick={() => reset()}
+                      variant="warning"
+                      className="float-right"
+                    >
+                      Reset
+                    </Button>
+                  </Col>
+                </Row>
               </Form>
             </Card.Body>
           </Card>
