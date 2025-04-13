@@ -73,12 +73,12 @@ async function main() {
     });
   }
 
-  console.log('✅ Done seeding!');
+  console.log('✅: Done seeding!');
 }
 
 main()
   .catch(async (e) => {
-    console.error('❌ Seeding error:', e);
+    console.error('❌: Seeding error:', e);
     await prisma.$disconnect();
     process.exit(1);
   })
