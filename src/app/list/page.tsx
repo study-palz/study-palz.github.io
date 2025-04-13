@@ -1,53 +1,39 @@
 import { getServerSession } from 'next-auth';
-import { Col, Container, Row, Table } from 'react-bootstrap';
-import { prisma } from '@/lib/prisma';
-import StuffItem from '@/components/StuffItem';
-import { loggedInProtectedPage } from '@/lib/page-protection';
+import { notFound } from 'next/navigation';
 import authOptions from '@/lib/authOptions';
+import { loggedInProtectedPage } from '@/lib/page-protection';
+import { prisma } from '@/lib/prisma';
 
-/** Render a list of stuff for the logged in user. */
-const ListPage = async () => {
-  // Protect the page, only logged in users can access it.
+export default async function ListPage() {
+  // Protect the page so that only logged in users can access it.
   const session = await getServerSession(authOptions);
   loggedInProtectedPage(
     session as {
       user: { email: string; id: string; randomKey: string };
-      // eslint-disable-next-line @typescript-eslint/comma-dangle
     } | null,
   );
+
+  // Example: Instead of fetching "stuff", perhaps you want to fetch users
   const owner = (session && session.user && session.user.email) || '';
-  const stuff = await prisma.stuff.findMany({
+  const users = await prisma.user.findMany({
     where: {
-      owner,
+      // Adjust filtering as necessary; here's just a placeholder
+      email: owner,
     },
   });
-  // console.log(stuff);
+
+  if (!users) {
+    return notFound();
+  }
+
   return (
     <main>
-      <Container id="list" fluid className="py-3">
-        <Row>
-          <Col>
-            <h1>Stuff</h1>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Quantity</th>
-                  <th>Condition</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stuff.map((item) => (
-                  <StuffItem key={item.id} {...item} />
-                ))}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-      </Container>
+      <h1>List Page</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.email}</li>
+        ))}
+      </ul>
     </main>
   );
-};
-
-export default ListPage;
+}
