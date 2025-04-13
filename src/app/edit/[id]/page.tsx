@@ -2,31 +2,27 @@ import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
 import authOptions from '@/lib/authOptions';
 import { loggedInProtectedPage } from '@/lib/page-protection';
-import { prisma } from '@/lib/prisma';
-import EditStuffForm from '@/components/EditStuffForm';
 
 export default async function EditStuffPage({ params }: { params: { id: string | string[] } }) {
-  // Protect the page, only logged in users can access it.
+  // Protect the page so that only logged-in users can access it.
   const session = await getServerSession(authOptions);
   loggedInProtectedPage(
     session as {
       user: { email: string; id: string; randomKey: string };
-      // eslint-disable-next-line @typescript-eslint/comma-dangle
     } | null,
   );
-  const id = Number(Array.isArray(params?.id) ? params?.id[0] : params?.id);
-  // console.log(id);
-  const stuff: Stuff | null = await prisma.stuff.findUnique({
-    where: { id },
-  });
-  // console.log(stuff);
-  if (!stuff) {
+
+  // Convert the id to a string (if it's an array, take the first element)
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+  if (!id) {
     return notFound();
   }
 
+  // Render a basic edit page with the ID.
   return (
     <main>
-      <EditStuffForm stuff={stuff} />
+      <h1>Edit Item</h1>
+      <p>Editing item with ID: {id}</p>
     </main>
   );
 }
