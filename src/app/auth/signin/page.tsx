@@ -11,19 +11,19 @@ export default function Home() {
             <Image
               src="/studypalzlogo.png"
               alt="Study Palz Logo"
-              width={120}
+              width={200}
               height={120}
               style={{ margin: '0 auto 1rem' }}
             />
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>Welcome</h1>
-            <p style={{ fontSize: '1.125rem', marginTop: '1rem' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white'}}>Welcome</h1>
+            <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
               Login to reconnect with your study palz.
             </p>
           </div>
           <div
             style={{
               flex: 1,
-              background: 'var(--gray-alpha-100)',
+              background: '#ffffff',
               padding: '40px',
               borderRadius: '12px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -59,7 +59,7 @@ export default function Home() {
             <p style={{ textAlign: 'center', marginTop: '1rem' }}>
               Don&apos;t have an account?
               {' '}
-              <Link className="secondary" href="/signup">
+              <Link className="secondary" href="/auth/signup">
                 Sign up
               </Link>
             </p>
