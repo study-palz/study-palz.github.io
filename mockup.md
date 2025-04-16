@@ -1,22 +1,13 @@
 # Mockup
 
----
+## Homepage
+![Our Homepage Mockup](public/images/homepage.png)
 
-## homepage
-![Our sign up mockup](/images/homepage.png)
----
+## Courses
+![Our Courses Mockup](public/images/courses.png)
 
-## courses
-![Our sign up mockup](/images/courses.png)
----
+## Calendar
+![Our Calendar Mockup](public/images/calendar.png)
 
-## calendar
-![Our sign up mockup](/images/calendar.png)
-
-
----
-
-## signup
-
-![Our sign up mockup](/images/signup.png)
-
+## Sign Up
+![Our Sign Up Mockup](public/images/signup.png)
