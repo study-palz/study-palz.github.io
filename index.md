@@ -6,7 +6,7 @@
 
 ## Important Links
 
-[Vercel Deployment](https://study-palz.github.io/)
+[Vercel Deployment](https://study-palz.vercel.app/)
 
 [our mock up pages](mockup.md)
 
