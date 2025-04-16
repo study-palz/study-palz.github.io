@@ -1,13 +1,19 @@
 # Mockup
 
 ## Homepage
-![Our Homepage Mockup](public/images/homepage.png)
+![Our Homepage Mockup](public/images/homepage-m1.png)
 
-## Courses
-![Our Courses Mockup](public/images/courses.png)
+## Login Page
+![Our Log In page Mockup](public/images/clogin-m1.png)
 
 ## Calendar
-![Our Calendar Mockup](public/images/calendar.png)
+![Our Calendar Mockup](public/images/calendar-m1.png)
 
-## Sign Up
-![Our Sign Up Mockup](public/images/signup.png)
+## Sign Up Page
+![Our Sign Up page Mockup](public/images/Signup-M1.png)
+
+## Profile Page
+![Our Profile page Mockup](public/images/Profile-m1.png)
+
+## Profile Page
+![Our Leaderboard Mockup](public/images/leaderboard-m1.png)
