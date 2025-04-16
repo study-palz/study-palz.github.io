@@ -3,20 +3,20 @@
 ---
 
 ## homepage
-![Our sign up mockup](/images/homepage.jpg)
+![Our sign up mockup](/images/homepage.png)
 ---
 
 ## courses
-![Our sign up mockup](/images/courses.jpg)
+![Our sign up mockup](/images/courses.png)
 ---
 
 ## calendar
-![Our sign up mockup](/images/calendar.jpg)
+![Our sign up mockup](/images/calendar.png)
 
 
 ---
 
 ## signup
 
-![Our sign up mockup](/images/signup.jpg)
+![Our sign up mockup](/images/signup.png)
 
