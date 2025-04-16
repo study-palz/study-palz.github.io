@@ -3,7 +3,7 @@
 ---
 
 ## homepage
-![Our sign up mockup](/images/homepage.png)
+![Our sign up mockup](images/homepage.png)
 ---
 
 ## courses
