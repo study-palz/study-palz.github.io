@@ -1,8 +1,8 @@
-// File: C:\Users\18085\Documents\GitHub\study-palz.github.io\src\app\auth\signup\page.tsx
-import * as entry from '../../../../../src/app/auth/signup/page.js'
+// File: C:\Users\18085\Documents\GitHub\study-palz.github.io\src\app\calendar\page.tsx
+import * as entry from '../../../../src/app/calendar/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../../src/app/auth/signup/page.js')
+type TEntry = typeof import('../../../../src/app/calendar/page.js')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{
