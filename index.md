@@ -6,7 +6,13 @@
 
 ## Important Links
 
+[Vercel Deployment](https://study-palz.github.io/)
+
 [our mock up pages](mockup.md)
+
+[M1 Project Board](https://github.com/orgs/study-palz/projects/3)
+
+[M2 Project Board](https://github.com/orgs/study-palz/projects/7)
 
 [team contract copy](team-contract.md)
 
