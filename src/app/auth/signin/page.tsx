@@ -1,8 +1,47 @@
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../../page1.module.css';
 
 export default function Home() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  // Function to handle form submission with event type
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    // Simple validation
+    if (!email || !password) {
+      setError('Please fill in both fields.');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.ok) {
+        // On success, you can redirect the user to the dashboard or homepage
+        // For example:
+        // window.location.href = '/dashboard';
+        alert('Logged in successfully!');
+      } else {
+        const data = await res.json();
+        setError(data.message || 'Login failed, please try again.');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+    }
+  };
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -33,13 +72,15 @@ export default function Home() {
             }}
           >
             <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>Login</h2>
-            <form>
+            <form onSubmit={handleLogin}>
               <div style={{ marginBottom: '1rem', textAlign: 'left' }}>
                 <label htmlFor="loginEmail">Email address</label>
                 <input
                   type="email"
                   id="loginEmail"
                   placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
                 />
               </div>
@@ -49,9 +90,16 @@ export default function Home() {
                   type="password"
                   id="loginPassword"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
                 />
               </div>
+              {error && (
+                <p style={{ color: 'red', fontSize: '0.875rem', marginBottom: '1rem' }}>
+                  {error}
+                </p>
+              )}
               <button type="submit" className="primary" style={{ width: '100%' }}>
                 Login
               </button>
