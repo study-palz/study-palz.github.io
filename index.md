@@ -8,13 +8,13 @@
 
 [Vercel Deployment](https://study-palz.vercel.app/)
 
-[our mock up pages](mockup.md)
+[Mockup Pages](mockup.md)
 
 [M1 Project Board](https://github.com/orgs/study-palz/projects/3)
 
 [M2 Project Board](https://github.com/orgs/study-palz/projects/7)
 
-[team contract copy](team-contract.md)
+[Team Contract Copy](team-contract.md)
 
 ---
 
