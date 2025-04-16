@@ -7,6 +7,7 @@
 ## Important Links
 
 [our mock up pages](mockup.md)
+
 [team contract copy](team-contract.md)
 
 ---
@@ -59,9 +60,8 @@ UH students often struggle to complete homework efficiently or understand materi
 
 ---
 
-## 📸 Mockups
-
-Here’s a preview of our planned pages (add screenshots here):
+## 📸 Mockups for M1
+[our mock up pages for M1](mockup.md)
 
 - User Home Page
 - User Profile
@@ -73,10 +73,13 @@ Here’s a preview of our planned pages (add screenshots here):
 
 ---
 
-## 🚀 What's Next?
+## 🚀 What's next for M2
 
-We're currently building the MVP and refining our game system. Stay tuned for updates!
+We're currently working making the existing pages uniform and complementing our theme. 
+We are also working on the connecting our pages to vercel. 
+[M2 Project Board](https://github.com/orgs/study-palz/projects/7)
+
 
 ---
 
-*Built with ❤️ by UH Mānoa ICS students.*
+
