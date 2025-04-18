@@ -1,16 +1,71 @@
-/* eslint-disable max-len */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 import styles from '../../page1.module.css';
 
 export default function Signup() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!email || !password) {
+      setError('Please fill in both fields.');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || 'Something went wrong');
+      } else {
+        // Auto-login the user after successful signup
+        const signInRes = await signIn('credentials', {
+          redirect: false,
+          email,
+          password,
+        });
+
+        if (signInRes?.error) {
+          setError('Error logging in. Please try again.');
+        } else {
+          // Redirect the user to the home page (or logged-in home page)
+          window.location.href = '/';
+        }
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again later.');
+    }
+  };
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <div style={{ display: 'flex', flexDirection: 'row', gap: '64px', alignItems: 'center' }}>
-          {/* Left side: Welcome Panel */}
           <div style={{ flex: 1, textAlign: 'center' }}>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>Join the Squad!</h1>
-            <p style={{ fontSize: '1.125rem', marginTop: '1rem' }}>
+            <Image
+              src="/studypalzlogo.png"
+              alt="Study Palz Logo"
+              width={200}
+              height={120}
+              style={{ margin: '0 auto 1rem' }}
+            />
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white' }}>Join the Squad!</h1>
+            <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
               Create your Study-Palz account and start collaborating 🚀
             </p>
           </div>
@@ -19,7 +74,7 @@ export default function Signup() {
           <div
             style={{
               flex: 1,
-              background: 'var(--gray-alpha-100)',
+              background: '#ffffff',
               padding: '40px',
               borderRadius: '12px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -28,36 +83,43 @@ export default function Signup() {
             }}
           >
             <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem', textAlign: 'center' }}>Sign Up</h2>
-            <form>
-              <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="signupName">Full Name</label>
-                <input type="text" id="signupName" placeholder="Enter full name" style={{ width: '100%', padding: '0.5rem' }} />
-              </div>
-              <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="signupMajor">Major</label>
-                <input type="text" id="signupMajor" placeholder="Enter major" style={{ width: '100%', padding: '0.5rem' }} />
-              </div>
+            <form onSubmit={handleSignup}>
               <div style={{ marginBottom: '1rem' }}>
                 <label htmlFor="signupEmail">Email address</label>
-                <input type="email" id="signupEmail" placeholder="Enter email" style={{ width: '100%', padding: '0.5rem' }} />
+                <input
+                  type="email"
+                  id="signupEmail"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{ width: '100%', padding: '0.5rem' }}
+                />
               </div>
               <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="signupGender">Gender</label>
-                <select id="signupGender" style={{ width: '100%', padding: '0.5rem' }}>
-                  <option value="">Select gender</option>
-                  <option value="female">Female</option>
-                  <option value="male">Male</option>
-                  <option value="other">Other</option>
-                  <option value="preferNotToSay">Prefer not to say</option>
-                </select>
+                <label htmlFor="signupPassword">Password</label>
+                <input
+                  type="password"
+                  id="signupPassword"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ width: '100%', padding: '0.5rem' }}
+                />
               </div>
+              {error && (
+                <p style={{ color: 'red', fontSize: '0.875rem', marginBottom: '1rem' }}>
+                  {error}
+                </p>
+              )}
               <button type="submit" className="primary" style={{ width: '100%' }}>
                 Sign Up
               </button>
             </form>
+
             <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-              Already have an account?{' '}
-              <Link className="secondary" href="/">
+              Already have an account?
+              {' '}
+              <Link className="secondary" href="/auth/signin">
                 Login
               </Link>
             </p>
