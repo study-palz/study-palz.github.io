@@ -1,68 +1,45 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";  // adjust to your Prisma import path
-import bcrypt from "bcryptjs";
+// src/app/api/auth/[...nextauth]/route.ts
 
-export default NextAuth({
-  adapter: PrismaAdapter(prisma),
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcrypt';
+
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const { email, password } = credentials;
+        if (!credentials) return null;
 
-        // Check if email and password are provided
-        if (!email || !password) {
-          throw new Error("Email and password are required.");
-        }
-
-        // Check if user already exists
-        const existingUser = await prisma.user.findUnique({
-          where: { email },
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
         });
 
-        if (existingUser) {
-          throw new Error("User already exists.");
-        }
+        if (!user) throw new Error('No user found');
 
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const isValid = await bcrypt.compare(credentials.password, user.password);
+        if (!isValid) throw new Error('Invalid password');
 
-        // Create the user
-        const newUser = await prisma.user.create({
-          data: {
-            email,
-            password: hashedPassword,
-            role: "USER", // Set default role to 'USER' or change according to your needs
-          },
-        });
-
-        return { id: newUser.id, email: newUser.email }; // Return the user object
+        return {
+          id: String(user.id),
+          email: user.email,
+        };
       },
     }),
   ],
+  pages: {
+    signIn: '/auth/signin',
+    error: '/auth/error',
+  },
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.user.id = token.id;
-        session.user.email = token.email;
-      }
-      return session;
-    },
-  },
+  secret: process.env.NEXTAUTH_SECRET,
 });
+
+export { handler as GET, handler as POST };

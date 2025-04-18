@@ -1,41 +1,40 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+// src/app/auth/signin/page.tsx
+
 'use client';
+
 import { useState } from 'react';
+import { signIn } from 'next-auth/react'; // Import signIn from NextAuth
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../../page1.module.css';
 
-export default function Home() {
+export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Function to handle form submission with event type
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Simple validation
     if (!email || !password) {
       setError('Please fill in both fields.');
       return;
     }
 
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      // Use NextAuth's signIn method to handle login
+      const res = await signIn('credentials', {
+        redirect: false, // Prevent auto redirect
+        email,
+        password,
       });
 
-      if (res.ok) {
-        // On success, you can redirect the user to the dashboard or homepage
-        // For example:
-        // window.location.href = '/dashboard';
-        alert('Logged in successfully!');
+      if (res?.error) {
+        setError(res.error || 'Login failed, please try again.');
       } else {
-        const data = await res.json();
-        setError(data.message || 'Login failed, please try again.');
+        // Redirect on successful login
+        window.location.href = '/';
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
@@ -54,7 +53,7 @@ export default function Home() {
               height={120}
               style={{ margin: '0 auto 1rem' }}
             />
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white'}}>Welcome</h1>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white' }}>Welcome</h1>
             <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
               Login to reconnect with your study palz.
             </p>

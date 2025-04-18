@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+
 'use client';
+
 import { useState } from 'react';
-import { signIn } from 'next-auth/react'; // Import signIn from NextAuth
 import Link from 'next/link';
 import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 import styles from '../../page1.module.css';
 
 export default function Signup() {
@@ -13,23 +16,39 @@ export default function Signup() {
   const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Simple validation
     if (!email || !password) {
       setError('Please fill in both fields.');
       return;
     }
 
-    const res = await signIn('credentials', {
-      redirect: false,
-      email,
-      password,
-    });
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (res?.error) {
-      setError(res.error); // Show the error from NextAuth
-    } else {
-      // Redirect to dashboard or home after successful sign-up
-      window.location.href = '/auth/signin'; // or wherever you want to redirect
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || 'Something went wrong');
+      } else {
+        // Auto-login the user after successful signup
+        const signInRes = await signIn('credentials', {
+          redirect: false,
+          email,
+          password,
+        });
+
+        if (signInRes?.error) {
+          setError('Error logging in. Please try again.');
+        } else {
+          // Redirect the user to the home page (or logged-in home page)
+          window.location.href = '/';
+        }
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again later.');
     }
   };
 
@@ -98,7 +117,8 @@ export default function Signup() {
             </form>
 
             <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-              Already have an account?{' '}
+              Already have an account?
+              {' '}
               <Link className="secondary" href="/auth/signin">
                 Login
               </Link>
