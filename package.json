@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build": "prisma generate && next build",
     "dev": "next dev",
     "dev-https": "next dev --experimental-https",
-    "build": "prisma generate && next build",
-    "start": "next start",
     "lint": "next lint",
+    "migrate": "dotenv -e .env -- npx prisma migrate dev",
+    "playwright-ci": "next dev && npx playwright test",
     "playwright-development": "npx playwright test",
-    "playwright-ci": "next dev && npx playwright test"
+    "start": "next start"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -42,6 +43,7 @@
     "@types/node": "^22.5.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^8",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
