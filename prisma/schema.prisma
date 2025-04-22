@@ -79,8 +79,9 @@ model PointHistory {
 model UserProfile {
   id            Int      @id @default(autoincrement())
   userId        Int      @unique
-  fullName      String
-  headshotUrl   String?
+  firstName     String?  // Make nullable initially
+  lastName      String?  // Make nullable initially
+  profileImage   String?
   coursesTaken  String?
   coursesHelped String?
   updatedAt     DateTime @updatedAt
