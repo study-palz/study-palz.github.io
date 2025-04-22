@@ -7,6 +7,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { BoxArrowRight, PersonFill, PersonPlusFill } from 'react-bootstrap-icons';
+import React, { useState, useEffect } from 'react';
 import styles from '../app/page.module.css';
 
 const NavBar: React.FC = () => {
@@ -15,6 +16,22 @@ const NavBar: React.FC = () => {
   const userWithRole = session?.user as { email: string; randomKey: string; image?: string };
   const role = userWithRole?.randomKey;
   const pathName = usePathname();
+
+  // State to store the user's profile image URL
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  // Fetch the user's profile image URL from the API if logged in
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      if (currentUser) {
+        const res = await fetch(`/api/profile?email=${currentUser}`);
+        const data = await res.json();
+        setProfileImage(data.profileImage || null); // ✅ Use 'profileImage' field
+      }
+    };
+
+    fetchProfileImage();
+  }, [currentUser]);
 
   const handleSignOut = () => {
     signOut({ callbackUrl: '/' }); // Redirect to homepage after logout
@@ -31,13 +48,12 @@ const NavBar: React.FC = () => {
         {/* Navbar Toggle (Hamburger) for mobile */}
         <Navbar.Toggle
           aria-controls="basic-navbar-nav"
-          className={styles['navbar-toggler-icon']} // Apply the custom class here
+          className={styles['navbar-toggler-icon']}
         />
 
         {/* Main Nav Links */}
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto justify-content-start">
-            {/* Nav Links for larger screens */}
             <Nav.Link href="/" className="me-5" style={{ color: 'white', fontWeight: 'bold' }}>
               Home
             </Nav.Link>
@@ -51,14 +67,15 @@ const NavBar: React.FC = () => {
             {/* Show if logged in */}
             {currentUser && (
               <>
-                <Nav.Link href="/calendar" active={pathName === '/calendar'} className="me-5, ms-5" style={{ color: 'white', fontWeight: 'bold' }}>
+                <Nav.Link href="/calendar" active={pathName === '/calendar'} className="me-5 ms-5" style={{ color: 'white', fontWeight: 'bold' }}>
                   Calendar
                 </Nav.Link>
-                <Nav.Link href="/leaderboard" active={pathName === '/leaderboard'} className="me-5, ms-5" style={{ color: 'white', fontWeight: 'bold' }}>
+                <Nav.Link href="/leaderboard" active={pathName === '/leaderboard'} className="me-5 ms-5" style={{ color: 'white', fontWeight: 'bold' }}>
                   Leaderboard
                 </Nav.Link>
               </>
             )}
+
             {/* Admin Access */}
             {currentUser && role === 'ADMIN' && (
               <Nav.Link href="/admin" active={pathName === '/admin'} style={{ color: 'white' }}>
@@ -73,9 +90,9 @@ const NavBar: React.FC = () => {
               <>
                 {/* Profile Image as Icon */}
                 <Nav.Link href="/profile" className="me-3">
-                  {session.user?.image ? (
+                  {profileImage ? (
                     <img
-                      src={session.user.image}
+                      src={profileImage}
                       alt="Profile"
                       width={36}
                       height={36}
