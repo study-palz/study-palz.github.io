@@ -51,74 +51,41 @@ const NavBar: React.FC = () => {
 
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto justify-content-start">
-            <Nav.Link href="/" className="me-5" style={{ color: 'white', fontWeight: 'bold' }}>
-              Home
-            </Nav.Link>
-            <Nav.Link href="/about" className="me-5" style={{ color: 'white', fontWeight: 'bold' }}>
-              About
-            </Nav.Link>
-            <Nav.Link href="/contact" style={{ color: 'white', fontWeight: 'bold' }}>
-              Contact
-            </Nav.Link>
-
-            {currentUser && (
-              <>
-                <Nav.Link href="/calendar" active={pathName === '/calendar'} className="me-5 ms-5" style={{ color: 'white', fontWeight: 'bold' }}>
-                  Calendar
-                </Nav.Link>
-                <Nav.Link href="/leaderboard" active={pathName === '/leaderboard'} className="me-5 ms-5" style={{ color: 'white', fontWeight: 'bold' }}>
-                  Leaderboard
-                </Nav.Link>
-              </>
-            )}
-            {currentUser && role === 'ADMIN' && (
-              <Nav.Link href="/admin" active={pathName === '/admin'} style={{ color: 'white' }}>
-                Admin
-              </Nav.Link>
-            )}
+            {/* ... your other links ... */}
           </Nav>
 
           <Nav>
             {session ? (
               <>
-                <Nav.Link href="/profile" className="me-3">
-                  {profileImage ? (
-                    <img
-                      src={profileImage}
-                      alt="Profile"
-                      width={36}
-                      height={36}
-                      style={{
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                        border: '2px solid white',
-                      }}
-                    />
-                  ) : (
-                    <PersonFill size={24} color="white" />
-                  )}
-                </Nav.Link>
-
-                <Nav.Link
-                  onClick={handleSignOut}
-                  className="login-signup-btn"
-                  style={{ color: 'white', fontWeight: 'bold', cursor: 'pointer' }}
-                >
-                  <BoxArrowRight className="me-1" />
-                  Sign Out
-                </Nav.Link>
+                {/* signed-in user links */}
               </>
             ) : (
               <div className="d-flex">
-                <Nav.Link href="/auth/signin" className="login-signup-btn me-2">
-                  <PersonFill />
-                  {' '}
-                  Sign In
+                <Nav.Link
+                  href="/auth/signin"
+                  className="login-signup-btn me-2"
+                  style={{
+                    color: 'white',
+                    backgroundColor: 'transparent',
+                    border: '1px solid white',
+                    borderRadius: '20px',
+                    padding: '0.25rem 1rem',
+                  }}
+                >
+                  <PersonFill /> Sign In
                 </Nav.Link>
-                <Nav.Link href="/auth/signup" className="login-signup-btn">
-                  <PersonPlusFill />
-                  {' '}
-                  Sign Up
+                <Nav.Link
+                  href="/auth/signup"
+                  className="login-signup-btn"
+                  style={{
+                    color: 'white',
+                    backgroundColor: 'transparent',
+                    border: '1px solid white',
+                    borderRadius: '20px',
+                    padding: '0.25rem 1rem',
+                  }}
+                >
+                  <PersonPlusFill /> Sign Up
                 </Nav.Link>
               </div>
             )}

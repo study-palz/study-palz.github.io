@@ -1,5 +1,8 @@
 {
-  "/calendar/page": "app/calendar/page.js",
   "/page": "app/page.js",
-  "/auth/signup/page": "app/auth/signup/page.js"
+  "/courses/page": "app/courses/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/auth/signin/page": "app/auth/signin/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/courses/[code]/page": "app/courses/[code]/page.js"
 }
