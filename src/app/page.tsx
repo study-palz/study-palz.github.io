@@ -5,7 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Col, Container, Row, Card, Form } from 'react-bootstrap';
 import { useSession } from 'next-auth/react';
-import { courses } from './courses/page';
+
+// ←── Make sure this path points at your lib/courses.ts
+import { courses, Course } from '../lib/courses';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -14,12 +16,12 @@ export default function Home() {
 
   // search‐bar state
   const [query, setQuery] = useState('');
+
   const suggestions = query
     ? courses
-        .filter(
-          (c) =>
-            c.code.toLowerCase().includes(query.toLowerCase()) ||
-            c.title.toLowerCase().includes(query.toLowerCase())
+        .filter((c: Course) =>
+          c.code.toLowerCase().includes(query.toLowerCase()) ||
+          c.title.toLowerCase().includes(query.toLowerCase())
         )
         .slice(0, 5)
     : [];
@@ -30,7 +32,12 @@ export default function Home() {
 
   return (
     <main>
-      <Container id="landing-page" fluid className="py-5 text-center" style={{ color: 'white' }}>
+      <Container
+        id="landing-page"
+        fluid
+        className="py-5 text-center"
+        style={{ color: 'white' }}
+      >
         {/* Hero */}
         <Row className="mb-5">
           <Col>
@@ -41,7 +48,7 @@ export default function Home() {
           </Col>
         </Row>
 
-        {/* Browse Courses — now above the cards */}
+        {/* Browse Courses (moved above) */}
         <Row className="mb-5">
           <Col md={{ span: 8, offset: 2 }}>
             <Card className="p-4" style={{ backgroundColor: '#111', color: 'white' }}>
@@ -112,7 +119,6 @@ export default function Home() {
               </Card>
             </Link>
           </Col>
-
           <Col md={6}>
             <Link href="/calendar" passHref>
               <Card className="h-100 p-3 hover-shadow cursor-pointer">
@@ -125,7 +131,6 @@ export default function Home() {
               </Card>
             </Link>
           </Col>
-
           <Col md={6}>
             <Link href="/leaderboard" passHref>
               <Card className="h-100 p-3 hover-shadow cursor-pointer">
@@ -138,7 +143,6 @@ export default function Home() {
               </Card>
             </Link>
           </Col>
-
           <Col md={6}>
             <Link href="/leaderboard" passHref>
               <Card className="h-100 p-3 hover-shadow cursor-pointer">
