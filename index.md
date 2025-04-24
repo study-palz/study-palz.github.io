@@ -4,7 +4,7 @@
 
 ---
 
-## Important Links
+## Table of Contents
 
 [Overview](#💡-overview)
 
