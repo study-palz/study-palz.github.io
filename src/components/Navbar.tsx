@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 /* eslint-disable @next/next/no-img-element */
-
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
@@ -11,32 +10,44 @@ import React, { useState, useEffect } from 'react';
 import styles from '../app/page.module.css';
 
 const NavBar: React.FC = () => {
-  const { data: session } = useSession(); 
-  const currentUser = session?.user?.email;
-  const userWithRole = session?.user as { email: string; randomKey: string; image?: string };
-  const role = userWithRole?.randomKey;
+  // ── 1) ALL HOOKS UP FRONT ─────────────────────────────────────────────────────
+  const { data: session } = useSession();
   const pathName = usePathname();
-
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProfileImage = async () => {
-      if (currentUser) {
-        const res = await fetch(`/api/profile?email=${currentUser}`);
+    // Pull out email once and guard
+    const email = session?.user?.email;
+    if (!email) {
+      setProfileImage(null);
+      return;
+    }
+
+    // Now email is a string
+    (async () => {
+      try {
+        const res = await fetch(`/api/profile?email=${encodeURIComponent(email)}`);
         const data = await res.json();
         setProfileImage(data.profileImage || null);
-      } else {
-        setProfileImage(null); 
+      } catch {
+        setProfileImage(null);
       }
-    };
+    })();
+  }, [session?.user?.email]);
 
-    fetchProfileImage();
-  }, [currentUser]);
+  // ── 2) HIDE NAVBAR ON THESE ROUTES ────────────────────────────────────────────
+  const hiddenRoutes = ['/auth/signup', '/auth/signin', '/auth/signout'];
+  if (hiddenRoutes.includes(pathName || '')) {
+    return null;
+  }
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' });
-  };
+  // ── 3) ALL OTHER LOGIC (safe to reference hooks) ─────────────────────────────
+  const currentUser = session?.user?.email;
+  const userWithRole = session?.user as { email: string; randomKey: string; image?: string };
+  const role = userWithRole?.randomKey;
+  const handleSignOut = () => signOut({ callbackUrl: '/' });
 
+  // ── 4) RENDER ────────────────────────────────────────────────────────────────
   return (
     <Navbar expand="lg" style={{ backgroundColor: 'rgb(8, 8, 8)' }}>
       <Container>
@@ -63,16 +74,30 @@ const NavBar: React.FC = () => {
 
             {currentUser && (
               <>
-                <Nav.Link href="/calendar" active={pathName === '/calendar'} className="me-5 ms-5" style={{ color: 'white', fontWeight: 'bold' }}>
+                <Nav.Link
+                  href="/calendar"
+                  active={pathName === '/calendar'}
+                  className="me-5 ms-5"
+                  style={{ color: 'white', fontWeight: 'bold' }}
+                >
                   Calendar
                 </Nav.Link>
-                <Nav.Link href="/leaderboard" active={pathName === '/leaderboard'} className="me-5 ms-5" style={{ color: 'white', fontWeight: 'bold' }}>
+                <Nav.Link
+                  href="/leaderboard"
+                  active={pathName === '/leaderboard'}
+                  className="me-5 ms-5"
+                  style={{ color: 'white', fontWeight: 'bold' }}
+                >
                   Leaderboard
                 </Nav.Link>
               </>
             )}
             {currentUser && role === 'ADMIN' && (
-              <Nav.Link href="/admin" active={pathName === '/admin'} style={{ color: 'white' }}>
+              <Nav.Link
+                href="/admin"
+                active={pathName === '/admin'}
+                style={{ color: 'white' }}
+              >
                 Admin
               </Nav.Link>
             )}
@@ -111,14 +136,10 @@ const NavBar: React.FC = () => {
             ) : (
               <div className="d-flex">
                 <Nav.Link href="/auth/signin" className="login-signup-btn me-2">
-                  <PersonFill />
-                  {' '}
-                  Sign In
+                  <PersonFill /> Sign In
                 </Nav.Link>
                 <Nav.Link href="/auth/signup" className="login-signup-btn">
-                  <PersonPlusFill />
-                  {' '}
-                  Sign Up
+                  <PersonPlusFill /> Sign Up
                 </Nav.Link>
               </div>
             )}
