@@ -1,29 +1,32 @@
-// src/app/auth/reset-password/page.tsx
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import Link from 'next/link';
-import { Card, Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import Link from "next/link";
+import { Card, Container, Button, Form, Row, Col } from "react-bootstrap";
 
-type ResetForm = { password: string; confirmPassword: string };
+type ResetForm = {
+  password: string;
+  confirmPassword: string;
+};
 
 export default function ResetPassword() {
   const router = useRouter();
   const params = useSearchParams();
-  const token = params.get('token') ?? undefined;
+  const token = params.get("token") ?? undefined;
 
-  const [status, setStatus] =
-    useState<'loading' | 'invalid' | 'ready' | 'success'>('loading');
+  const [status, setStatus] = useState<
+    "loading" | "invalid" | "ready" | "success"
+  >("loading");
 
   const schema = Yup.object({
-    password: Yup.string().min(6, 'Min 6 chars').required('Required'),
+    password: Yup.string().min(6, "Min 6 chars").required("Required"),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password')], 'Passwords must match')
-      .required('Required'),
+      .oneOf([Yup.ref("password")], "Passwords must match")
+      .required("Required"),
   });
 
   const {
@@ -36,26 +39,27 @@ export default function ResetPassword() {
     if (!token) return;
     fetch(`/api/auth/validate-token?token=${encodeURIComponent(token)}`)
       .then((r) => r.json())
-      .then((data) => setStatus(data.valid ? 'ready' : 'invalid'));
+      .then((data) => setStatus(data.valid ? "ready" : "invalid"));
   }, [token]);
 
   const onSubmit = async (data: ResetForm) => {
-    await fetch('/api/auth/reset-password', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    await fetch("/api/auth/reset-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, newPassword: data.password }),
     });
-    setStatus('success');
+    setStatus("success");
   };
 
-  if (status === 'loading') return <p>Validating link…</p>;
-  if (status === 'invalid')
+  if (status === "loading") return <p>Validating link…</p>;
+  if (status === "invalid")
     return (
       <p>
-        Link is invalid or expired. <Link href="/auth/forgot-password">Try again</Link>
+        Link is invalid or expired.{" "}
+        <Link href="/auth/forgot-password">Try again</Link>
       </p>
     );
-  if (status === 'success')
+  if (status === "success")
     return (
       <p>
         Password reset! <Link href="/auth/signin">Sign in</Link>
@@ -74,7 +78,7 @@ export default function ResetPassword() {
                   <Form.Label>New Password</Form.Label>
                   <Form.Control
                     type="password"
-                    {...register('password')}
+                    {...register("password")}
                     isInvalid={!!errors.password}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -86,7 +90,7 @@ export default function ResetPassword() {
                   <Form.Label>Confirm Password</Form.Label>
                   <Form.Control
                     type="password"
-                    {...register('confirmPassword')}
+                    {...register("confirmPassword")}
                     isInvalid={!!errors.confirmPassword}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -94,7 +98,6 @@ export default function ResetPassword() {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                {/* Removed `block`, added `w-100` for full width */}
                 <Button type="submit" className="w-100">
                   Reset Password
                 </Button>
