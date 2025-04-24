@@ -6,6 +6,10 @@
 
 ## Important Links
 
+[Overview](#💡-overview)
+
+[User Guide](#💡-HowItWorks)
+
 [Vercel Deployment](https://study-palz.vercel.app/)
 
 [Mockup Pages](mockup.md)
