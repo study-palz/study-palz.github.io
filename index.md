@@ -163,4 +163,4 @@ This will load the app on your local machine for development.
 
 ---
 
-![ci-badge](https://github.com/ics-software-engineering/studypalz-application-template/workflows/ci-study-palz.github.iobadge.svg)
+![ci-badge](https://github.com/ics-software-engineering/studypalz-application-template/workflows/ci-study-palz.github.io/badge.svg)
