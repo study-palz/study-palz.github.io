@@ -80,7 +80,39 @@ UH students often struggle to complete homework efficiently or understand materi
 
 First, clone the repository by clicking [**here**](https://github.com/study-palz/study-palz.github.io) to view the repository and then run the following command in your terminal:
 
-<pre> <code>```bash createdb study_palz ```</code> </pre>
+<pre> <code>```git clone https://github.com/study-palz/study-palz.github.io.git ```</code> </pre>
+<pre> <code>```cd study-palz.github.io```</code> </pre>
+
+### 2. Set Up PostgreSQL Database
+
+Create a new PostgreSQL database called study_palz. Make sure PostgreSQL is installed and running:
+<pre> <code>```createdb study_palz```</code> </pre>
+
+### 3. Set Up the Environment Variables
+
+Copy the example environment file and configure your database connection:
+<pre> <code>```cp .env.example .env```</code> </pre>
+Then, open .env and set your PostgreSQL credentials:
+<pre> <code>```DATABASE_URL="postgresql://username:password@localhost:5432/study_palz"
+```</code> </pre>
+
+### 4. Install Dependencies
+
+Use npm to install the required packages:
+<pre> <code>```npm install```</code> </pre>
+
+### 5. Set Up the Database
+
+Run the following Prisma command to apply migrations and set up the database schema:
+<pre> <code>```npx prisma migrate dev```</code> </pre>
+
+### 5. Start the Development Server
+
+Finally, start the development server locally:
+<pre> <code>```npm run dev```</code> </pre>
+Then open your browser and go to
+<pre> <code>```[npm run dev](http://localhost:3000)```</code> </pre>
+This will load the app on your local machine for development.
 
 ---
 
