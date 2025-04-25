@@ -85,29 +85,22 @@ Clicking on the Sign Up link takes you to a registration page where new users ca
 
 ![](/public/images/contact-guide.png)
 
+### Profile
+
 
 ### Leaderboard
 
-Clicking on the Leaderboard link takes you to a page showing the top-performing users on Study Palz
+Clicking on the Leaderboard link takes you to a page showing the top-performing users on Study Palz.
+
+![](/public/images/leaderboard-guide.png)
 
 
-1. **Login & Set Up Your Profile**  
-   - When creating your account, your major is asked to group you with students in that major.
-   - Mark current courses you need help with.
-   - Upload a headshot so others can recognize you.
+### Calender
 
-2. **View Courses & Members**  
-   - See a list of UH courses.
-   - View "Senseis" (students offering help) and "Grasshoppers" (students seeking help) per course.
+The Calendar page shows all scheduled study sessions. You can view upcoming sessions, join one that fits your schedule.
 
-3. **Create Study Sessions**  
-   - Propose a study session at a set time or choose **“Right Now!”** if you need instant help.
-   - Get notified when others join your session.
+![](/public/images/calender-guide.png)
 
-4. **Join Sessions & Help Others**  
-   - Use the calendar to view all active and upcoming sessions.
-
----
 
 ## Developer Guide 🔧
 
