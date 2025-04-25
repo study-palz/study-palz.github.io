@@ -1,5 +1,6 @@
 {
   "/page": "app/page.js",
+<<<<<<< HEAD
   "/courses/[code]/page": "app/courses/[code]/page.js",
   "/auth/signup/page": "app/auth/signup/page.js",
   "/courses/page": "app/courses/page.js",
@@ -8,4 +9,12 @@
   "/api/signup/route": "app/api/signup/route.js",
   "/auth/signin/page": "app/auth/signin/page.js",
   "/_not-found/page": "app/_not-found/page.js"
+=======
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/courses/[code]/page": "app/courses/[code]/page.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
+  "/api/signup/route": "app/api/signup/route.js",
+  "/courses/page": "app/courses/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
+>>>>>>> parent of 32e5fac (issue-28)
 }

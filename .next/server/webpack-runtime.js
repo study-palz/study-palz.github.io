@@ -130,7 +130,11 @@
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
+<<<<<<< HEAD
 /******/ 		__webpack_require__.h = () => ("f982ced374677738")
+=======
+/******/ 		__webpack_require__.h = () => ("4f6685208830ecd8")
+>>>>>>> parent of 32e5fac (issue-28)
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
