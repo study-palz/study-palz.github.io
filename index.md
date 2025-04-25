@@ -61,9 +61,34 @@ When you arrive at the app, the landing page welcomes you with a simple and invi
 
 ![](public/images/home-guide.png)
 
-![Home Guide](images/signin-guide.png)
+### About
+
+Clicking on the About link will direct you to a page that provides an overview of Study-Palz
+
+![](/public/images/about-guide.png)
+
+### Contact 
+
+Clicking on the Contact link will take you to a page where you can find ways to reach out to the Study-Palz team
+
+![](/public/images/contact-guide.png)
+
+### Sign in 
+
+Clicking on the Sign In link brings you to a secure login page where returning users can enter their email and password to access their personalized Study-Palz dashboard.
+
+![](/public/images/signin-guide.png)
+
+### Sign up
+
+Clicking on the Sign Up link takes you to a registration page where new users can create an account by entering their name, email, password, and major—setting up their profile to start using Study-Palz.
+
+![](/public/images/contact-guide.png)
 
 
+### Leaderboard
+
+Clicking on the Leaderboard link takes you to a page showing the top-performing users on Study Palz
 
 
 1. **Login & Set Up Your Profile**  
