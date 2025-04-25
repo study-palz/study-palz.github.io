@@ -14,9 +14,9 @@
 
 [Milestones](#milestones)
 
-[User Guide](#💡-HowItWorks)
+[User Guide](#user-guide-)
 
-[Developer Guide]
+[Developer Guide](#developer-guide-)
 
 ---
 
@@ -53,7 +53,8 @@ UH students often struggle to complete homework efficiently or understand materi
 
 ---
 
-## 🔧 How It Works
+## User Guide 🔧
+
 
 1. **Login & Set Up Your Profile**  
    - When creating your account, your major is asked to group you with students in that major.
@@ -70,6 +71,11 @@ UH students often struggle to complete homework efficiently or understand materi
 
 4. **Join Sessions & Help Others**  
    - Use the calendar to view all active and upcoming sessions.
+
+---
+
+## Developer Guide 🔧
+
 
 ---
 
