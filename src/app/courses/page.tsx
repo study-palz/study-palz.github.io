@@ -1,10 +1,12 @@
 import Link from 'next/link';
-import { courseData as courseList, Course } from '../../lib/courses';
+import type { Course } from '../../lib/courses';
+import { courseData as courseList } from '../../lib/courses';
 
 export default function CoursesPage() {
   return (
     <div style={{ padding: '2rem', color: 'white' }}>
       <h1>ICS Courses</h1>
+
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {courseList.map(({ code, title }: Course) => (
           <li key={code} style={{ margin: '0.5rem 0' }}>

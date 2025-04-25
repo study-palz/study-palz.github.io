@@ -6,22 +6,22 @@ import { useRouter } from 'next/navigation';
 import { Col, Container, Row, Card, Form } from 'react-bootstrap';
 import { useSession } from 'next-auth/react';
 
-// ←── Make sure this path points at your lib/courses.ts
-import { courseData as courses, Course } from '../lib/courses';
+import type { Course } from '../lib/courses';
+import { courseData as courses } from '../lib/courses';
 
 export default function Home() {
   const { data: session } = useSession();
   const router = useRouter();
   const profileLink = session ? '/profile' : '/auth/signup';
 
-  // search‐bar state
+  // ─── Search state ───────────────────────────────────────────────────────────
   const [query, setQuery] = useState('');
-
   const suggestions = query
     ? courses
-        .filter((c: Course) =>
-          c.code.toLowerCase().includes(query.toLowerCase()) ||
-          c.title.toLowerCase().includes(query.toLowerCase())
+        .filter(
+          (c: Course) =>
+            c.code.toLowerCase().includes(query.toLowerCase()) ||
+            c.title.toLowerCase().includes(query.toLowerCase())
         )
         .slice(0, 5)
     : [];
@@ -30,14 +30,10 @@ export default function Home() {
     router.push(`/courses/${encodeURIComponent(code)}`);
   };
 
+  // ─── JSX ────────────────────────────────────────────────────────────────────
   return (
     <main>
-      <Container
-        id="landing-page"
-        fluid
-        className="py-5 text-center"
-        style={{ color: 'white' }}
-      >
+      <Container id="landing-page" fluid className="py-5 text-center" style={{ color: 'white' }}>
         {/* Hero */}
         <Row className="mb-5">
           <Col>
@@ -48,13 +44,13 @@ export default function Home() {
           </Col>
         </Row>
 
-        {/* Browse Courses (moved above) */}
+        {/* Search box / browse courses */}
         <Row className="mb-5">
           <Col md={{ span: 8, offset: 2 }}>
             <Card className="p-4" style={{ backgroundColor: '#111', color: 'white' }}>
               <Card.Body>
                 <Card.Title as="h2">📚 Browse ICS Courses</Card.Title>
-                <Card.Text>Search by code or title or view the full list:</Card.Text>
+                <Card.Text>Search by code or title, or view the full list:</Card.Text>
 
                 <Form.Control
                   type="text"
@@ -105,52 +101,47 @@ export default function Home() {
           </Col>
         </Row>
 
-        {/* Main action cards */}
+        {/* Quick-action cards */}
         <Row className="g-4">
           <Col md={6}>
             <Link href={profileLink} passHref>
               <Card className="h-100 p-3 hover-shadow cursor-pointer">
                 <Card.Body>
                   <Card.Title>📄 Set up your profile</Card.Title>
-                  <Card.Text>
-                    Pick your courses, upload a headshot, and choose your roles.
-                  </Card.Text>
+                  <Card.Text>Pick your courses, upload a head-shot, choose your roles.</Card.Text>
                 </Card.Body>
               </Card>
             </Link>
           </Col>
+
           <Col md={6}>
             <Link href="/calendar" passHref>
               <Card className="h-100 p-3 hover-shadow cursor-pointer">
                 <Card.Body>
                   <Card.Title>📅 View or schedule study sessions</Card.Title>
-                  <Card.Text>
-                    Join a session now or plan one later in ICSpace.
-                  </Card.Text>
+                  <Card.Text>Join a session now or plan one later in ICSpace.</Card.Text>
                 </Card.Body>
               </Card>
             </Link>
           </Col>
+
           <Col md={6}>
             <Link href="/leaderboard" passHref>
               <Card className="h-100 p-3 hover-shadow cursor-pointer">
                 <Card.Body>
                   <Card.Title>🏆 Earn points & level up</Card.Title>
-                  <Card.Text>
-                    Help others, join sessions, and get recognized!
-                  </Card.Text>
+                  <Card.Text>Help others, join sessions, and get recognized!</Card.Text>
                 </Card.Body>
               </Card>
             </Link>
           </Col>
+
           <Col md={6}>
             <Link href="/leaderboard" passHref>
               <Card className="h-100 p-3 hover-shadow cursor-pointer">
                 <Card.Body>
                   <Card.Title>📊 Check the leaderboard</Card.Title>
-                  <Card.Text>
-                    See who’s leading the ICS StudyPalz community.
-                  </Card.Text>
+                  <Card.Text>See who’s leading the StudyPalz community.</Card.Text>
                 </Card.Body>
               </Card>
             </Link>
