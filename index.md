@@ -59,7 +59,13 @@ UH students often struggle to complete homework efficiently or understand materi
 
 When you arrive at the app, the landing page welcomes you with a simple and inviting message.
 
-![](public/images/signin-guide.png)
+![](public/images/home-guide.png)
+
+### About
+
+Clicking on the About link will direct you to a page that provides an overview of Study-Palz, including its mission, key features, and the team behind the platform.
+
+
 
 ![Home Guide](images/signin-guide.png)
 
