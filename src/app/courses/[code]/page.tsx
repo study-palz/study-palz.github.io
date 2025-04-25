@@ -1,61 +1,64 @@
-import React from 'react';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+// This is the dynamic course detail page.
+// It lives at “/courses/[code]”.
+
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
 
 interface Props {
-  params: { code: string };
+  params: { code: string }
 }
 
 const mockData: Record<string, { senseis: string[]; grasshoppers: string[] }> = {
+  // replace with real DB fetch later...
   'ICS 101': {
-    senseis: ['Alice A.', 'Bob B.'],
-    grasshoppers: ['Carol C.', 'David D.'],
+    senseis: [],
+    grasshoppers: [],
   },
-};
+  'ICS 101A': {
+    senseis: [],
+    grasshoppers: [],
+  },
+  // …etc
+}
 
 export default function CourseDetail({ params }: Props) {
-  const code = decodeURIComponent(params.code);
-  const entry = mockData[code];
+  const code = decodeURIComponent(params.code)
+  const entry = mockData[code]
 
   if (!entry) {
-    return notFound();
+    // tells Next to render the built-in 404
+    notFound()
   }
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div style={{ padding: '2rem', color: 'white' }}>
       <h1>{code}</h1>
 
-      <section>
-        <h2>Senseis</h2>
-        {entry.senseis.length > 0 ? (
-          <ul>
-            {entry.senseis.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No senseis yet.</p>
-        )}
-      </section>
+      <h2>Senseis</h2>
+      {entry.senseis.length > 0 ? (
+        <ul>
+          {entry.senseis.map((name) => (
+            <li key={name}>{name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No senseis yet.</p>
+      )}
 
-      <section style={{ marginTop: '1.5rem' }}>
-        <h2>Grasshoppers</h2>
-        {entry.grasshoppers.length > 0 ? (
-          <ul>
-            {entry.grasshoppers.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No grasshoppers yet.</p>
-        )}
-      </section>
+      <h2>Grasshoppers</h2>
+      {entry.grasshoppers.length > 0 ? (
+        <ul>
+          {entry.grasshoppers.map((name) => (
+            <li key={name}>{name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No grasshoppers yet.</p>
+      )}
 
-      <p style={{ marginTop: '2rem' }}>
-        <Link href="/courses" style={{ color: '#0070f3' }}>
-          ← Back to courses
-        </Link>
+      <p>
+        <Link href="/courses">← Back to courses</Link>
       </p>
     </div>
-  );
+  )
 }
