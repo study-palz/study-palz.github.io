@@ -10,13 +10,13 @@
 
 [GitHub, Team & Live App](#github-team--live-app)
 
-[User Guide](#💡-HowItWorks)
-
 [Mockup Pages](mockup.md)
 
 [M1 Project Board](https://github.com/orgs/study-palz/projects/3)
 
 [M2 Project Board](https://github.com/orgs/study-palz/projects/7)
+
+[User Guide](#💡-HowItWorks)
 
 ---
 
