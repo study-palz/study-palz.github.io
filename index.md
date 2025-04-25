@@ -163,4 +163,4 @@ This will load the app on your local machine for development.
 
 ---
 
-[![ci-nextjs-application-template](https://github.com/study-palz/nextjs-application-template/study-palz.github.io/workflows/ci.yml/badge.svg)](https://https://github.com/study-palz/study-palz.github.io/blob/main/.github/workflow/ci.yml)
+[![ci-nextjs-application-template](https://github.com/study-palz/nextjs-application-template/study-palz.github.io/workflows/ci.yml/badge.svg)](https://github.com/study-palz/study-palz.github.io/actions/.github/workflow/ci.yml)
