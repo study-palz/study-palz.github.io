@@ -59,7 +59,11 @@ UH students often struggle to complete homework efficiently or understand materi
 
 When you arrive at the app, the landing page welcomes you with a simple and inviting message.
 
+<<<<<<< HEAD
 ![](public/images/home-guide.png)
+=======
+!(images/home-guide.png)
+>>>>>>> parent of f3ccaea (Update index.md)
 
 ### About
 
