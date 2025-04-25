@@ -53,7 +53,8 @@ UH students often struggle to complete homework efficiently or understand materi
 
 ---
 
-## 🔧 User Guide
+## User Guide 🔧
+
 
 1. **Login & Set Up Your Profile**  
    - When creating your account, your major is asked to group you with students in that major.
@@ -73,7 +74,8 @@ UH students often struggle to complete homework efficiently or understand materi
 
 ---
 
-## 🔧 Developer Guide
+## Developer Guide 🔧
+
 
 ---
 
