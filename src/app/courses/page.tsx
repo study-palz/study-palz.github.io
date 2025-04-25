@@ -1,6 +1,6 @@
 // src/app/courses/page.tsx
 import Link from 'next/link';
-import { courses } from '../../lib/courses'; // relative path into src/lib
+import { courses } from '../../lib/courses';
 
 export default function CoursesPage() {
   return (
