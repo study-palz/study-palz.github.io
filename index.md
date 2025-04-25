@@ -65,13 +65,13 @@ When you arrive at the app, the landing page welcomes you with a simple and invi
 
 Clicking on the About link will direct you to a page that provides an overview of Study-Palz, including its mission, key features, and the team behind the platform.
 
-![](/public/image/about-guide.png)
+![](public/images/about-guide.png)
 
 ### Contact 
 
 Clicking on the Contact link will take you to a page where you can find ways to reach out to the Study-Palz team
 
-![](/public/images/contact-guide.png)
+![](public/images/contact-guide.png)
 
 ![Home Guide](images/signup-guide.png)
 
