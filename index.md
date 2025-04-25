@@ -61,6 +61,9 @@ When you arrive at the app, the landing page welcomes you with a simple and invi
 
 ![Home Guide](images/home-guide.png)
 
+![Home Guide](images/signin-guide.png)
+
+![Home Guide](images/signup-guide.png)
 
 
 
