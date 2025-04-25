@@ -8,6 +8,8 @@
 
 [Overview](#💡-overview)
 
+[GitHub, Team & Live App](#github-team--live-app)
+
 [User Guide](#💡-HowItWorks)
 
 [Vercel Deployment](https://study-palz.vercel.app/)
@@ -34,6 +36,13 @@ UH students often struggle to complete homework efficiently or understand materi
 - Leaderboard to challenge students and encourage them to study more.
 
 ---
+
+## GitHub, Team & Live App
+
+- 🔗 **GitHub Repository**: [Study Palz on GitHub](https://github.com/orgs/study-palz/repositories)  
+- 👥 **Team Members & Contact Info**: [Meet the Team](team.md)  
+- 🚀 **Live App on Vercel**: [Launch Study Palz](https://study-palz.vercel.app/)
+
 
 ## 🔧 How It Works
 
