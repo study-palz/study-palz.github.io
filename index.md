@@ -42,8 +42,11 @@ UH students often struggle to complete homework efficiently or understand materi
 
 ## Milestones
 
+- [Project Milestone 1](https://github.com/orgs/study-palz/projects/3))
 
-[M2 Project Board](https://github.com/orgs/study-palz/projects/7)
+- [Project Milestone 2](https://github.com/orgs/study-palz/projects/7)
+
+- [Project Milestone 3](https://github.com/orgs/study-palz/projects/8/views/1)
 
 
 ---
