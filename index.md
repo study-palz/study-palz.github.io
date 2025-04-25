@@ -12,15 +12,11 @@
 
 [User Guide](#💡-HowItWorks)
 
-[Vercel Deployment](https://study-palz.vercel.app/)
-
 [Mockup Pages](mockup.md)
 
 [M1 Project Board](https://github.com/orgs/study-palz/projects/3)
 
 [M2 Project Board](https://github.com/orgs/study-palz/projects/7)
-
-[Team Contract Copy](team-contract.md)
 
 ---
 
@@ -40,7 +36,9 @@ UH students often struggle to complete homework efficiently or understand materi
 ## GitHub, Team & Live App
 
 - 🔗 **GitHub Repository**: [Study Palz on GitHub](https://github.com/orgs/study-palz/repositories)  
+
 - 👥 **Team Members & Contact Info**: [Meet the Team](team-contract.md)  
+
 - 🚀 **Live App on Vercel**: [Launch Study Palz](https://study-palz.vercel.app/)
 
 
