@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: study-palz.github.io
+    working-directory: .github/
 
 jobs:
   build:
