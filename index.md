@@ -12,9 +12,7 @@
 
 [Mockup Pages](mockup.md)
 
-[M1 Project Board](https://github.com/orgs/study-palz/projects/3)
-
-[M2 Project Board](https://github.com/orgs/study-palz/projects/7)
+[Milestones](#milestones)
 
 [User Guide](#💡-HowItWorks)
 
@@ -41,6 +39,14 @@ UH students often struggle to complete homework efficiently or understand materi
 
 - 🚀 **Live App on Vercel**: [Launch Study Palz](https://study-palz.vercel.app/)
 
+
+## Milestones
+
+
+[M2 Project Board](https://github.com/orgs/study-palz/projects/7)
+
+
+---
 
 ## 🔧 How It Works
 
@@ -77,30 +83,5 @@ UH students often struggle to complete homework efficiently or understand materi
 
 ---
 
-## 📸 Mockups for M1
-
-
-[our mock up pages for M1](mockup.md)
-
-
-- User Home Page
-- User Profile
-- Study Session Creation
-- Calendar View
-- Leaderboard
-- Login Page
-- Registration Page
-
----
-
-## 🚀 What's next for M2
-
-We're currently working making the existing pages uniform and complementing our theme. 
-We are also working on the connecting our pages to vercel. 
-
-[M2 Project Board](https://github.com/orgs/study-palz/projects/7)
-
-
----
 
 
