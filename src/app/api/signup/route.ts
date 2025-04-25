@@ -10,22 +10,21 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Email and password are required.' }, { status: 400 });
   }
 
-  console.log('Checking if user exists:', email); // Debugging log
+  console.log('Checking if user exists:', email); 
 
-  // Check if user already exists
   const existingUser = await prisma.user.findUnique({ where: { email } });
 
   if (existingUser) {
-    console.log('User already exists:', email); // Debugging log
+    console.log('User already exists:', email); 
     return NextResponse.json({ message: 'User already exists.' }, { status: 409 });
   }
 
-  // Hash password
+
   const hashedPassword = await hash(password, 10);
 
-  // Create user
+  
   try {
-    console.log('Creating new user:', email); // Debugging log
+    console.log('Creating new user:', email); 
     await prisma.user.create({
       data: {
         email,

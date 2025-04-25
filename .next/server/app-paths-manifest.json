@@ -1,5 +1,24 @@
 {
+  "/admin/page": "app/admin/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/add/page": "app/add/page.js",
+  "/api/profile/route": "app/api/profile/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/auth/change-password/page": "app/auth/change-password/page.js",
+  "/about/page": "app/about/page.js",
+  "/api/signup/route": "app/api/signup/route.js",
+  "/auth/signout/page": "app/auth/signout/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
   "/calendar/page": "app/calendar/page.js",
+  "/courses/page": "app/courses/page.js",
+  "/auth/signin/page": "app/auth/signin/page.js",
+  "/edit/[id]/page": "app/edit/[id]/page.js",
+  "/courses/[code]/page": "app/courses/[code]/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/leaderboard/page": "app/leaderboard/page.js",
+  "/list/page": "app/list/page.js",
+  "/not-authorized/page": "app/not-authorized/page.js",
   "/page": "app/page.js",
-  "/auth/signup/page": "app/auth/signup/page.js"
+  "/profile/page": "app/profile/page.js"
 }
