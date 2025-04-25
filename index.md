@@ -40,7 +40,7 @@ UH students often struggle to complete homework efficiently or understand materi
 ## GitHub, Team & Live App
 
 - 🔗 **GitHub Repository**: [Study Palz on GitHub](https://github.com/orgs/study-palz/repositories)  
-- 👥 **Team Members & Contact Info**: [Meet the Team](team.md)  
+- 👥 **Team Members & Contact Info**: [Meet the Team](team-contract.md)  
 - 🚀 **Live App on Vercel**: [Launch Study Palz](https://study-palz.vercel.app/)
 
 
