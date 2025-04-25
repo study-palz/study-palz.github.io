@@ -8,6 +8,7 @@
 
 ## Calendar
 ![Our Calendar Mockup](public/images/calendar-m1.png)
+![Our Calendar Mockup](public/images/Calendar_update-drag.png)
 
 ## Sign Up Page
 ![Our Sign Up page Mockup](public/images/Signup-M1.png)
