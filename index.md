@@ -1,5 +1,3 @@
-[![ci-badge](https://github.com/study-palz/study-palz.github.io/workflows/ci-study-palz.github.io/badge.svg)](https://github.com/study-palz/study-palz.github.io/actions/workflows/ci.yml)
----
 # Welcome to Study-Palz 👋
 
 **A face-to-face study group platform for all students at UH Mānoa**
@@ -11,6 +9,8 @@
 [Overview](#overview)
 
 [GitHub, Team & Live App](#github-team--live-app)
+
+[![ci-badge](https://github.com/study-palz/study-palz.github.io/workflows/ci-study-palz.github.io/badge.svg)](https://github.com/study-palz/study-palz.github.io/actions/workflows/ci.yml)
 
 [Mockup Pages](mockup.md)
 
