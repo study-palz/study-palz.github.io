@@ -14,9 +14,9 @@
 
 [Milestones](#milestones)
 
-[User Guide](#💡-HowItWorks)
+[User Guide](#user-guide-)
 
-[Developer Guide]
+[Developer Guide](#developer-guide-)
 
 ---
 
