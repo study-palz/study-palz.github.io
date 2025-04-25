@@ -1,64 +1,56 @@
-// This is the dynamic course detail page.
-// It lives at “/courses/[code]”.
-
-import { notFound } from 'next/navigation'
+// src/app/courses/[code]/page.tsx
+import { prisma } from '../../../lib/prisma'
 import Link from 'next/link'
 
-interface Props {
-  params: { code: string }
-}
+interface Props { params: { code: string } }
 
-const mockData: Record<string, { senseis: string[]; grasshoppers: string[] }> = {
-  // replace with real DB fetch later...
-  'ICS 101': {
-    senseis: [],
-    grasshoppers: [],
-  },
-  'ICS 101A': {
-    senseis: [],
-    grasshoppers: [],
-  },
-  // …etc
-}
-
-export default function CourseDetail({ params }: Props) {
+export default async function CourseDetail({ params }: Props) {
   const code = decodeURIComponent(params.code)
-  const entry = mockData[code]
 
-  if (!entry) {
-    // tells Next to render the built-in 404
-    notFound()
+  const course = await prisma.course.findUnique({
+    where: { code },
+    include: {
+      roles: {
+        include: { user: true },                
+        orderBy: { isSensei: 'desc' },          
+      },
+    },
+  })
+
+  if (!course) {
+    return <p style={{ padding: '2rem', color: 'white' }}>Course not found</p>
   }
+
+  const senseis = course.roles.filter(r => r.isSensei).map(r => r.user.name || r.user.email)
+  const grasshoppers = course.roles.filter(r => !r.isSensei).map(r => r.user.name || r.user.email)
 
   return (
     <div style={{ padding: '2rem', color: 'white' }}>
-      <h1>{code}</h1>
+      <h1>{course.code} — {course.title}</h1>
 
-      <h2>Senseis</h2>
-      {entry.senseis.length > 0 ? (
-        <ul>
-          {entry.senseis.map((name) => (
-            <li key={name}>{name}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No senseis yet.</p>
-      )}
+      <section>
+        <h2>Senseis</h2>
+        {senseis.length ? (
+          <ul>
+            {senseis.map(name => <li key={name}>{name}</li>)}
+          </ul>
+        ) : (
+          <p>No senseis yet.</p>
+        )}
+      </section>
 
-      <h2>Grasshoppers</h2>
-      {entry.grasshoppers.length > 0 ? (
-        <ul>
-          {entry.grasshoppers.map((name) => (
-            <li key={name}>{name}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No grasshoppers yet.</p>
-      )}
+      <section>
+        <h2>Grasshoppers</h2>
+        {grasshoppers.length ? (
+          <ul>
+            {grasshoppers.map(name => <li key={name}>{name}</li>)}
+          </ul>
+        ) : (
+          <p>No grasshoppers yet.</p>
+        )}
+      </section>
 
-      <p>
-        <Link href="/courses">← Back to courses</Link>
-      </p>
+      <p><Link href="/courses">← Back to courses</Link></p>
     </div>
   )
 }
