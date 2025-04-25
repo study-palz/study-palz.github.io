@@ -10,8 +10,6 @@
 
 [GitHub, Team & Live App](#github-team--live-app)
 
-[![ci-badge](https://github.com/study-palz/study-palz.github.io/workflows/ci-study-palz.github.io/badge.svg)](https://github.com/study-palz/study-palz.github.io/actions/workflows/ci.yml)
-
 [Mockup Pages](mockup.md)
 
 [Milestones](#milestones)
@@ -43,6 +41,7 @@ UH students often struggle to complete homework efficiently or understand materi
 
 - 🚀 **Live App on Vercel**: [Launch Study Palz](https://study-palz.vercel.app/)
 
+[![ci-badge](https://github.com/study-palz/study-palz.github.io/workflows/ci-study-palz.github.io/badge.svg)](https://github.com/study-palz/study-palz.github.io/actions/workflows/ci.yml)
 
 ## Milestones
 
