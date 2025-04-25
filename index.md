@@ -6,7 +6,7 @@
 
 ## Table of Contents
 
-[Overview](#💡-overview)
+[Overview](#💡overview)
 
 [GitHub, Team & Live App](#github-team--live-app)
 
