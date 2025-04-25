@@ -138,7 +138,7 @@ Use npm to install the required packages:
 Run the following Prisma command to apply migrations and set up the database schema:
 <pre> <code>```npx prisma migrate dev```</code> </pre>
 
-### 5. Start the Development Server
+### 6. Start the Development Server
 
 Finally, start the development server locally:
 <pre> <code>```npm run dev```</code> </pre>
