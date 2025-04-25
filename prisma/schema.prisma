@@ -26,30 +26,30 @@ enum SessionStatus {
 }
 
 model User {
-  id                  Int             @id @default(autoincrement())
-  email               String          @unique
-  password            String
-  role                Role            @default(USER)
-  name                String?
-  profilePicture      String?
+  id                   Int             @id @default(autoincrement())
+  email                String          @unique
+  password             String
+  role                 Role            @default(USER)
+  name                 String?
+  profilePicture       String?
 
   // courses the user teaches or needs help in
-  courseRoles         CourseRole[]
+  courseRoles          CourseRole[]
 
   // study sessions
-  sessionsHosted      StudySession[]  @relation("OwnerSessions")
-  sessionsAttending   StudySession[]  @relation("AttendeeSessions")
+  sessionsHosted       StudySession[]  @relation("OwnerSessions")
+  sessionsAttending    StudySession[]  @relation("AttendeeSessions")
 
   // points
-  points              Int             @default(0)
-  pointHistory        PointHistory[]
+  points               Int             @default(0)
+  pointHistory         PointHistory[]
 
   // password reset
-  resetToken          String?         @unique
-  resetTokenExpiresAt DateTime?
+  resetToken           String?         @unique
+  resetTokenExpiresAt  DateTime?
 
-  // one-to-one profile metadata (UserProfile owns the FK)
-  userProfile         UserProfile?    @relation("UserProfileRelation")
+  // one-to-one profile metadata
+  userProfile          UserProfile?    @relation("UserProfileRelation")
 }
 
 model Course {
@@ -65,12 +65,12 @@ model Course {
 }
 
 model CourseRole {
-  id        Int     @id @default(autoincrement())
-  user      User    @relation(fields: [userId], references: [id])
-  userId    Int
-  course    Course  @relation(fields: [courseId], references: [id])
-  courseId  Int
-  isSensei  Boolean
+  id         Int     @id @default(autoincrement())
+  user       User    @relation(fields: [userId], references: [id])
+  userId     Int
+  course     Course  @relation(fields: [courseId], references: [id])
+  courseId   Int
+  isSensei   Boolean
 
   @@unique([userId, courseId, isSensei])
 }
@@ -112,6 +112,6 @@ model UserProfile {
   updatedAt     DateTime @updatedAt
   createdAt     DateTime @default(now())
 
-  // This side owns the foreign key to User
+  // owns the FK
   user          User     @relation("UserProfileRelation", fields: [userId], references: [id])
 }
