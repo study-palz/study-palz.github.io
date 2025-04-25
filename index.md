@@ -53,7 +53,10 @@ UH students often struggle to complete homework efficiently or understand materi
 
 ---
 
-## User Guide 🔧
+## User Interface Walkthrough 🔧
+
+### Landing page
+
 
 
 1. **Login & Set Up Your Profile**  
