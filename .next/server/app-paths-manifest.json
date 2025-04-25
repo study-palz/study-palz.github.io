@@ -1,11 +1,7 @@
 {
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/auth/signin/page": "app/auth/signin/page.js",
-  "/auth/signup/page": "app/auth/signup/page.js",
   "/page": "app/page.js",
-  "/api/profile/route": "app/api/profile/route.js",
-  "/api/signup/route": "app/api/signup/route.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
   "/courses/[code]/page": "app/courses/[code]/page.js",
-  "/profile/page": "app/profile/page.js"
+  "/profile/page": "app/profile/page.js",
+  "/calendar/page": "app/calendar/page.js"
 }
