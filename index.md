@@ -73,8 +73,17 @@ Clicking on the Contact link will take you to a page where you can find ways to 
 
 ![](public/images/contact-guide.png)
 
-![Home Guide](images/signup-guide.png)
+### sign in 
 
+Clicking on the Sign In link brings you to a secure login page where returning users can enter their email and password to access their personalized Study-Palz dashboard.
+
+![](/public/images/signin-guide.png)
+
+### sign up
+
+Clicking on the Sign Up link takes you to a registration page where new users can create an account by entering their name, email, password, and major—setting up their profile to start using Study-Palz.
+
+![](/public/images/signup-guide.png)
 
 
 1. **Login & Set Up Your Profile**  
