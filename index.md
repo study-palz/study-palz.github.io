@@ -59,7 +59,7 @@ UH students often struggle to complete homework efficiently or understand materi
 
 When you arrive at the app, the landing page welcomes you with a simple and inviting message.
 
-![Landing Page](images/home-guide.png)
+![Landing Page](/images/home-guide.png)
 
 
 
