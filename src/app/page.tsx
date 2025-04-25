@@ -7,7 +7,7 @@ import { Col, Container, Row, Card, Form } from 'react-bootstrap';
 import { useSession } from 'next-auth/react';
 
 // ←── Make sure this path points at your lib/courses.ts
-import { courses, Course } from '../lib/courses';
+import { courseData as courses, Course } from '../lib/courses';
 
 export default function Home() {
   const { data: session } = useSession();

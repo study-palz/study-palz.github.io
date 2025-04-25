@@ -1,6 +1,5 @@
-// src/app/courses/page.tsx
 import Link from 'next/link';
-import { courses as courseList, Course } from '../../lib/courses';
+import { courseData as courseList, Course } from '../../lib/courses';
 
 export default function CoursesPage() {
   return (

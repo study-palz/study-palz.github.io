@@ -1,11 +1,9 @@
-// src/lib/courses.ts
-
 export interface Course {
     code: string;
     title: string;
   }
   
-  export const courses: Course[] = [
+  export const courseData: Course[] = [
     { code: 'ICS 101',  title: 'Digital Tools for the Information World' },
     { code: 'ICS 101A', title: 'Digital Tools for the Information World' },
     { code: 'ICS 102',  title: 'Introduction to Data Science' },
