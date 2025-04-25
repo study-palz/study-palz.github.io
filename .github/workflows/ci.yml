@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./src/app
+    working-directory: ./src/app/page.tsx
 
 jobs:
   build:
