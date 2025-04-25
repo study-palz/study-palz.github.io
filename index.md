@@ -76,6 +76,13 @@ UH students often struggle to complete homework efficiently or understand materi
 
 ## Developer Guide 🔧
 
+### 1. Clone the Repository
+
+First, clone the repository by clicking [**here**](https://github.com/study-palz/study-palz.github.io) to view the repository and then run the following command in your terminal:
+
+When rendered, it will display a box containing the following commands:
+git clone https://github.com/study-palz/study-palz.github.io.git
+cd study-palz.github.io
 
 ---
 
