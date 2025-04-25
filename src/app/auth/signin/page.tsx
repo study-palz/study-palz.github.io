@@ -1,10 +1,7 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-// src/app/auth/signin/page.tsx
-
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react'; // Import signIn from NextAuth
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../../page1.module.css';
@@ -23,9 +20,8 @@ export default function SignIn() {
     }
 
     try {
-      // Use NextAuth's signIn method to handle login
       const res = await signIn('credentials', {
-        redirect: false, // Prevent auto redirect
+        redirect: false,
         email,
         password,
       });
@@ -33,10 +29,9 @@ export default function SignIn() {
       if (res?.error) {
         setError(res.error || 'Login failed, please try again.');
       } else {
-        // Redirect on successful login
         window.location.href = '/';
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.');
     }
   };
@@ -44,7 +39,14 @@ export default function SignIn() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '64px', alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '64px',
+            alignItems: 'center',
+          }}
+        >
           <div style={{ flex: 1, textAlign: 'center' }}>
             <Image
               src="/studypalzlogo.png"
@@ -53,11 +55,14 @@ export default function SignIn() {
               height={120}
               style={{ margin: '0 auto 1rem' }}
             />
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white' }}>Welcome</h1>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white' }}>
+              Welcome
+            </h1>
             <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
               Login to reconnect with your study palz.
             </p>
           </div>
+
           <div
             style={{
               flex: 1,
@@ -83,6 +88,7 @@ export default function SignIn() {
                   style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
                 />
               </div>
+
               <div style={{ marginBottom: '1rem', textAlign: 'left' }}>
                 <label htmlFor="loginPassword">Password</label>
                 <input
@@ -94,18 +100,27 @@ export default function SignIn() {
                   style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
                 />
               </div>
+
               {error && (
                 <p style={{ color: 'red', fontSize: '0.875rem', marginBottom: '1rem' }}>
                   {error}
                 </p>
               )}
+
               <button type="submit" className="primary" style={{ width: '100%' }}>
                 Login
               </button>
+
+              {/* Forgot password link */}
+              <p style={{ marginTop: '0.75rem', fontSize: '0.9rem' }}>
+                <Link href="/auth/forgot-password" className="secondary">
+                  Forgot your password?
+                </Link>
+              </p>
             </form>
+
             <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-              Don&apos;t have an account?
-              {' '}
+              Don&apos;t have an account?{' '}
               <Link className="secondary" href="/auth/signup">
                 Sign up
               </Link>
