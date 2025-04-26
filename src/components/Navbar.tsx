@@ -77,7 +77,7 @@ const NavBar: React.FC = () => {
                 <Nav.Link
                   href="/calendar"
                   active={pathName === '/calendar'}
-                  className="me-5 ms-5"
+                  className="me-4 ms-3"
                   style={{ color: 'white', fontWeight: 'bold' }}
                 >
                   Calendar
@@ -85,7 +85,7 @@ const NavBar: React.FC = () => {
                 <Nav.Link
                   href="/leaderboard"
                   active={pathName === '/leaderboard'}
-                  className="me-5 ms-5"
+                  className="me-4 ms-3"
                   style={{ color: 'white', fontWeight: 'bold' }}
                 >
                   Leaderboard
