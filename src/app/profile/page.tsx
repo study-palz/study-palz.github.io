@@ -24,8 +24,8 @@ export default function ProfilePage() {
   const [coursesTaken, setCoursesTaken] = useState('');
   const [coursesHelped, setCoursesHelped] = useState('');
   const [message, setMessage] = useState('');
-  
-  // Profile data state, typed with ProfileData or null
+
+  // Profile data state
   const [savedData, setSavedData] = useState<ProfileData | null>(null);
 
   // Fetch user profile on load
@@ -89,7 +89,7 @@ export default function ProfilePage() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(to right,  #080808, #2a5298)',
+      background: 'linear-gradient(to right, #080808, #2a5298)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -192,6 +192,30 @@ export default function ProfilePage() {
             </Form>
           </Col>
         </Row>
+
+        {/* New Saved Profile Section */}
+        {savedData && (
+          <Card className="mt-5 p-4" style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'white' }}>
+            <h4 className="mb-4">📋 Your Saved Profile</h4>
+            <p><strong>First Name:</strong> {savedData.firstName}</p>
+            <p><strong>Last Name:</strong> {savedData.lastName}</p>
+            <p><strong>Courses Taken:</strong> {savedData.coursesTaken}</p>
+            <p><strong>Courses You Can Help With:</strong> {savedData.coursesHelped}</p>
+            {savedData.profileImage && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={savedData.profileImage} alt="Saved Profile"
+                style={{
+                  width: '150px',
+                  height: '150px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  marginTop: '1rem',
+                  border: '3px solid #00ffe7',
+                }}
+              />
+            )}
+          </Card>
+        )}
       </Container>
     </div>
   );
