@@ -1,57 +1,53 @@
-import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+// pages/api/profile.ts
+import { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth';
+import  authOptions  from '@/lib/authOptions'; 
+import { prisma } from '@/lib/prisma'; 
 
-const prisma = new PrismaClient();
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const session = await getServerSession(req, res, authOptions);
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const email = searchParams.get('email');
-
-  if (!email) return NextResponse.json({ error: 'Missing email' }, { status: 400 });
+  if (!session || !session.user?.email) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   const user = await prisma.user.findUnique({
-    where: { email },
-    include: { userProfile: true },
+    where: { email: session.user.email },
   });
 
-  if (!user || !user.userProfile) return NextResponse.json(null);
+  if (!user) return res.status(404).json({ error: 'User not found' });
 
-  return NextResponse.json({
-    firstName: user.userProfile.firstName,
-    lastName: user.userProfile.lastName,
-    profileImage: user.userProfile.profileImage,
-    coursesTaken: user.userProfile.coursesTaken,
-    coursesHelped: user.userProfile.coursesHelped,
-  });
-}
+  if (req.method === 'GET') {
+    const profile = await prisma.userProfile.findUnique({
+      where: { userId: user.id },
+    });
+    return res.status(200).json(profile);
+  }
 
-export async function POST(req: Request) {
-  const body = await req.json();
-  const { email, firstName, lastName, profileImage, coursesTaken, coursesHelped } = body;
+  if (req.method === 'POST') {
+    const { firstName, lastName, profileImage, coursesTaken, coursesHelped } = req.body;
 
-  if (!email) return NextResponse.json({ error: 'Missing email' }, { status: 400 });
+    const profile = await prisma.userProfile.upsert({
+      where: { userId: user.id },
+      update: {
+        firstName,
+        lastName,
+        profileImage,
+        coursesTaken,
+        coursesHelped,
+      },
+      create: {
+        userId: user.id,
+        firstName,
+        lastName,
+        profileImage,
+        coursesTaken,
+        coursesHelped,
+      },
+    });
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    return res.status(200).json(profile);
+  }
 
-  const profile = await prisma.userProfile.upsert({
-    where: { userId: user.id },
-    update: {
-      firstName,
-      lastName,
-      profileImage,
-      coursesTaken,
-      coursesHelped,
-    },
-    create: {
-      userId: user.id,
-      firstName,
-      lastName,
-      profileImage,
-      coursesTaken,
-      coursesHelped,
-    },
-  });
-
-  return NextResponse.json(profile);
+  return res.status(405).end(); // Method not allowed
 }

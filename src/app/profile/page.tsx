@@ -1,114 +1,116 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Container, Form, Button, Alert, Row, Col } from 'react-bootstrap';
+import { useRouter } from 'next/navigation';
+import { Container, Form, Button, Alert, Row, Col, Card } from 'react-bootstrap';
+
+// Define ProfileData type
+type ProfileData = {
+  profileImage: string;
+  firstName: string;
+  lastName: string;
+  coursesTaken: string;
+  coursesHelped: string;
+};
 
 export default function ProfilePage() {
   const { data: session, update } = useSession();
+  const router = useRouter();
+
   const [profileImage, setProfileImage] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [coursesTaken, setCoursesTaken] = useState('');
+  const [coursesHelped, setCoursesHelped] = useState('');
   const [message, setMessage] = useState('');
+  
+  // Profile data state, typed with ProfileData or null
+  const [savedData, setSavedData] = useState<ProfileData | null>(null);
 
   // Fetch user profile on load
   useEffect(() => {
-    if (session?.user?.email) {
-      fetch(`/api/profile?email=${session.user.email}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data) {
-            setProfileImage(data.profileImage || '');
-            setFirstName(data.firstName || '');
-            setLastName(data.lastName || '');
-          }
-        });
-    }
+    if (!session?.user?.email) return;
+
+    fetch(`/api/profile?email=${session.user.email}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data) {
+          setProfileImage(data.profileImage || '');
+          setFirstName(data.firstName || '');
+          setLastName(data.lastName || '');
+          setCoursesTaken(data.coursesTaken || '');
+          setCoursesHelped(data.coursesHelped || '');
+          setSavedData({
+            profileImage: data.profileImage || '',
+            firstName: data.firstName || '',
+            lastName: data.lastName || '',
+            coursesTaken: data.coursesTaken || '',
+            coursesHelped: data.coursesHelped || '',
+          });
+        }
+      });
   }, [session]);
 
-  // Handle image upload + preview
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const previewUrl = URL.createObjectURL(file);
-      setProfileImage(previewUrl);
-    }
-  };
-
+  // Handle profile submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    let uploadedImageUrl = profileImage;
-
-    // Simulate upload (replace with actual upload logic, e.g. Cloudinary or S3)
-    if (imageFile) {
-      const formData = new FormData();
-      formData.append('file', imageFile);
-
-      const uploadRes = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await uploadRes.json();
-      uploadedImageUrl = data.url; // Returned image URL
-    }
 
     const res = await fetch('/api/profile', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: session?.user?.email,
-        profileImage: uploadedImageUrl,
+        profileImage,
         firstName,
         lastName,
+        coursesTaken,
+        coursesHelped,
       }),
     });
 
     if (res.ok) {
-      setMessage('✅ Profile saved successfully!');
+      setMessage('✅ Profile saved!');
+      setSavedData({
+        profileImage,
+        firstName,
+        lastName,
+        coursesTaken,
+        coursesHelped,
+      });
 
       // Refresh session so navbar updates profile image
-      await update({ image: uploadedImageUrl });
+      await update({ image: profileImage });
     } else {
-      setMessage('❌ Something went wrong.');
+      setMessage('❌ Failed to save profile');
     }
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(to right, #1e3c72, #2a5298)',
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(to right, #1e3c72, #2a5298)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '2rem'
+    }}>
+      <Container style={{
+        background: 'rgba(255, 255, 255, 0.07)',
+        borderRadius: '15px',
         padding: '2rem',
-      }}
-    >
-      <Container
-        style={{
-          background: 'rgba(255, 255, 255, 0.07)',
-          borderRadius: '15px',
-          padding: '2rem',
-          color: 'white',
-          maxWidth: '900px',
-          backdropFilter: 'blur(10px)',
-        }}
-      >
-        <h2 className="text-center mb-4">🧑‍💻 Create Your Profile</h2>
+        color: 'white',
+        maxWidth: '1000px',
+        backdropFilter: 'blur(10px)',
+      }}>
+        <h2 className="text-center mb-4">🧑‍💻 Your Profile</h2>
         {message && <Alert variant="info">{message}</Alert>}
 
         <Row>
-          {/* Left: Image Uploader */}
           <Col md={5} className="text-center mb-4 mb-md-0">
             {profileImage ? (
-              <img
-                src={profileImage}
-                alt="Preview"
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={profileImage} alt="Preview"
                 style={{
                   width: '200px',
                   height: '200px',
@@ -119,28 +121,29 @@ export default function ProfilePage() {
                 }}
               />
             ) : (
-              <div
-                style={{
-                  width: '200px',
-                  height: '200px',
-                  borderRadius: '50%',
-                  backgroundColor: '#444',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#aaa',
-                }}
-              >
-                Upload Image
-              </div>
+              <div style={{
+                width: '200px',
+                height: '200px',
+                borderRadius: '50%',
+                backgroundColor: '#444',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#aaa'
+              }}>Image Preview</div>
             )}
 
             <Form.Group className="mt-3">
-              <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
+              <Form.Label>Profile Image URL</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="https://example.com/photo.jpg"
+                value={profileImage}
+                onChange={(e) => setProfileImage(e.target.value)}
+              />
             </Form.Group>
           </Col>
 
-          {/* Right: Info Form */}
           <Col md={7}>
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
@@ -149,7 +152,7 @@ export default function ProfilePage() {
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="John"
+                  placeholder="Jane"
                 />
               </Form.Group>
 
@@ -163,10 +166,28 @@ export default function ProfilePage() {
                 />
               </Form.Group>
 
+              <Form.Group className="mb-3">
+                <Form.Label>Courses Taken</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={coursesTaken}
+                  onChange={(e) => setCoursesTaken(e.target.value)}
+                  placeholder="ICS 314, ICS 321"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Courses You Can Help With</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={coursesHelped}
+                  onChange={(e) => setCoursesHelped(e.target.value)}
+                  placeholder="ICS 111, ICS 211"
+                />
+              </Form.Group>
+
               <div className="text-end">
-                <Button type="submit" variant="primary">
-                  Save Profile
-                </Button>
+                <Button type="submit" variant="primary">Save Profile</Button>
               </div>
             </Form>
           </Col>
