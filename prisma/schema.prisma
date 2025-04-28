@@ -112,6 +112,5 @@ model UserProfile {
   updatedAt     DateTime @updatedAt
   createdAt     DateTime @default(now())
 
-  // owns the FK
   user          User     @relation("UserProfileRelation", fields: [userId], references: [id])
 }

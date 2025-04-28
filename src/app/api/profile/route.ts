@@ -1,53 +1,68 @@
-// pages/api/profile.ts
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import  authOptions  from '@/lib/authOptions'; 
-import { prisma } from '@/lib/prisma'; 
+import  authOptions  from '@/lib/authOptions'; // Import authOptions
+import { prisma } from '@/lib/prisma'; // Import Prisma client
+import { NextRequest } from 'next/server'; // Ensure we're using NextRequest from next/server
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const session = await getServerSession(req, res, authOptions);
+export async function GET(req: NextRequest) {
+  // Get session using NextRequest and authOptions
+  const session = await getServerSession({ req, ...authOptions });
 
   if (!session || !session.user?.email) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
   });
 
-  if (!user) return res.status(404).json({ error: 'User not found' });
-
-  if (req.method === 'GET') {
-    const profile = await prisma.userProfile.findUnique({
-      where: { userId: user.id },
-    });
-    return res.status(200).json(profile);
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
-  if (req.method === 'POST') {
-    const { firstName, lastName, profileImage, coursesTaken, coursesHelped } = req.body;
+  const profile = await prisma.userProfile.findUnique({
+    where: { userId: user.id },
+  });
 
-    const profile = await prisma.userProfile.upsert({
-      where: { userId: user.id },
-      update: {
-        firstName,
-        lastName,
-        profileImage,
-        coursesTaken,
-        coursesHelped,
-      },
-      create: {
-        userId: user.id,
-        firstName,
-        lastName,
-        profileImage,
-        coursesTaken,
-        coursesHelped,
-      },
-    });
+  return NextResponse.json(profile);
+}
 
-    return res.status(200).json(profile);
+export async function POST(req: NextRequest) {
+  // Get session using NextRequest and authOptions
+  const session = await getServerSession({ req, ...authOptions });
+
+  if (!session || !session.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  return res.status(405).end(); // Method not allowed
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
+
+  const { firstName, lastName, profileImage, coursesTaken, coursesHelped } = await req.json();
+
+  const profile = await prisma.userProfile.upsert({
+    where: { userId: user.id },
+    update: {
+      firstName,
+      lastName,
+      profileImage,
+      coursesTaken,
+      coursesHelped,
+    },
+    create: {
+      userId: user.id,
+      firstName,
+      lastName,
+      profileImage,
+      coursesTaken,
+      coursesHelped,
+    },
+  });
+
+  return NextResponse.json(profile);
 }
