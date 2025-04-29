@@ -47,10 +47,10 @@ export default function Home() {
         {/* Search box / browse courses */}
         <Row className="mb-5">
           <Col md={{ span: 8, offset: 2 }}>
-            <Card className="p-4" style={{ background: 'linear-gradient(to right, #080808, #2a5298)',}}>
+            <Card className="p-4" style={{ backgroundColor: '#111', color: 'white' }}>
               <Card.Body>
-                <Card.Title as="h2" color="white">📚 Browse ICS Courses</Card.Title>
-                <Card.Text color="white">Search by code or title, or view the full list:</Card.Text>
+                <Card.Title as="h2">📚 Browse ICS Courses</Card.Title>
+                <Card.Text>Search by code or title, or view the full list:</Card.Text>
 
                 <Form.Control
                   type="text"
