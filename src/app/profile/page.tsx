@@ -80,19 +80,6 @@ export default function ProfilePage() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (typeof reader.result === 'string') {
-        setProfileImage(reader.result); // base64 string
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
   return (
     <div style={{
       minHeight: '150vh',
@@ -147,15 +134,6 @@ export default function ProfilePage() {
                 placeholder="https://example.com/photo.jpg"
                 value={profileImage.startsWith('data:image') ? '' : profileImage}
                 onChange={(e) => setProfileImage(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group className="mt-3">
-              <Form.Label>Or Upload Image File</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
               />
             </Form.Group>
           </Col>
