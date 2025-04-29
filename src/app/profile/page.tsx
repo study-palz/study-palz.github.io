@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Container, Form, Button, Alert, Row, Col, Card } from 'react-bootstrap';
 
-// Define ProfileData type
 type ProfileData = {
   profileImage: string;
   firstName: string;
@@ -24,7 +23,6 @@ export default function ProfilePage() {
   const [coursesTaken, setCoursesTaken] = useState('');
   const [coursesHelped, setCoursesHelped] = useState('');
   const [message, setMessage] = useState('');
-
   const [savedData, setSavedData] = useState<ProfileData | null>(null);
 
   useEffect(() => {
@@ -82,6 +80,19 @@ export default function ProfilePage() {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === 'string') {
+        setProfileImage(reader.result); // base64 string
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <div style={{
       minHeight: '150vh',
@@ -130,12 +141,21 @@ export default function ProfilePage() {
             )}
 
             <Form.Group className="mt-3">
-              <Form.Label>Profile Image URL</Form.Label>
+              <Form.Label>Profile Image URL (optional)</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="https://example.com/photo.jpg"
-                value={profileImage}
+                value={profileImage.startsWith('data:image') ? '' : profileImage}
                 onChange={(e) => setProfileImage(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mt-3">
+              <Form.Label>Or Upload Image File</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
               />
             </Form.Group>
           </Col>
@@ -189,7 +209,6 @@ export default function ProfilePage() {
           </Col>
         </Row>
 
-        {/* New Saved Profile Section */}
         {savedData && (
           <Card className="mt-5 p-4" style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'white' }}>
             <h4 className="mb-4">📋 Your Saved Profile</h4>
