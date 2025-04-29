@@ -84,7 +84,7 @@ export default function ProfilePage() {
 
   return (
     <div style={{
-      minHeight: '70vh',
+      minHeight: '150vh',
       background: 'linear-gradient(to right, #080808, #2a5298)',
       display: 'flex',
       justifyContent: 'center',
