@@ -25,10 +25,8 @@ export default function ProfilePage() {
   const [coursesHelped, setCoursesHelped] = useState('');
   const [message, setMessage] = useState('');
 
-  // Profile data state
   const [savedData, setSavedData] = useState<ProfileData | null>(null);
 
-  // Fetch user profile on load
   useEffect(() => {
     if (!session?.user?.email) return;
 
@@ -52,7 +50,6 @@ export default function ProfilePage() {
       });
   }, [session]);
 
-  // Handle profile submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -79,7 +76,6 @@ export default function ProfilePage() {
         coursesHelped,
       });
 
-      // Refresh session so navbar updates profile image
       await update({ image: profileImage });
     } else {
       setMessage('❌ Failed to save profile');
@@ -88,7 +84,7 @@ export default function ProfilePage() {
 
   return (
     <div style={{
-      minHeight: '100vh',
+      minHeight: '70vh',
       background: 'linear-gradient(to right, #080808, #2a5298)',
       display: 'flex',
       justifyContent: 'center',
