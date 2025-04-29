@@ -1,11 +1,11 @@
+// app/api/profile/route.ts
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import  authOptions  from '@/lib/authOptions'; // Import authOptions
-import { prisma } from '@/lib/prisma'; // Import Prisma client
-import { NextRequest } from 'next/server'; // Ensure we're using NextRequest from next/server
+import authOptions from '@/lib/authOptions';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  // Get session using NextRequest and authOptions
   const session = await getServerSession({ req, ...authOptions });
 
   if (!session || !session.user?.email) {
@@ -28,7 +28,6 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  // Get session using NextRequest and authOptions
   const session = await getServerSession({ req, ...authOptions });
 
   if (!session || !session.user?.email) {
