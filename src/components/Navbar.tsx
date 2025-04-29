@@ -10,20 +10,17 @@ import React, { useState, useEffect } from 'react';
 import styles from '../app/page.module.css';
 
 const NavBar: React.FC = () => {
-  // ── 1) ALL HOOKS UP FRONT ─────────────────────────────────────────────────────
-  const { data: session } = useSession();
+  const { data: session, status } = useSession(); // Add 'status' here
   const pathName = usePathname();
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Pull out email once and guard
     const email = session?.user?.email;
     if (!email) {
       setProfileImage(null);
       return;
     }
-
-    // Now email is a string
+    
     (async () => {
       try {
         const res = await fetch(`/api/profile?email=${encodeURIComponent(email)}`);
@@ -35,19 +32,16 @@ const NavBar: React.FC = () => {
     })();
   }, [session?.user?.email]);
 
-  // ── 2) HIDE NAVBAR ON THESE ROUTES ────────────────────────────────────────────
   const hiddenRoutes = ['/auth/signup', '/auth/signin', '/auth/signout'];
   if (hiddenRoutes.includes(pathName || '')) {
     return null;
   }
 
-  // ── 3) ALL OTHER LOGIC (safe to reference hooks) ─────────────────────────────
   const currentUser = session?.user?.email;
   const userWithRole = session?.user as { email: string; randomKey: string; image?: string };
   const role = userWithRole?.randomKey;
   const handleSignOut = () => signOut({ callbackUrl: '/' });
 
-  // ── 4) RENDER ────────────────────────────────────────────────────────────────
   return (
     <Navbar expand="lg" style={{ backgroundColor: 'rgb(8, 8, 8)' }}>
       <Container>
@@ -104,7 +98,7 @@ const NavBar: React.FC = () => {
           </Nav>
 
           <Nav>
-            {session ? (
+            {status === 'loading' ? null : session ? (
               <>
                 <Nav.Link href="/profile" className="me-3">
                   {profileImage ? (
