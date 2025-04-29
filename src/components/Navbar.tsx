@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
@@ -10,36 +9,35 @@ import React, { useState, useEffect } from 'react';
 import styles from '../app/page.module.css';
 
 const NavBar: React.FC = () => {
-  const { data: session, status } = useSession(); // Add 'status' here
+  const { data: session, status } = useSession();
   const pathName = usePathname();
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
-    const email = session?.user?.email;
-    if (!email) {
+    if (!session?.user?.email) {
       setProfileImage(null);
       return;
     }
-    
-    (async () => {
+
+    const email = session.user.email;
+    const fetchProfileImage = async () => {
       try {
         const res = await fetch(`/api/profile?email=${encodeURIComponent(email)}`);
         const data = await res.json();
-        setProfileImage(data.profileImage || null);
-      } catch {
-        setProfileImage(null);
+        setProfileImage(data.profileImage || null); // Set profile image if exists, else null
+      } catch (error) {
+        setProfileImage(null); // Reset if there's an error fetching the image
       }
-    })();
-  }, [session?.user?.email]);
+    };
+
+    fetchProfileImage();
+  }, [session?.user?.email]); // Only run this effect when the user's email changes
 
   const hiddenRoutes = ['/auth/signup', '/auth/signin', '/auth/signout'];
   if (hiddenRoutes.includes(pathName || '')) {
     return null;
   }
 
-  const currentUser = session?.user?.email;
-  const userWithRole = session?.user as { email: string; randomKey: string; image?: string };
-  const role = userWithRole?.randomKey;
   const handleSignOut = () => signOut({ callbackUrl: '/' });
 
   return (
@@ -49,51 +47,19 @@ const NavBar: React.FC = () => {
           <img src="/studypalzlogo.png" alt="StudyPalz Logo" height="100" width="200" />
         </Navbar.Brand>
 
-        <Navbar.Toggle
-          aria-controls="basic-navbar-nav"
-          className={styles['navbar-toggler-icon']}
-        />
-
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className={styles['navbar-toggler-icon']} />
+        
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto justify-content-start">
-            <Nav.Link href="/" className="me-5" style={{ color: 'white', fontWeight: 'bold' }}>
-              Home
-            </Nav.Link>
-            <Nav.Link href="/about" className="me-5" style={{ color: 'white', fontWeight: 'bold' }}>
-              About
-            </Nav.Link>
-            <Nav.Link href="/contact" style={{ color: 'white', fontWeight: 'bold' }}>
-              Contact
-            </Nav.Link>
+            <Nav.Link href="/" className="me-5" style={{ color: 'white', fontWeight: 'bold' }}>Home</Nav.Link>
+            <Nav.Link href="/about" className="me-5" style={{ color: 'white', fontWeight: 'bold' }}>About</Nav.Link>
+            <Nav.Link href="/contact" style={{ color: 'white', fontWeight: 'bold' }}>Contact</Nav.Link>
 
-            {currentUser && (
+            {session && (
               <>
-                <Nav.Link
-                  href="/calendar"
-                  active={pathName === '/calendar'}
-                  className="me-5 ms-5"
-                  style={{ color: 'white', fontWeight: 'bold' }}
-                >
-                  Calendar
-                </Nav.Link>
-                <Nav.Link
-                  href="/leaderboard"
-                  active={pathName === '/leaderboard'}
-                  className="me-4 ms-3"
-                  style={{ color: 'white', fontWeight: 'bold' }}
-                >
-                  Leaderboard
-                </Nav.Link>
+                <Nav.Link href="/calendar" active={pathName === '/calendar'} className="me-5 ms-5" style={{ color: 'white', fontWeight: 'bold' }}>Calendar</Nav.Link>
+                <Nav.Link href="/leaderboard" active={pathName === '/leaderboard'} className="me-4 ms-3" style={{ color: 'white', fontWeight: 'bold' }}>Leaderboard</Nav.Link>
               </>
-            )}
-            {currentUser && role === 'ADMIN' && (
-              <Nav.Link
-                href="/admin"
-                active={pathName === '/admin'}
-                style={{ color: 'white' }}
-              >
-                Admin
-              </Nav.Link>
             )}
           </Nav>
 
@@ -118,11 +84,7 @@ const NavBar: React.FC = () => {
                   )}
                 </Nav.Link>
 
-                <Nav.Link
-                  onClick={handleSignOut}
-                  className="login-signup-btn"
-                  style={{ color: 'white', fontWeight: 'bold', cursor: 'pointer' }}
-                >
+                <Nav.Link onClick={handleSignOut} className="login-signup-btn" style={{ color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>
                   <BoxArrowRight className="me-1" />
                   Sign Out
                 </Nav.Link>
