@@ -28,6 +28,7 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!session?.user?.email) return;
 
+    // Fetch profile data only when the session is available
     fetch(`/api/profile?email=${session.user.email}`)
       .then(res => res.json())
       .then(data => {
@@ -46,7 +47,7 @@ export default function ProfilePage() {
           });
         }
       });
-  }, [session]);
+  }, [session?.user?.email]); // Re-run only when session email changes
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
