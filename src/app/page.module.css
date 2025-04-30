@@ -230,7 +230,7 @@
 }
 
 .navbar-toggler-icon {
-  background-color: blue !important; /* Force the blue background */
+  background-color: white !important; /* Force the blue background */
   background-image: none !important; /* Remove default image */
-  border: 1px solid blue; /* Add a border if you want it to be more visible */
+  border: 1px solid white; /* Add a border if you want it to be more visible */
 }

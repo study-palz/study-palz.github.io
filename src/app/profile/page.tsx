@@ -28,7 +28,6 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!session?.user?.email) return;
 
-    // Fetch profile data only when the session is available
     fetch(`/api/profile?email=${session.user.email}`)
       .then(res => res.json())
       .then(data => {
@@ -47,7 +46,7 @@ export default function ProfilePage() {
           });
         }
       });
-  }, [session?.user?.email]); // Re-run only when session email changes
+  }, [session?.user?.email]); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,7 +128,6 @@ export default function ProfilePage() {
             )}
 
             <Form.Group className="mt-3">
-              <Form.Label>Profile Image URL (optional)</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="https://example.com/photo.jpg"
