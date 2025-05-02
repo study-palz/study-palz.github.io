@@ -41,7 +41,7 @@ const NavBar: React.FC = () => {
   const handleSignOut = () => signOut({ callbackUrl: '/' });
 
   return (
-<Navbar expand="lg" style={{ backgroundColor: 'linear-gradient(to right, #080808, #2a5298)' }}>
+<Navbar expand="lg" style={{ backgroundColor: ' #080808' }}>
       <Container>
         <Navbar.Brand href="/">
           <img src="/studypalzlogo.png" alt="StudyPalz Logo" height="100" width="200" />
