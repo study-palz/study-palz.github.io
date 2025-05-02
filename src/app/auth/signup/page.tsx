@@ -68,6 +68,21 @@ export default function Signup() {
             <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
               Create your Study-Palz account and start collaborating 🚀
             </p>
+
+            {/* Back to Home link right below the signup message */}
+            <p style={{ marginTop: '1rem' }}>
+              <Link
+                href="/"
+                style={{
+                  color: '#00bfff',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                  fontSize: '1rem',
+                }}
+              >
+                ← Back to Home
+              </Link>
+            </p>
           </div>
 
           {/* Right side: Signup Form */}

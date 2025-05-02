@@ -61,6 +61,21 @@ export default function SignIn() {
             <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
               Login to reconnect with your study palz.
             </p>
+
+            {/* Back to Home link right below the welcome message */}
+            <p style={{ marginTop: '1rem' }}>
+              <Link
+                href="/"
+                style={{
+                  color: '#00bfff',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                  fontSize: '1rem',
+                }}
+              >
+                ← Back to Home
+              </Link>
+            </p>
           </div>
 
           <div
