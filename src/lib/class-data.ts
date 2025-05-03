@@ -1,11 +1,17 @@
 // src/lib/class-data.ts
+import supabaseAdmin from './supabaseAdmin';
+
 export async function getClassByCode(code: string) {
-    // Replace with your real DB fetch
-    return {
-      id: '123',
-      code,
-      title: 'Intro to Study-Palz',
-      description: 'Learn how to be a great sensei or grasshopper!',
-    };
+  const { data, error } = await supabaseAdmin
+    .from('Course')
+    .select('*')
+    .eq('code', code)
+    .single();
+
+  if (error) {
+    console.error('Error fetching course:', error);
+    return null;
   }
-  
+
+  return data;
+}

@@ -1,39 +1,63 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+// Temporarily use 'any' for Database type if types aren't generated yet
+// Replace 'any' with: import { Database } from '@/types/supabase'; if available
 
 export default function CreateSessionPage({ params }: { params: { code: string } }) {
   const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [ownerId, setOwnerId] = useState<string | null>(null);
   const router = useRouter();
+
+  const supabase = createClientComponentClient<any>();
+
+  useEffect(() => {
+    async function fetchUserId() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setOwnerId(user?.id ?? null);
+    }
+
+    fetchUserId();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
+    if (!ownerId) {
+      alert('User not logged in.');
+      return;
+    }
+
     const res = await fetch(`/api/courses/${params.code}/sessions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, description, startTime, endTime }),
+      body: JSON.stringify({ topic, description, startTime, endTime, ownerId }),
     });
-  
-    const result = await res.json();
-  
+
     if (res.ok) {
-      // 👇 redirect to confirmation page using returned session ID
-      router.push(`/courses/${params.code}/sessions/${result.id}/confirmation`);
+      const session = await res.json();
+      router.push(`/courses/${params.code}/sessions/${session.id}/confirmation`);
     } else {
-      alert('Failed to create session: ' + result.error);
+      const err = await res.json();
+      alert('Failed to create session: ' + err.error);
     }
   };
-  
 
   return (
     <div className="container py-5">
       <h1 className="text-white text-center mb-4">Create Study Session</h1>
-      <form onSubmit={handleSubmit} className="bg-dark p-4 rounded shadow mx-auto" style={{ maxWidth: '600px' }}>
+      <form
+        onSubmit={handleSubmit}
+        className="bg-dark p-4 rounded shadow mx-auto"
+        style={{ maxWidth: '600px' }}
+      >
         <div className="mb-3">
           <label className="form-label text-white">Topic</label>
           <input

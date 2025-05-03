@@ -1,11 +1,8 @@
-
-import { useRouter } from 'next/navigation';
+import { getClassByCode } from '@/lib/class-data'; // or use '../../../lib/class-data' if path alias is not configured
 import Link from 'next/link';
-import { getClassByCode } from '../../../lib/class-data';
-
 
 export default async function CoursePage({ params }: { params: { code: string } }) {
-  const course = await getClassByCode(params.code);
+  const course = await getClassByCode(decodeURIComponent(params.code));
 
   if (!course) {
     return <div>Class not found</div>;
