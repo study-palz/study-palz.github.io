@@ -1,10 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-// Temporarily use 'any' for Database type if types aren't generated yet
-// Replace 'any' with: import { Database } from '@/types/supabase'; if available
 
 export default function CreateSessionPage({ params }: { params: { code: string } }) {
   const [topic, setTopic] = useState('');
@@ -12,20 +10,20 @@ export default function CreateSessionPage({ params }: { params: { code: string }
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [ownerId, setOwnerId] = useState<string | null>(null);
-  const router = useRouter();
 
-  const supabase = createClientComponentClient<any>();
+  const router = useRouter();
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
     async function fetchUserId() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error('Error fetching user:', error);
+      }
       setOwnerId(user?.id ?? null);
     }
-
     fetchUserId();
-  }, []);
+  }, [supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
