@@ -24,14 +24,14 @@ const NavBar: React.FC = () => {
       try {
         const res = await fetch(`/api/profile?email=${encodeURIComponent(email)}`);
         const data = await res.json();
-        setProfileImage(data.profileImage || null); // Set profile image if exists, else null
+        setProfileImage(data.profileImage || null);
       } catch (error) {
-        setProfileImage(null); // Reset if there's an error fetching the image
+        setProfileImage(null);
       }
     };
 
     fetchProfileImage();
-  }, [session?.user?.email]); // Only run this effect when the user's email changes
+  }, [session?.user?.email]);
 
   const hiddenRoutes = ['/auth/signup', '/auth/signin', '/auth/signout'];
   if (hiddenRoutes.includes(pathName || '')) {
@@ -41,7 +41,7 @@ const NavBar: React.FC = () => {
   const handleSignOut = () => signOut({ callbackUrl: '/' });
 
   return (
-<Navbar expand="lg" style={{ backgroundColor: ' #080808' }}>
+    <Navbar expand="lg" style={{ backgroundColor: '#080808' }}>
       <Container>
         <Navbar.Brand href="/">
           <img src="/studypalzlogo.png" alt="StudyPalz Logo" height="100" width="200" />
@@ -82,6 +82,11 @@ const NavBar: React.FC = () => {
                   ) : (
                     <PersonFill size={24} color="white" />
                   )}
+                </Nav.Link>
+
+                {/* ✅ Change Password Link */}
+                <Nav.Link href="/change-password" className="me-3" style={{ color: 'white', fontWeight: 'bold' }}>
+                  Change Password
                 </Nav.Link>
 
                 <Nav.Link onClick={handleSignOut} className="login-signup-btn" style={{ color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>
