@@ -1,38 +1,43 @@
-// app/leaderboard/page.tsx
-import { Container, ListGroup, ListGroupItem } from 'react-bootstrap';
+// pages/leaderboard.tsx
+'use client'
+import { useEffect, useState } from 'react'
 
-const Leaderboard = () => {
-  // Example leaderboard data
-  const leaderboardData = [
-    { rank: 1, name: 'John Doe', points: 150 },
-    { rank: 2, name: 'Jane Smith', points: 120 },
-    { rank: 3, name: 'Sam Brown', points: 100 },
-  ];
+type User = {
+  id: number
+  name: string
+  points: number
+}
+
+export default function Leaderboard() {
+  const [user, setUsers] = useState<User[]>([])
+
+  useEffect(() => {
+    fetch('/api/leaderboard/route.ts')
+      .then((res) => res.json())
+      .then(setUsers)
+  }, [])
 
   return (
-    <Container className="py-5">
-      <h1>Leaderboard</h1>
-      <ListGroup>
-        {leaderboardData.map((entry) => (
-          <ListGroupItem key={entry.rank} className="d-flex justify-content-between align-items-center">
-            <div>
-              <strong>
-                {entry.rank}
-                .
-                {' '}
-                {entry.name}
-              </strong>
-            </div>
-            <div>
-              {entry.points}
-              {' '}
-              points
-            </div>
-          </ListGroupItem>
-        ))}
-      </ListGroup>
-    </Container>
-  );
-};
-
-export default Leaderboard;
+    <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
+      <h1>🏆 Leaderboard</h1>
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
+        <thead>
+          <tr style={{ backgroundColor: '#f0f0f0' }}>
+            <th style={{ textAlign: 'left', padding: '0.5rem' }}>Rank</th>
+            <th style={{ textAlign: 'left', padding: '0.5rem' }}>Name</th>
+            <th style={{ textAlign: 'right', padding: '0.5rem' }}>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {user.map((user, index) => (
+            <tr key={user.id}>
+              <td style={{ padding: '0.5rem' }}>{index + 1}</td>
+              <td style={{ padding: '0.5rem' }}>{user.name}</td>
+              <td style={{ padding: '0.5rem', textAlign: 'right' }}>{user.points}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </main>
+  )
+}
