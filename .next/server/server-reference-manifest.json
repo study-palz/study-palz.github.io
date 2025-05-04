@@ -1,1 +1,5 @@
-{"node":{"56e7d360c11e352edd2c0971bc3fa1ad1a96b50a":{"workers":{"app/auth/change-password/page":"37406"},"layer":{"app/auth/change-password/page":"action-browser"}}},"edge":{},"encryptionKey":"NugBqa0zPqOJ81I4SdIipiiEWvegtR3flpMnktaI4Pk="}
+{
+  "node": {},
+  "edge": {},
+  "encryptionKey": "WObVNKyZmoyRkJ8R8njMzVVTp5UVodc8OKarqaxmD/c="
+}
