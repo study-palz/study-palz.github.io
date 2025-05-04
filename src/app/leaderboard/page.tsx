@@ -19,7 +19,7 @@ export default function Leaderboard() {
 
   return (
     <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>🏆 Leaderboard</h1>
+      <h1>Leaderboard</h1>
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
         <thead>
           <tr style={{ backgroundColor: '#f0f0f0' }}>
