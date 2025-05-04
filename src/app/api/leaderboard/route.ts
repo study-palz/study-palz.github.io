@@ -1,31 +1,27 @@
-// pages/api/leaderboard.ts
-import { prisma } from '@/lib/prisma'
+// src/app/api/leaderboard/route.ts
+
 import { NextResponse } from 'next/server'
-
-
-export default async function handler(
-) {
-  const User = await prisma.user.findMany({
-    orderBy: {
-      points: 'desc',
-    },
-    select: {
-      id: true,
-      name: true,
-      points: true,
-    },
-  })
-
-}
+import { prisma } from '@/lib/prisma'
 
 export async function GET() {
-    try {
-      const users = await prisma.player.findMany({
-        orderBy: { points: 'desc' },
-      })
-      return NextResponse.json(users)
-    } catch (error) {
-      console.error('Error fetching leaderboard:', error)
-      return new NextResponse('Internal Server Error', { status: 500 })
-    }
+  try {
+    const leaderboard = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        points: true,
+      },
+      orderBy: {
+        points: 'desc',
+      },
+    })
+
+    return NextResponse.json(leaderboard)
+  } catch (error) {
+    console.error('[API ERROR] /api/leaderboard:', error)
+    return NextResponse.json(
+      { message: 'Failed to load leaderboard.' },
+      { status: 500 }
+    )
   }
+}
