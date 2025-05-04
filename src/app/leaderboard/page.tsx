@@ -23,7 +23,7 @@ export default function LeaderboardPage() {
 
   return (
     <Container className="py-5">
-      <h1 className="text-4xl text-white font-bold mb-6 text-center">Leaderboard</h1>
+      <h1 className="text-4xl text-white font-bold mb-6 text-center">🏅Leaderboard🏅</h1>
       <ListGroup>
         {visibleUsers.map((user, index) => (
           <ListGroupItem
