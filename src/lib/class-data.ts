@@ -1,17 +1,25 @@
-// src/lib/class-data.ts
-import supabaseAdmin from './supabaseAdmin';
+import { createClient } from '@supabase/supabase-js'
+import type { Database } from '@/types/supabase'
+
+const supabase = createClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export async function getClassByCode(code: string) {
-  const { data, error } = await supabaseAdmin
+  console.log('Requested code:', code)
+
+  const { data, error } = await supabase
     .from('Course')
     .select('*')
     .eq('code', code)
-    .single();
+    .single()
 
   if (error) {
-    console.error('Error fetching course:', error);
-    return null;
+    console.error('Supabase error:', error)
+    return null
   }
 
-  return data;
+  console.log('Fetched course:', data)
+  return data
 }

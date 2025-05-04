@@ -1,11 +1,17 @@
-import { getClassByCode } from '@/lib/class-data'; // or use '../../../lib/class-data' if path alias is not configured
+// ✅ NO 'use client' here — it's a Server Component
+
+import { getClassByCode } from '@/lib/class-data';
 import Link from 'next/link';
 
 export default async function CoursePage({ params }: { params: { code: string } }) {
-  const course = await getClassByCode(decodeURIComponent(params.code));
+  const decodedCode = decodeURIComponent(params.code);
+  const course = await getClassByCode(decodedCode);
+
+  console.log('Requested code:', decodedCode);
+  console.log('Fetched course:', course);
 
   if (!course) {
-    return <div>Class not found</div>;
+    return <div className="text-center mt-10 text-red-500">Class not found</div>;
   }
 
   return (
