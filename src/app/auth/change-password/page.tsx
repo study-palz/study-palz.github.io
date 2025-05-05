@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+// ChangePassword.tsx
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -41,22 +42,18 @@ const ChangePassword = () => {
   });
 
   const onSubmit = async (data: ChangePasswordForm) => {
-    // Log to check if onSubmit is firing
-    console.log('Form submitted with data:', data);
-
     const payload: ChangePasswordInput = { email, ...data };
-    try {
-      // Log payload before sending it
-      console.log('Payload for password change:', payload);
 
-      // Assuming changePassword function is defined in `dbActions`
+    try {
+      // Call the changePassword function
       await changePassword(payload);
 
-      // Show success message
+      // Display success message
       await swal('Password Changed', 'Your password has been changed', 'success', { timer: 2000 });
-      reset();  // Reset the form after successful submission
+
+      // Reset the form
+      reset();
     } catch (error) {
-      // Handle error if any occurs
       console.error('Error changing password:', error);
       await swal('Error', 'There was an issue changing your password. Please try again.', 'error');
     }
@@ -134,3 +131,4 @@ const ChangePassword = () => {
 };
 
 export default ChangePassword;
+

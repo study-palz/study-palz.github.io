@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
+// NavBar.tsx
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { BoxArrowRight, PersonFill, PersonPlusFill, ShieldLockFill } from 'react-bootstrap-icons';
+import { BoxArrowRight, PersonFill, PersonPlusFill } from 'react-bootstrap-icons';
 import React, { useState, useEffect } from 'react';
 import styles from '../app/page.module.css';
 
@@ -31,7 +32,7 @@ const NavBar: React.FC = () => {
     };
 
     fetchProfileImage();
-  }, [session?.user?.email]); // Only run this effect when the user's email changes
+  }, [session?.user?.email]);
 
   const hiddenRoutes = ['/auth/signup', '/auth/signin', '/auth/signout'];
   if (hiddenRoutes.includes(pathName || '')) {
@@ -84,12 +85,10 @@ const NavBar: React.FC = () => {
                   )}
                 </Nav.Link>
 
-                {/* Change Password Button */}
-                <Nav.Link href="/auth/change-password" className="login-signup-btn me-3" style={{ color: 'white', fontWeight: 'bold' }}>
-                  <ShieldLockFill size={20} className="me-1" /> Change Password
+                <Nav.Link href="/auth/changepassword" className="me-3" style={{ color: 'white', fontWeight: 'bold' }}>
+                  Change Password
                 </Nav.Link>
 
-                {/* Sign Out Button */}
                 <Nav.Link onClick={handleSignOut} className="login-signup-btn" style={{ color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>
                   <BoxArrowRight className="me-1" />
                   Sign Out
