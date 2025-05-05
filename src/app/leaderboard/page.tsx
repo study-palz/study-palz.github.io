@@ -1,4 +1,4 @@
-'use client'
+  'use client'
 
 import { Container, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
@@ -16,12 +16,6 @@ export default function LeaderboardPage() {
   useEffect(() => {
     fetch('/api/leaderboard')
       .then((res) => res.json())
-      .then((data) => {
-        const validUsers = data.filter(
-          (user: User) => user.name !== null && user.name.trim() !== ''
-        )
-        setUsers(validUsers)
-      })
       .catch((err) => console.error('Failed to fetch leaderboard:', err))
   }, [])
 
