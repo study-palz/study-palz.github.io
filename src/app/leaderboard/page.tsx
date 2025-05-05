@@ -1,5 +1,6 @@
-import { Container, ListGroup, ListGroupItem, Image } from 'react-bootstrap'
+import { Container, ListGroup, ListGroupItem, Image, Button } from 'react-bootstrap'
 import { prisma } from '@/lib/prisma'
+import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -29,6 +30,7 @@ export default async function LeaderboardPage() {
     orderBy: {
       points: 'desc',
     },
+    take: 100,
   })
 
   const formattedUsers = users.map((user) => ({
@@ -38,7 +40,6 @@ export default async function LeaderboardPage() {
     profileImage: user.userProfile?.profileImage || DEFAULT_IMAGE_URL,
   }))
 
-  const hasMore = formattedUsers.length > 10
   const visibleUsers = formattedUsers.slice(0, 10)
 
   return (
@@ -67,6 +68,14 @@ export default async function LeaderboardPage() {
         ))}
       </ListGroup>
 
+      {formattedUsers.length > 10 && (
+        <div className="mt-4">
+          <Link href="/leaderboard/all" passHref>
+            <Button variant="light">Show More</Button>
+          </Link>
+        </div>
+      )}
     </Container>
   )
 }
+
