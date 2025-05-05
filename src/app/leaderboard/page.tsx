@@ -1,31 +1,42 @@
-  'use client'
+import { Container, ListGroup, ListGroupItem, Image } from 'react-bootstrap'
+import { prisma } from '@/lib/prisma'
 
-import { Container, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
+const DEFAULT_IMAGE_URL = '/default-profile.png'
 
-type User = {
-  id: number
-  name: string | null
-  points: number
-}
+export default async function LeaderboardPage() {
+  const users = await prisma.user.findMany({
+    where: {
+      userProfile: {
+        NOT: {
+          firstName: null,
+        },
+      },
+    },
+    select: {
+      id: true,
+      points: true,
+      userProfile: {
+        select: {
+          firstName: true,
+          lastName: true,
+          profileImage: true,
+        },
+      },
+    },
+    orderBy: {
+      points: 'desc',
+    },
+  })
 
-export default function LeaderboardPage() {
-  const [users, setUsers] = useState<User[]>([])
-  const [showAll, setShowAll] = useState(false)
+  const formattedUsers = users.map((user) => ({
+    id: user.id,
+    name: `${user.userProfile?.firstName ?? ''} ${user.userProfile?.lastName ?? ''}`.trim(),
+    points: user.points,
+    profileImage: user.userProfile?.profileImage || DEFAULT_IMAGE_URL,
+  }))
 
-  useEffect(() => {
-    fetch('/api/leaderboard')
-      .then((res) => res.json())
-      .then((data) => {
-        const validUsers = data.filter(
-          (user: User) => user.name !== null && user.name.trim() !== ''
-        )
-        setUsers(validUsers)
-      })
-      .catch((err) => console.error('Failed to fetch leaderboard:', err))
-  }, [])
-
-  const visibleUsers = showAll ? users : users.slice(0, 10)
+  const hasMore = formattedUsers.length > 10
+  const visibleUsers = formattedUsers.slice(0, 10)
 
   return (
     <Container className="py-5 text-center">
@@ -36,7 +47,14 @@ export default function LeaderboardPage() {
             key={user.id}
             className="d-flex justify-content-between align-items-center bg-white"
           >
-            <div>
+            <div className="d-flex align-items-center gap-2">
+              <Image
+                src={user.profileImage}
+                roundedCircle
+                width={32}
+                height={32}
+                alt={`${user.name}'s profile`}
+              />
               <strong>{index + 1}. {user.name}</strong>
             </div>
             <div>
@@ -46,12 +64,6 @@ export default function LeaderboardPage() {
         ))}
       </ListGroup>
 
-      {users.length > 10 && (
-        <Button variant="light" className="mt-4" onClick={() => setShowAll(!showAll)}>
-          {showAll ? 'Show Less' : 'Show More'}
-        </Button>
-      )}
     </Container>
   )
 }
-
