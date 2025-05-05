@@ -84,8 +84,7 @@ const NavBar: React.FC = () => {
                   )}
                 </Nav.Link>
 
-                {/* ✅ Change Password Link */}
-                <Nav.Link href="/change-password" className="me-3" style={{ color: 'white', fontWeight: 'bold' }}>
+                <Nav.Link href="/auth/change-password" className="me-3" style={{ color: 'white', fontWeight: 'bold' }}>
                   Change Password
                 </Nav.Link>
 
