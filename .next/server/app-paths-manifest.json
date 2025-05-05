@@ -1,7 +1,7 @@
 {
   "/courses/[code]/page": "app/courses/[code]/page.js",
-  "/page": "app/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/courses/[code]/create-session/page": "app/courses/[code]/create-session/page.js",
   "/courses/page": "app/courses/page.js"
 }
