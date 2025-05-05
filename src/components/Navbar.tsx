@@ -4,7 +4,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { BoxArrowRight, PersonFill, PersonPlusFill } from 'react-bootstrap-icons';
+import { BoxArrowRight, PersonFill, PersonPlusFill, ShieldLockFill } from 'react-bootstrap-icons';
 import React, { useState, useEffect } from 'react';
 import styles from '../app/page.module.css';
 
@@ -24,14 +24,14 @@ const NavBar: React.FC = () => {
       try {
         const res = await fetch(`/api/profile?email=${encodeURIComponent(email)}`);
         const data = await res.json();
-        setProfileImage(data.profileImage || null);
+        setProfileImage(data.profileImage || null); // Set profile image if exists, else null
       } catch (error) {
-        setProfileImage(null);
+        setProfileImage(null); // Reset if there's an error fetching the image
       }
     };
 
     fetchProfileImage();
-  }, [session?.user?.email]);
+  }, [session?.user?.email]); // Only run this effect when the user's email changes
 
   const hiddenRoutes = ['/auth/signup', '/auth/signin', '/auth/signout'];
   if (hiddenRoutes.includes(pathName || '')) {
@@ -41,7 +41,7 @@ const NavBar: React.FC = () => {
   const handleSignOut = () => signOut({ callbackUrl: '/' });
 
   return (
-    <Navbar expand="lg" style={{ backgroundColor: '#080808' }}>
+    <Navbar expand="lg" style={{ backgroundColor: ' #080808' }}>
       <Container>
         <Navbar.Brand href="/">
           <img src="/studypalzlogo.png" alt="StudyPalz Logo" height="100" width="200" />
@@ -84,10 +84,12 @@ const NavBar: React.FC = () => {
                   )}
                 </Nav.Link>
 
-                <Nav.Link href="/auth/change-password" className="me-3" style={{ color: 'white', fontWeight: 'bold' }}>
-                  Change Password
+                {/* Change Password Button */}
+                <Nav.Link href="/auth/change-password" className="login-signup-btn me-3" style={{ color: 'white', fontWeight: 'bold' }}>
+                  <ShieldLockFill size={20} className="me-1" /> Change Password
                 </Nav.Link>
 
+                {/* Sign Out Button */}
                 <Nav.Link onClick={handleSignOut} className="login-signup-btn" style={{ color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>
                   <BoxArrowRight className="me-1" />
                   Sign Out
