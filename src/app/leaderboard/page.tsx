@@ -1,31 +1,38 @@
-  'use client'
+import { Container, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { prisma } from '@/lib/prisma'
 
-import { Container, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
+export default async function LeaderboardPage() {
+  const users = await prisma.user.findMany({
+    where: {
+      userProfile: {
+        NOT: {
+          firstName: null,
+        },
+      },
+    },
+    select: {
+      id: true,
+      points: true,
+      userProfile: {
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+    },
+    orderBy: {
+      points: 'desc',
+    },
+  })
 
-type User = {
-  id: number
-  name: string | null
-  points: number
-}
+  const formattedUsers = users.map((user) => ({
+    id: user.id,
+    name: `${user.userProfile?.firstName ?? ''} ${user.userProfile?.lastName ?? ''}`.trim(),
+    points: user.points,
+  }))
 
-export default function LeaderboardPage() {
-  const [users, setUsers] = useState<User[]>([])
-  const [showAll, setShowAll] = useState(false)
-
-  useEffect(() => {
-    fetch('/api/leaderboard')
-      .then((res) => res.json())
-      .then((data) => {
-        const validUsers = data.filter(
-          (user: User) => user.name !== null && user.name.trim() !== ''
-        )
-        setUsers(validUsers)
-      })
-      .catch((err) => console.error('Failed to fetch leaderboard:', err))
-  }, [])
-
-  const visibleUsers = showAll ? users : users.slice(0, 10)
+  const hasMore = formattedUsers.length > 10
+  const visibleUsers = formattedUsers.slice(0, 10)
 
   return (
     <Container className="py-5 text-center">
@@ -45,13 +52,6 @@ export default function LeaderboardPage() {
           </ListGroupItem>
         ))}
       </ListGroup>
-
-      {users.length > 10 && (
-        <Button variant="light" className="mt-4" onClick={() => setShowAll(!showAll)}>
-          {showAll ? 'Show Less' : 'Show More'}
-        </Button>
-      )}
     </Container>
   )
 }
-
