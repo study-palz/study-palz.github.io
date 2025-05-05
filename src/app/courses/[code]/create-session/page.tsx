@@ -9,34 +9,38 @@ export default function CreateSessionPage({ params }: { params: { code: string }
   const [description, setDescription] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [ownerId, setOwnerId] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const router = useRouter();
   const supabase = createClientComponentClient();
 
   useEffect(() => {
-    async function fetchUserId() {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error('Error fetching user:', error);
+    async function fetchAccessToken() {
+      const { data, error } = await supabase.auth.getSession();
+      if (error || !data.session) {
+        console.error('Error fetching session:', error);
+        return;
       }
-      setOwnerId(user?.id ?? null);
+      setAccessToken(data.session.access_token);
     }
-    fetchUserId();
+    fetchAccessToken();
   }, [supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!ownerId) {
+    if (!accessToken) {
       alert('User not logged in.');
       return;
     }
 
     const res = await fetch(`/api/courses/${params.code}/sessions`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, description, startTime, endTime, ownerId }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ topic, description, startTime, endTime }),
     });
 
     if (res.ok) {

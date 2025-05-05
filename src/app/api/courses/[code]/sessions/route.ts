@@ -13,16 +13,18 @@ export async function POST(req: Request, { params }: { params: { code: string } 
     return NextResponse.json({ error: 'No authorization token found' }, { status: 401 });
   }
 
+  // Step 1: Get user from token
   const {
     data: { user },
     error: userError
   } = await supabaseAdmin.auth.getUser(token);
 
   if (userError || !user) {
-    return NextResponse.json({ error: 'Unable to retrieve user from token' }, { status: 401 });
+    console.error('Failed to retrieve user from token:', userError);
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Step 1: Find the course by its human-readable code
+  // Step 2: Get course ID
   const { data: course, error: courseError } = await supabaseAdmin
     .from('Course')
     .select('id')
@@ -30,10 +32,11 @@ export async function POST(req: Request, { params }: { params: { code: string } 
     .single();
 
   if (courseError || !course) {
+    console.error('Course not found:', courseError);
     return NextResponse.json({ error: 'Course not found' }, { status: 404 });
   }
 
-  // Step 2: Insert the session using the found course ID and user ID
+  // Step 3: Insert study session
   const { data, error } = await supabaseAdmin
     .from('StudySession')
     .insert([
@@ -43,8 +46,8 @@ export async function POST(req: Request, { params }: { params: { code: string } 
         startTime,
         endTime,
         courseId: course.id,
-        ownerId: user.id, // ✅ FIXED: use authenticated user ID
-      },
+        ownerId: user.id
+      }
     ])
     .select()
     .single();
