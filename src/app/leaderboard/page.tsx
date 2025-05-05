@@ -12,18 +12,19 @@ type User = {
 export default function LeaderboardPage() {
   const [users, setUsers] = useState<User[]>([])
   const [showAll, setShowAll] = useState(false)
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-  useEffect(() => {
-    fetch('/api/leaderboard')
-      .then((res) => res.json())
-      .then((data) => {
-        const validUsers = data.filter(
-          (user: User) => user.name !== null && user.name.trim() !== ''
-        )
-        setUsers(validUsers)
-      })
-      .catch((err) => console.error('Failed to fetch leaderboard:', err))
-  }, [])
+useEffect(() => {
+  fetch(`${baseUrl}/api/leaderboard`)
+    .then((res) => res.json())
+    .then((data) => {
+      const validUsers = data.filter(
+        (user: User) => user.name !== null && user.name.trim() !== ''
+      )
+      setUsers(validUsers)
+    })
+    .catch((err) => console.error('Failed to fetch leaderboard:', err))
+}, [])
 
   const visibleUsers = showAll ? users : users.slice(0, 10)
 
