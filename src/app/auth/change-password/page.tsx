@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -40,10 +41,25 @@ const ChangePassword = () => {
   });
 
   const onSubmit = async (data: ChangePasswordForm) => {
+    // Log to check if onSubmit is firing
+    console.log('Form submitted with data:', data);
+
     const payload: ChangePasswordInput = { email, ...data };
-    await changePassword(payload);
-    await swal('Password Changed', 'Your password has been changed', 'success', { timer: 2000 });
-    reset();
+    try {
+      // Log payload before sending it
+      console.log('Payload for password change:', payload);
+
+      // Assuming changePassword function is defined in `dbActions`
+      await changePassword(payload);
+
+      // Show success message
+      await swal('Password Changed', 'Your password has been changed', 'success', { timer: 2000 });
+      reset();  // Reset the form after successful submission
+    } catch (error) {
+      // Handle error if any occurs
+      console.error('Error changing password:', error);
+      await swal('Error', 'There was an issue changing your password. Please try again.', 'error');
+    }
   };
 
   if (status === 'loading') {
