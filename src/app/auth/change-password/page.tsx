@@ -64,80 +64,88 @@ const ChangePasswordPage = () => {
   }
 
   return (
-    <Container className="py-5">
+    <div
+      style={{
+        background: 'linear-gradient(to right, #080808, #2a5298)',
+        minHeight: '100vh',
+        padding: '3rem 1rem',
+      }}
+    >
       <motion.div
         initial={{ x: '-100vw', opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
-        <Row className="justify-content-center">
-          <Col md={6}>
-            <Card className="shadow-lg border-0 rounded-4 p-4">
-              <h2 className="text-center mb-4 text-primary">
-                <LockFill className="me-2" />
-                Change Password
-              </h2>
-              <Form onSubmit={handleSubmit(onSubmit)}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Current Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Enter current password"
-                    {...register('oldpassword')}
-                    isInvalid={!!errors.oldpassword}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.oldpassword?.message}
-                  </Form.Control.Feedback>
-                </Form.Group>
+        <Container>
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Card className="shadow-lg border-0 rounded-4 p-4">
+                <h2 className="text-center mb-4 text-primary">
+                  <LockFill className="me-2" />
+                  Change Password
+                </h2>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Current Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Enter current password"
+                      {...register('oldpassword')}
+                      isInvalid={!!errors.oldpassword}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.oldpassword?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>New Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Enter new password"
-                    {...register('password')}
-                    isInvalid={!!errors.password}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.password?.message}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>New Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Enter new password"
+                      {...register('password')}
+                      isInvalid={!!errors.password}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.password?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
 
-                <Form.Group className="mb-4">
-                  <Form.Label>Confirm New Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Confirm new password"
-                    {...register('confirmPassword')}
-                    isInvalid={!!errors.confirmPassword}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.confirmPassword?.message}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                  <Form.Group className="mb-4">
+                    <Form.Label>Confirm New Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Confirm new password"
+                      {...register('confirmPassword')}
+                      isInvalid={!!errors.confirmPassword}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.confirmPassword?.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
 
-                <div className="d-flex justify-content-between">
-                  <Button variant="warning" onClick={() => reset()} disabled={loading}>
-                    Reset
-                  </Button>
-                  <Button type="submit" variant="primary" disabled={loading}>
-                    {loading ? (
-                      <>
-                        <Spinner size="sm" animation="border" className="me-2" />
-                        Saving...
-                      </>
-                    ) : (
-                      'Change Password'
-                    )}
-                  </Button>
-                </div>
-              </Form>
-            </Card>
-          </Col>
-        </Row>
+                  <div className="d-flex justify-content-between">
+                    <Button variant="warning" onClick={() => reset()} disabled={loading}>
+                      Reset
+                    </Button>
+                    <Button type="submit" variant="primary" disabled={loading}>
+                      {loading ? (
+                        <>
+                          <Spinner size="sm" animation="border" className="me-2" />
+                          Saving...
+                        </>
+                      ) : (
+                        'Change Password'
+                      )}
+                    </Button>
+                  </div>
+                </Form>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
       </motion.div>
-    </Container>
+    </div>
   );
 };
 

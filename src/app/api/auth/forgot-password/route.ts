@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { NextResponse } from 'next/server';
 import { randomBytes } from 'crypto';
 import { addHours } from 'date-fns';
@@ -27,7 +28,8 @@ export async function POST(req: Request) {
         },
       });
 
-      const resetUrl = `${process.env.NEXTAUTH_URL}/auth/reset-password?token=${token}`;
+     const resetUrl = `https://study-palz.vercel.app/auth/change-password?token=${token}`;
+
       await transporter.sendMail({
         to: email,
         from: process.env.SMTP_FROM,

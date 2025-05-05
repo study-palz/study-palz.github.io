@@ -67,7 +67,7 @@ export default function Signup() {
               Join the Squad!
             </h1>
             <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
-              Create your Study-Palz account and start collaborating 🚀
+              Create your StudyPalz account and start collaborating 🚀
             </p>
             <p style={{ marginTop: '1rem' }}>
               <Link
