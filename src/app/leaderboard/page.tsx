@@ -1,5 +1,7 @@
-import { Container, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { Container, ListGroup, ListGroupItem, Image } from 'react-bootstrap'
 import { prisma } from '@/lib/prisma'
+
+const DEFAULT_IMAGE_URL = '/default-profile.png'
 
 export default async function LeaderboardPage() {
   const users = await prisma.user.findMany({
@@ -17,6 +19,7 @@ export default async function LeaderboardPage() {
         select: {
           firstName: true,
           lastName: true,
+          profileImage: true,
         },
       },
     },
@@ -29,6 +32,7 @@ export default async function LeaderboardPage() {
     id: user.id,
     name: `${user.userProfile?.firstName ?? ''} ${user.userProfile?.lastName ?? ''}`.trim(),
     points: user.points,
+    profileImage: user.userProfile?.profileImage || DEFAULT_IMAGE_URL,
   }))
 
   const hasMore = formattedUsers.length > 10
@@ -43,7 +47,14 @@ export default async function LeaderboardPage() {
             key={user.id}
             className="d-flex justify-content-between align-items-center bg-white"
           >
-            <div>
+            <div className="d-flex align-items-center gap-2">
+              <Image
+                src={user.profileImage}
+                roundedCircle
+                width={32}
+                height={32}
+                alt={`${user.name}'s profile`}
+              />
               <strong>{index + 1}. {user.name}</strong>
             </div>
             <div>
@@ -52,6 +63,7 @@ export default async function LeaderboardPage() {
           </ListGroupItem>
         ))}
       </ListGroup>
+
     </Container>
   )
 }
