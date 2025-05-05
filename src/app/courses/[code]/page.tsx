@@ -1,64 +1,31 @@
-// This is the dynamic course detail page.
-// It lives at “/courses/[code]”.
+// ✅ NO 'use client' here — it's a Server Component
 
-import { notFound } from 'next/navigation'
-import Link from 'next/link'
+import { getClassByCode } from '@/lib/class-data';
+import Link from 'next/link';
 
-interface Props {
-  params: { code: string }
-}
+export default async function CoursePage({ params }: { params: { code: string } }) {
+  const decodedCode = decodeURIComponent(params.code);
+  const course = await getClassByCode(decodedCode);
 
-const mockData: Record<string, { senseis: string[]; grasshoppers: string[] }> = {
-  // replace with real DB fetch later...
-  'ICS 101': {
-    senseis: [],
-    grasshoppers: [],
-  },
-  'ICS 101A': {
-    senseis: [],
-    grasshoppers: [],
-  },
-  // …etc
-}
+  console.log('Requested code:', decodedCode);
+  console.log('Fetched course:', course);
 
-export default function CourseDetail({ params }: Props) {
-  const code = decodeURIComponent(params.code)
-  const entry = mockData[code]
-
-  if (!entry) {
-    // tells Next to render the built-in 404
-    notFound()
+  if (!course) {
+    return <div className="text-center mt-10 text-red-500">Class not found</div>;
   }
 
   return (
-    <div style={{ padding: '2rem', color: 'white' }}>
-      <h1>{code}</h1>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold">{course.title}</h1>
+      <p className="mt-2 text-gray-600">{course.description}</p>
 
-      <h2>Senseis</h2>
-      {entry.senseis.length > 0 ? (
-        <ul>
-          {entry.senseis.map((name) => (
-            <li key={name}>{name}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No senseis yet.</p>
-      )}
-
-      <h2>Grasshoppers</h2>
-      {entry.grasshoppers.length > 0 ? (
-        <ul>
-          {entry.grasshoppers.map((name) => (
-            <li key={name}>{name}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No grasshoppers yet.</p>
-      )}
-
-      <p>
-        <Link href="/courses">← Back to courses</Link>
-      </p>
+      <div className="mt-6">
+        <Link href={`/courses/${params.code}/create-session`}>
+          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Create New Session
+          </button>
+        </Link>
+      </div>
     </div>
-  )
+  );
 }
