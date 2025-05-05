@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-// ChangePassword.tsx
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -45,17 +43,15 @@ const ChangePassword = () => {
     const payload: ChangePasswordInput = { email, ...data };
 
     try {
-      // Call the changePassword function
       await changePassword(payload);
-
-      // Display success message
       await swal('Password Changed', 'Your password has been changed', 'success', { timer: 2000 });
-
-      // Reset the form
       reset();
-    } catch (error) {
-      console.error('Error changing password:', error);
-      await swal('Error', 'There was an issue changing your password. Please try again.', 'error');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        swal('Error', error.message, 'error');
+      } else {
+        swal('Error', 'An unexpected error occurred. Please try again.', 'error');
+      }
     }
   };
 
@@ -131,4 +127,3 @@ const ChangePassword = () => {
 };
 
 export default ChangePassword;
-
