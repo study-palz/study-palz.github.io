@@ -1,4 +1,11 @@
 {
+<<<<<<< HEAD
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/calendar/page": "app/calendar/page.js"
+=======
+  "/leaderboard/page": "app/leaderboard/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/leaderboard/route": "app/api/leaderboard/route.js"
+>>>>>>> 408292a84f35c32977f77975d8658e9a340a94ea
 }
