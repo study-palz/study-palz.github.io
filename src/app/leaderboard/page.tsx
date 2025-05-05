@@ -3,7 +3,6 @@ import { prisma } from '@/lib/prisma'
 
 const DEFAULT_IMAGE_URL = '/default-profile.png'
 
-export const dynamic = 'force-dynamic'
 
 export default async function LeaderboardPage() {
   const users = await prisma.user.findMany({
