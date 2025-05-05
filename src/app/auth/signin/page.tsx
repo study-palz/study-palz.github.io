@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import styles from '../../page1.module.css';
 
 export default function SignIn() {
@@ -39,14 +40,7 @@ export default function SignIn() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '64px',
-            alignItems: 'center',
-          }}
-        >
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '64px', alignItems: 'center' }}>
           <div style={{ flex: 1, textAlign: 'center' }}>
             <Image
               src="/studypalzlogo.png"
@@ -55,14 +49,10 @@ export default function SignIn() {
               height={120}
               style={{ margin: '0 auto 1rem' }}
             />
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white' }}>
-              Welcome
-            </h1>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white' }}>Welcome</h1>
             <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
               Login to reconnect with your study palz.
             </p>
-
-            {/* Back to Home link right below the welcome message */}
             <p style={{ marginTop: '1rem' }}>
               <Link
                 href="/"
@@ -78,7 +68,16 @@ export default function SignIn() {
             </p>
           </div>
 
-          <div
+          {/* Right side: Sign In Form with staggered animation for fields */}
+          <motion.div
+            initial={{ y: -200, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              type: 'spring',
+              stiffness: 100,
+              damping: 12,
+              bounce: 0.3,
+            }}
             style={{
               flex: 1,
               background: '#ffffff',
@@ -87,12 +86,19 @@ export default function SignIn() {
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
               maxWidth: '400px',
               width: '100%',
-              textAlign: 'center',
             }}
           >
-            <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>Login</h2>
+            <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem', textAlign: 'center' }}>
+              Login
+            </h2>
             <form onSubmit={handleLogin}>
-              <div style={{ marginBottom: '1rem', textAlign: 'left' }}>
+              {/* Email Field */}
+              <motion.div
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2, type: 'spring', stiffness: 100, damping: 20 }}
+                style={{ marginBottom: '1rem' }}
+              >
                 <label htmlFor="loginEmail">Email address</label>
                 <input
                   type="email"
@@ -100,11 +106,17 @@ export default function SignIn() {
                   placeholder="Enter email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
+                  style={{ width: '100%', padding: '0.5rem' }}
                 />
-              </div>
+              </motion.div>
 
-              <div style={{ marginBottom: '1rem', textAlign: 'left' }}>
+              {/* Password Field */}
+              <motion.div
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4, type: 'spring', stiffness: 100, damping: 20 }}
+                style={{ marginBottom: '1rem' }}
+              >
                 <label htmlFor="loginPassword">Password</label>
                 <input
                   type="password"
@@ -112,16 +124,15 @@ export default function SignIn() {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
+                  style={{ width: '100%', padding: '0.5rem' }}
                 />
-              </div>
+              </motion.div>
 
               {error && (
                 <p style={{ color: 'red', fontSize: '0.875rem', marginBottom: '1rem' }}>
                   {error}
                 </p>
               )}
-
               <button type="submit" className="primary" style={{ width: '100%' }}>
                 Login
               </button>
@@ -140,7 +151,7 @@ export default function SignIn() {
                 Sign up
               </Link>
             </p>
-          </div>
+          </motion.div>
         </div>
       </main>
     </div>
