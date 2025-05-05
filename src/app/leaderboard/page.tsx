@@ -1,8 +1,10 @@
 import { Container, ListGroup, ListGroupItem, Image } from 'react-bootstrap'
 import { prisma } from '@/lib/prisma'
 
-const DEFAULT_IMAGE_URL = '/default-profile.png'
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
+const DEFAULT_IMAGE_URL = '/default-profile.png'
 
 export default async function LeaderboardPage() {
   const users = await prisma.user.findMany({
