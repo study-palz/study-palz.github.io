@@ -32,13 +32,41 @@ const handler = NextAuth({
       },
     }),
   ],
+
   pages: {
     signIn: '/auth/signin',
     error: '/auth/error',
   },
+
   session: {
     strategy: 'jwt',
   },
+
+  callbacks: {
+    async jwt({ token, user, account }) {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+      }
+
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
+
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.accessToken = token.accessToken;
+        session.refreshToken = token.refreshToken;
+      }
+      return session;
+    },
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
 });
 

@@ -5,6 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from '@/components/Footer';
 import NavBar from '@/components/Navbar';
 import Providers from './providers';
+import SyncSupabaseSession from '@/utils/syncSupabaseSession';
+
+// Inside your layout's return:
+<SyncSupabaseSession />
+
 
 const inter = Inter({ subsets: ['latin'] });
 

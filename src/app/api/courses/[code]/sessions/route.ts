@@ -9,22 +9,24 @@ export async function POST(req: Request, { params }: { params: { code: string } 
   const authHeader = req.headers.get('Authorization');
   const token = authHeader?.replace('Bearer ', '');
 
+  console.log('▶️ Bearer token received:', token); // 🐛 DEBUG LOG
+
   if (!token) {
     return NextResponse.json({ error: 'No authorization token found' }, { status: 401 });
   }
 
-  // Step 1: Get user from token
   const {
     data: { user },
     error: userError
   } = await supabaseAdmin.auth.getUser(token);
 
+  console.log('👤 User fetched from Supabase:', user); // 🐛 DEBUG LOG
+  console.log('❌ User fetch error (if any):', userError); // 🐛 DEBUG LOG
+
   if (userError || !user) {
-    console.error('Failed to retrieve user from token:', userError);
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Step 2: Get course ID
   const { data: course, error: courseError } = await supabaseAdmin
     .from('Course')
     .select('id')
@@ -32,11 +34,10 @@ export async function POST(req: Request, { params }: { params: { code: string } 
     .single();
 
   if (courseError || !course) {
-    console.error('Course not found:', courseError);
+    console.error('❌ Course not found:', courseError);
     return NextResponse.json({ error: 'Course not found' }, { status: 404 });
   }
 
-  // Step 3: Insert study session
   const { data, error } = await supabaseAdmin
     .from('StudySession')
     .insert([
@@ -53,9 +54,10 @@ export async function POST(req: Request, { params }: { params: { code: string } 
     .single();
 
   if (error) {
-    console.error('Insert error:', error);
+    console.error('❌ Insert error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  console.log('✅ Study session created:', data); // 🐛 DEBUG LOG
   return NextResponse.json(data);
 }

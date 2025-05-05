@@ -10,6 +10,7 @@ export default function CreateSessionPage({ params }: { params: { code: string }
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
   const supabase = createClientComponentClient();
@@ -18,10 +19,13 @@ export default function CreateSessionPage({ params }: { params: { code: string }
     async function fetchAccessToken() {
       const { data, error } = await supabase.auth.getSession();
       if (error || !data.session) {
-        console.error('Error fetching session:', error);
-        return;
+        console.error('❌ Error fetching session:', error);
+        setAccessToken(null);
+      } else {
+        console.log('✅ Session loaded:', data.session);
+        setAccessToken(data.session.access_token);
       }
-      setAccessToken(data.session.access_token);
+      setLoading(false);
     }
     fetchAccessToken();
   }, [supabase]);
@@ -34,6 +38,8 @@ export default function CreateSessionPage({ params }: { params: { code: string }
       return;
     }
 
+    console.log('📤 Sending session with token:', accessToken);
+
     const res = await fetch(`/api/courses/${params.code}/sessions`, {
       method: 'POST',
       headers: {
@@ -45,12 +51,18 @@ export default function CreateSessionPage({ params }: { params: { code: string }
 
     if (res.ok) {
       const session = await res.json();
+      console.log('✅ Session created:', session);
       router.push(`/courses/${params.code}/sessions/${session.id}/confirmation`);
     } else {
       const err = await res.json();
+      console.error('❌ Failed to create session:', err.error);
       alert('Failed to create session: ' + err.error);
     }
   };
+
+  if (loading) {
+    return <p className="text-center text-white">Loading...</p>;
+  }
 
   return (
     <div className="container py-5">
