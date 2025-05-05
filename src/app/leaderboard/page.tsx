@@ -19,7 +19,7 @@ useEffect(() => {
     .then((res) => res.json())
     .then((data) => {
       const validUsers = data.filter(
-        (user: User) => user.name !== null && user.name.trim() !== ''
+        (user: User) => user  .name !== null && user.name.trim() !== ''
       )
       setUsers(validUsers)
     })
