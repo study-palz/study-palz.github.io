@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+// NavBar.tsx
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
@@ -31,7 +32,7 @@ const NavBar: React.FC = () => {
     };
 
     fetchProfileImage();
-  }, [session?.user?.email]); // Only run this effect when the user's email changes
+  }, [session?.user?.email]);
 
   const hiddenRoutes = ['/auth/signup', '/auth/signin', '/auth/signout'];
   if (hiddenRoutes.includes(pathName || '')) {
@@ -41,7 +42,7 @@ const NavBar: React.FC = () => {
   const handleSignOut = () => signOut({ callbackUrl: '/' });
 
   return (
-<Navbar expand="lg" style={{ backgroundColor: 'linear-gradient(to right, #080808, #2a5298)' }}>
+    <Navbar expand="lg" style={{ backgroundColor: ' #080808' }}>
       <Container>
         <Navbar.Brand href="/">
           <img src="/studypalzlogo.png" alt="StudyPalz Logo" height="100" width="200" />
@@ -82,6 +83,10 @@ const NavBar: React.FC = () => {
                   ) : (
                     <PersonFill size={24} color="white" />
                   )}
+                </Nav.Link>
+
+                <Nav.Link href="/auth/change-password" className="me-3" style={{ color: 'white', fontWeight: 'bold' }}>
+                  Change Password
                 </Nav.Link>
 
                 <Nav.Link onClick={handleSignOut} className="login-signup-btn" style={{ color: 'white', fontWeight: 'bold', cursor: 'pointer' }}>

@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signIn } from 'next-auth/react';
+import { motion } from 'framer-motion';
 import styles from '../../page1.module.css';
 
 export default function Signup() {
@@ -33,7 +34,6 @@ export default function Signup() {
       if (!res.ok) {
         setError(data.message || 'Something went wrong');
       } else {
-        // Auto-login the user after successful signup
         const signInRes = await signIn('credentials', {
           redirect: false,
           email,
@@ -43,7 +43,6 @@ export default function Signup() {
         if (signInRes?.error) {
           setError('Error logging in. Please try again.');
         } else {
-          // Redirect the user to the home page (or logged-in home page)
           window.location.href = '/';
         }
       }
@@ -64,14 +63,37 @@ export default function Signup() {
               height={120}
               style={{ margin: '0 auto 1rem' }}
             />
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white' }}>Join the Squad!</h1>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'white' }}>
+              Join the Squad!
+            </h1>
             <p style={{ fontSize: '1.125rem', marginTop: '1rem', color: 'white' }}>
-              Create your Study-Palz account and start collaborating 🚀
+              Create your StudyPalz account and start collaborating 🚀
+            </p>
+            <p style={{ marginTop: '1rem' }}>
+              <Link
+                href="/"
+                style={{
+                  color: '#00bfff',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                  fontSize: '1rem',
+                }}
+              >
+                ← Back to Home
+              </Link>
             </p>
           </div>
 
-          {/* Right side: Signup Form */}
-          <div
+          {/* Right side: Signup Form with staggered animation for fields */}
+          <motion.div
+            initial={{ y: -200, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              type: 'spring',
+              stiffness: 100,
+              damping: 12,
+              bounce: 0.3,
+            }}
             style={{
               flex: 1,
               background: '#ffffff',
@@ -82,9 +104,17 @@ export default function Signup() {
               width: '100%',
             }}
           >
-            <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem', textAlign: 'center' }}>Sign Up</h2>
+            <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem', textAlign: 'center' }}>
+              Sign Up
+            </h2>
             <form onSubmit={handleSignup}>
-              <div style={{ marginBottom: '1rem' }}>
+              {/* Email Field */}
+              <motion.div
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2, type: 'spring', stiffness: 100, damping: 20 }}
+                style={{ marginBottom: '1rem' }}
+              >
                 <label htmlFor="signupEmail">Email address</label>
                 <input
                   type="email"
@@ -94,8 +124,15 @@ export default function Signup() {
                   onChange={(e) => setEmail(e.target.value)}
                   style={{ width: '100%', padding: '0.5rem' }}
                 />
-              </div>
-              <div style={{ marginBottom: '1rem' }}>
+              </motion.div>
+
+              {/* Password Field */}
+              <motion.div
+                initial={{ y: -50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4, type: 'spring', stiffness: 100, damping: 20 }}
+                style={{ marginBottom: '1rem' }}
+              >
                 <label htmlFor="signupPassword">Password</label>
                 <input
                   type="password"
@@ -105,7 +142,8 @@ export default function Signup() {
                   onChange={(e) => setPassword(e.target.value)}
                   style={{ width: '100%', padding: '0.5rem' }}
                 />
-              </div>
+              </motion.div>
+
               {error && (
                 <p style={{ color: 'red', fontSize: '0.875rem', marginBottom: '1rem' }}>
                   {error}
@@ -117,13 +155,12 @@ export default function Signup() {
             </form>
 
             <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-              Already have an account?
-              {' '}
+              Already have an account?{' '}
               <Link className="secondary" href="/auth/signin">
                 Login
               </Link>
             </p>
-          </div>
+          </motion.div>
         </div>
       </main>
     </div>
