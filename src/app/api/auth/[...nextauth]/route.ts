@@ -1,26 +1,33 @@
-// src/app/api/auth/[...nextauth]/route.ts
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 
-// 1. Annotate your options so TS knows all the callback signatures
+/* ------------------------------------------------------------------ */
+/* 1️⃣  Define all NextAuth options (typed)                             */
+/* ------------------------------------------------------------------ */
 const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        email:    { label: 'Email',    type: 'email'    },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials) return null;
+
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
         if (!user) throw new Error('No user found');
-        const isValid = await bcrypt.compare(credentials.password, user.password);
+
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
         if (!isValid) throw new Error('Invalid password');
+
         return { id: String(user.id), email: user.email };
       },
     }),
@@ -28,16 +35,14 @@ const authOptions: NextAuthOptions = {
 
   pages: {
     signIn: '/auth/signin',
-    error: '/auth/error',
+    error:  '/auth/error',
   },
 
-  // 2. Make sure this matches the literal type NextAuth expects
   session: {
-    strategy: 'jwt', // <-- this is the exact SessionStrategy literal
+    strategy: 'jwt',          // required literal
   },
 
   callbacks: {
-    // now `token` is correctly typed as JWT & you won’t get `any`
     async jwt({ token, user, account }) {
       if (account) {
         token.accessToken  = account.access_token!;
@@ -50,12 +55,11 @@ const authOptions: NextAuthOptions = {
       return token;
     },
 
-    // and here `session` and `token` also pick up the right types
     async session({ session, token }) {
       if (session.user) {
-        session.user.id           = token.id as string;
-        session.accessToken       = token.accessToken as string;
-        session.refreshToken      = token.refreshToken as string;
+        session.user.id      = token.id as string;
+        session.accessToken  = token.accessToken  as string;
+        session.refreshToken = token.refreshToken as string;
       }
       return session;
     },
@@ -64,8 +68,10 @@ const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// instantiate NextAuth _once_
+/* ------------------------------------------------------------------ */
+/* 2️⃣  Instantiate once and export                                    */
+/* ------------------------------------------------------------------ */
 const handler = NextAuth(authOptions);
 
-// app‑router expects only the HTTP handlers as exports
-export { handler as GET, handler as POST };
+/* Next.js App Router expects HTTP handlers plus any shared constants */
+export { handler as GET, handler as POST, authOptions };
