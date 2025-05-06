@@ -1,6 +1,7 @@
 // src/app/api/courses/[code]/sessions/[sessionId]/attendees/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { authOptions } from '@/lib/authOptions';
 
 export async function GET(
   _req: Request,

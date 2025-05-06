@@ -2,8 +2,7 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { prisma } from '@/lib/prisma'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'  // adjust if your path differs
-
+import { authOptions } from '@/lib/authOptions';
 export async function POST(
   _req: Request,
   { params }: { params: { code: string; sessionId: string } }
