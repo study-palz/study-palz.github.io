@@ -1,8 +1,8 @@
+// src/app/courses/[code]/sessions/[sessionId]/confirmation/ConfirmationClient.tsx
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface Props {
   code: string;
@@ -17,68 +17,63 @@ export default function ConfirmationClient({
   ownerId,
   initialAttendees,
 }: Props) {
-  const { data: nextAuthSession } = useSession();
-  const currentUserId = Number(nextAuthSession?.user?.id);
-  const [attendees, setAttendees] = useState(initialAttendees);
-  const [joined, setJoined] = useState(
-    attendees.some((u) => u.id === currentUserId)
-  );
   const router = useRouter();
+  const [attendees, setAttendees] = useState(initialAttendees);
+  const [isJoining, setIsJoining] = useState(false);
 
-  useEffect(() => {
-    setJoined(attendees.some((u) => u.id === currentUserId));
-  }, [attendees, currentUserId]);
+  const joinOrLeave = async () => {
+    setIsJoining(true);
+    const isAttending = attendees.some((u) => u.id === ownerId);
 
-  const toggleJoin = useCallback(async () => {
-    const action = joined ? 'leave' : 'join';
-    await fetch(`/api/courses/${code}/sessions/${sessionId}/${action}`, {
-      method: 'POST',
+    const method = isAttending ? 'DELETE' : 'POST';
+    const url = `/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/${isAttending ? 'leave' : 'join'}`;
+
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        isAttending ? { sessionId } : undefined
+      ),
     });
-    const res = await fetch(`/api/courses/${code}/sessions/${sessionId}/attendees`);
-    if (res.ok) {
-      const updated = await res.json();
-      setAttendees(updated);
-    }
-  }, [joined, code, sessionId]);
 
-  const deleteSession = useCallback(async () => {
-    if (!confirm('Are you sure you want to delete this session?')) return;
-    const res = await fetch(
-      `/api/courses/${code}/sessions/${sessionId}`,
-      { method: 'DELETE' }
-    );
-    if (res.ok) {
-      // <-- redirect back to the course page
-      router.push(`/courses/${code}`);
-    } else {
-      alert('Failed to delete session');
+    if (!res.ok) {
+      console.error(await res.json());
+      setIsJoining(false);
+      return;
     }
-  }, [code, sessionId, router]);
+
+    // update attendee list in this component
+    if (isAttending) {
+      setAttendees((prev) =>
+        prev.filter((u) => u.id !== ownerId)
+      );
+    } else {
+      setAttendees((prev) => [
+        ...prev,
+        { id: ownerId, name: undefined, email: '' },
+      ]);
+    }
+
+    // **force the course page to re‑fetch**  
+    router.refresh();
+    setIsJoining(false);
+  };
 
   return (
-    <div className="text-center">
-      <button onClick={toggleJoin} className="btn btn-outline-light mb-3">
-        {joined ? 'Leave Session' : 'Join Session'}
+    <div className="text-center mt-6">
+      <button
+        className={`btn ${
+          attendees.some((u) => u.id === ownerId)
+            ? 'btn-danger'
+            : 'btn-primary'
+        }`}
+        onClick={joinOrLeave}
+        disabled={isJoining}
+      >
+        {attendees.some((u) => u.id === ownerId)
+          ? 'Leave Session'
+          : 'Join Session'}
       </button>
-
-      <div className="mt-4">
-        <h5 className="text-white">Attendees ({attendees.length})</h5>
-        <ul className="list-group list-group-flush">
-          {attendees.map((u) => (
-            <li key={u.id} className="list-group-item bg-dark text-white">
-              {u.name || u.email}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {currentUserId === ownerId && (
-        <div className="mt-4">
-          <button onClick={deleteSession} className="btn btn-danger">
-            Delete Session
-          </button>
-        </div>
-      )}
     </div>
   );
 }
