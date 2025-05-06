@@ -1,0 +1,16 @@
+{
+  "defaultAccounts": [
+    {
+      "email": "alice@hawaii.edu",
+      "role": "USER",
+      "name": "Alice",
+      "profilePicture": "https://example.com/alice.png"
+    },
+    {
+      "email": "admin@hawaii.edu",
+      "role": "ADMIN",
+      "name": "Admin",
+      "profilePicture": "https://example.com/admin.png"
+    }
+  ]
+}

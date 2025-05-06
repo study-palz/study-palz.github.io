@@ -1,0 +1,114 @@
+/* Base Styles */
+.page {
+  --gray-rgb: 0, 0, 0;
+  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+  
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+  
+  display: grid;
+  grid-template-rows: 20px 1fr 20px;
+  align-items: center;
+  justify-items: center;
+  min-height: 100svh;
+  padding: 80px;
+  gap: 64px;
+  font-family: var(--font-geist-sans);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .page {
+    --gray-rgb: 255, 255, 255;
+    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+  
+    --button-primary-hover: #ccc;
+    --button-secondary-hover: #1a1a1a;
+  }
+}
+
+/* Main content styling */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  grid-row-start: 2;
+  width: 100%;
+  max-width: 1200px;  /* Keep a maximum width for larger screens */
+  margin: 0 auto;
+}
+
+/* Layout for the sign-in page */
+.main > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 64px;
+  width: 100%;
+}
+
+/* Styling for the logo section */
+.main > div > div:first-child {
+  text-align: center;
+  flex: 1 1 50%;
+}
+
+.main > div > div:first-child img {
+  width: 100%;
+  max-width: 200px;  /* Prevent large logos on mobile */
+}
+
+/* Sign-in form section */
+.main > div > div:last-child {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  flex: 1 1 50%;
+}
+
+.main > div > div:last-child form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.main > div > div:last-child button {
+  margin-top: 16px;
+}
+
+/* Responsive Styles for Mobile Devices */
+@media (max-width: 600px) {
+  .page {
+    padding: 32px;
+    padding-bottom: 80px;
+  }
+  
+  .main > div {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .main > div > div {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 100%;  /* Ensure the sections don't stretch too wide */
+  }
+  
+  .main > div > div:first-child {
+    order: 2;  /* Move the logo to the bottom for better balance on mobile */
+  }
+
+  .main > div > div:last-child {
+    order: 1;  /* Keep the form on top */
+  }
+  
+  .main > div > div:last-child form input {
+    width: 100%;  /* Make sure inputs are full width */
+  }
+}
