@@ -1,63 +1,65 @@
-import { NextResponse } from 'next/server';
-import supabaseAdmin from '@/lib/supabaseAdmin';
+// src/app/api/courses/[code]/sessions/route.ts
+import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { revalidatePath } from 'next/cache'
 
-export async function POST(req: Request, { params }: { params: { code: string } }) {
-  const body = await req.json();
-  const { topic, description, startTime, endTime } = body;
-
-  const courseCode = decodeURIComponent(params.code).trim();
-  const authHeader = req.headers.get('Authorization');
-  const token = authHeader?.replace('Bearer ', '');
-
-  console.log('▶️ Bearer token received:', token); // 🐛 DEBUG LOG
-
-  if (!token) {
-    return NextResponse.json({ error: 'No authorization token found' }, { status: 401 });
+export async function POST(
+  req: Request,
+  { params }: { params: { code: string } }
+) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseAdmin.auth.getUser(token);
+  const { topic, description, startTime, endTime } = await req.json()
 
-  console.log('👤 User fetched from Supabase:', user); // 🐛 DEBUG LOG
-  console.log('❌ User fetch error (if any):', userError); // 🐛 DEBUG LOG
-
-  if (userError || !user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const { data: course, error: courseError } = await supabaseAdmin
-    .from('Course')
-    .select('id')
-    .eq('code', courseCode)
-    .single();
-
-  if (courseError || !course) {
-    console.error('❌ Course not found:', courseError);
-    return NextResponse.json({ error: 'Course not found' }, { status: 404 });
-  }
-
-  const { data, error } = await supabaseAdmin
-    .from('StudySession')
-    .insert([
-      {
+  try {
+    const created = await prisma.studySession.create({
+      data: {
         topic,
         description,
-        startTime,
-        endTime,
-        courseId: course.id,
-        ownerId: user.id
-      }
-    ])
-    .select()
-    .single();
+        startTime: new Date(startTime),
+        endTime:   new Date(endTime),
+        owner:  { connect: { id: Number(session.user.id) } },
+        course: { connect: { code: params.code } },
+      },
+    })
 
-  if (error) {
-    console.error('❌ Insert error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // await + encodeURIComponent to target the correct course page
+    await revalidatePath(`/courses/${encodeURIComponent(params.code)}`)
+
+    return NextResponse.json(created, { status: 201 })
+  } catch (err: any) {
+    console.error('Prisma insert error:', err)
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { code: string } }
+) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  console.log('✅ Study session created:', data); // 🐛 DEBUG LOG
-  return NextResponse.json(data);
+  const { sessionId } = await req.json()
+
+  try {
+    await prisma.studySession.delete({
+      where: { id: sessionId },
+    })
+
+    // same here: await + encodeURIComponent
+    await revalidatePath(`/courses/${encodeURIComponent(params.code)}`)
+
+    return NextResponse.json({ ok: true }, { status: 200 })
+  } catch (err: any) {
+    console.error('Prisma delete error:', err)
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
 }
