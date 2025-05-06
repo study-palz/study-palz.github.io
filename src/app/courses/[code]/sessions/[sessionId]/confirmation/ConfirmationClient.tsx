@@ -1,21 +1,14 @@
 // src/app/courses/[code]/sessions/[sessionId]/confirmation/ConfirmationClient.tsx
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter }   from 'next/navigation'
-import { useSession }  from 'next-auth/react'
-
-interface Attendee {
-  id:    number
-  name?: string
-  email: string
-}
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface Props {
-  code: string
-  sessionId: number
-  ownerId: number
-  initialAttendees: Attendee[]
+  code: string;
+  sessionId: number;
+  ownerId: number;
+  initialAttendees: { id: number; name?: string; email: string }[];
 }
 
 export default function ConfirmationClient({
@@ -24,105 +17,63 @@ export default function ConfirmationClient({
   ownerId,
   initialAttendees,
 }: Props) {
-  const router  = useRouter()
-  const { data: session } = useSession()
-  const [attendees, setAttendees] = useState<Attendee[]>(initialAttendees)
-  const amOwner = session?.user?.id === String(ownerId)
+  const router = useRouter();
+  const [attendees, setAttendees] = useState(initialAttendees);
+  const [isJoining, setIsJoining] = useState(false);
 
-  const revalidateCourse = () => {
-    // This will force Next.js to re‐fetch and re‐render /courses/[code]
-    router.refresh()
-  }
+  const joinOrLeave = async () => {
+    setIsJoining(true);
+    const isAttending = attendees.some((u) => u.id === ownerId);
 
-  const join = async () => {
-    const res = await fetch(
-      `/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/join`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      }
-    )
-    if (res.ok) {
-      // Optimistically add current user to the list
-      setAttendees((a) => [
-        ...a,
-        { id: Number(session!.user.id), name: session!.user.name ?? undefined, email: session!.user.email! },
-      ])
-      revalidateCourse()
-    } else {
-      console.error('Join failed', await res.json())
+    const method = isAttending ? 'DELETE' : 'POST';
+    const url = `/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/${isAttending ? 'leave' : 'join'}`;
+
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        isAttending ? { sessionId } : undefined
+      ),
+    });
+
+    if (!res.ok) {
+      console.error(await res.json());
+      setIsJoining(false);
+      return;
     }
-  }
 
-  const leave = async () => {
-    const res = await fetch(
-      `/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/leave`,
-      {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ sessionId }),
-      }
-    )
-    if (res.ok) {
-      setAttendees((a) => a.filter((u) => u.id !== Number(session!.user.id)))
-      revalidateCourse()
+    // update attendee list in this component
+    if (isAttending) {
+      setAttendees((prev) =>
+        prev.filter((u) => u.id !== ownerId)
+      );
     } else {
-      console.error('Leave failed', await res.json())
+      setAttendees((prev) => [
+        ...prev,
+        { id: ownerId, name: undefined, email: '' },
+      ]);
     }
-  }
 
-  const removeSession = async () => {
-    const res = await fetch(
-      `/api/courses/${encodeURIComponent(code)}/sessions`,
-      {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ sessionId }),
-      }
-    )
-    if (res.ok) {
-      // after deleting the entire session, send user back to course page
-      router.push(`/courses/${encodeURIComponent(code)}`)
-    } else {
-      console.error('Delete session failed', await res.json())
-    }
-  }
-
-  const amAttending = attendees.some((u) => String(u.id) === session?.user?.id)
+    // **force the course page to re‑fetch**  
+    router.refresh();
+    setIsJoining(false);
+  };
 
   return (
-    <div className="text-center mt-4">
-      {!session && <p className="text-gray-400">Please sign in to join.</p>}
-
-      {session && !amAttending && (
-        <button
-          onClick={join}
-          className="btn btn-primary"
-        >
-          Join Session
-        </button>
-      )}
-
-      {session && amAttending && (
-        <button
-          onClick={leave}
-          className="btn btn-danger"
-        >
-          Leave Session
-        </button>
-      )}
-
-      {amOwner && (
-        <button
-          onClick={removeSession}
-          className="btn btn-outline-danger ml-2"
-        >
-          Delete Session
-        </button>
-      )}
+    <div className="text-center mt-6">
+      <button
+        className={`btn ${
+          attendees.some((u) => u.id === ownerId)
+            ? 'btn-danger'
+            : 'btn-primary'
+        }`}
+        onClick={joinOrLeave}
+        disabled={isJoining}
+      >
+        {attendees.some((u) => u.id === ownerId)
+          ? 'Leave Session'
+          : 'Join Session'}
+      </button>
     </div>
-  )
+  );
 }
