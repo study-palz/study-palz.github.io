@@ -1,12 +1,12 @@
 {
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/profile/route": "app/api/profile/route.js",
-  "/courses/[code]/page": "app/courses/[code]/page.js",
-  "/courses/[code]/create-session/page": "app/courses/[code]/create-session/page.js",
-  "/courses/page": "app/courses/page.js",
   "/page": "app/page.js",
+  "/courses/[code]/page": "app/courses/[code]/page.js",
+  "/courses/page": "app/courses/page.js",
   "/courses/[code]/sessions/[sessionId]/page": "app/courses/[code]/sessions/[sessionId]/page.js",
-  "/api/courses/[code]/sessions/[sessionId]/route": "app/api/courses/[code]/sessions/[sessionId]/route.js"
+  "/api/courses/[code]/sessions/route": "app/api/courses/[code]/sessions/route.js",
+  "/courses/[code]/create-session/page": "app/courses/[code]/create-session/page.js",
+  "/courses/[code]/sessions/[sessionId]/confirmation/page": "app/courses/[code]/sessions/[sessionId]/confirmation/page.js",
+  "/api/profile/route": "app/api/profile/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
 }
