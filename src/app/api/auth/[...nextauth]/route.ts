@@ -4,7 +4,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcrypt';
 
-export const authOptions: NextAuthOptions = {
+// 1. Annotate your options so TS knows all the callback signatures
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -20,26 +21,23 @@ export const authOptions: NextAuthOptions = {
         if (!user) throw new Error('No user found');
         const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) throw new Error('Invalid password');
-        // Returning these props becomes `user` in our callbacks
         return { id: String(user.id), email: user.email };
       },
     }),
-    // …add other providers here if any…
   ],
 
   pages: {
     signIn: '/auth/signin',
-    error:  '/auth/error',
+    error: '/auth/error',
   },
 
-  session: { strategy: 'jwt' },
+  // 2. Make sure this matches the literal type NextAuth expects
+  session: {
+    strategy: 'jwt', // <-- this is the exact SessionStrategy literal
+  },
 
   callbacks: {
-    /**
-     * jwt() runs when a JWT is created or updated.
-     * On initial sign in, `account` is populated, so we stash those tokens.
-     * We also put `user.id` onto the token so we can retrieve it later.
-     */
+    // now `token` is correctly typed as JWT & you won’t get `any`
     async jwt({ token, user, account }) {
       if (account) {
         token.accessToken  = account.access_token!;
@@ -52,10 +50,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
 
-    /**
-     * session() runs whenever `useSession()` or `getSession()` is called.
-     * Here we pull our values off the JWT (`token`) and onto `session`.
-     */
+    // and here `session` and `token` also pick up the right types
     async session({ session, token }) {
       if (session.user) {
         session.user.id           = token.id as string;
@@ -66,9 +61,11 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  // ensure you have NEXTAUTH_SECRET in your env
   secret: process.env.NEXTAUTH_SECRET,
 };
 
+// instantiate NextAuth _once_
 const handler = NextAuth(authOptions);
+
+// app‑router expects only the HTTP handlers as exports
 export { handler as GET, handler as POST };
