@@ -18,7 +18,7 @@
 
 [Developer Guide](#developer-guide-)
 
-[Community Feedback](#community-feedback)
+[Community Feedback](#community-feedback-)
 
 ---
 
