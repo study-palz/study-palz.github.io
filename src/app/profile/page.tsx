@@ -1,3 +1,4 @@
+// src/app/profile/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -28,7 +29,10 @@ export default function ProfilePage() {
   useEffect(() => {
     if (!session?.user?.email) return;
 
-    fetch(`/api/profile?email=${session.user.email}`)
+    fetch(
+      `/api/profile?email=${encodeURIComponent(session.user.email)}`,
+      { credentials: 'include' }
+    )
       .then(res => res.json())
       .then(data => {
         if (data) {
@@ -46,13 +50,14 @@ export default function ProfilePage() {
           });
         }
       });
-  }, [session?.user?.email]); 
+  }, [session?.user?.email]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const res = await fetch('/api/profile', {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: session?.user?.email,
@@ -212,3 +217,6 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+
+/* eslint-disable @next/next/no-img-element */

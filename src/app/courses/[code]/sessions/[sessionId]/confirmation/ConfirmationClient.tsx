@@ -26,14 +26,16 @@ export default function ConfirmationClient({
     const isAttending = attendees.some((u) => u.id === ownerId);
 
     const method = isAttending ? 'DELETE' : 'POST';
-    const url = `/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/${isAttending ? 'leave' : 'join'}`;
+    const url = `/api/courses/${encodeURIComponent(
+      code
+    )}/sessions/${sessionId}/${isAttending ? 'leave' : 'join'}`;
 
     const res = await fetch(url, {
       method,
+      credentials: 'include',        // ← include the next-auth cookie
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(
-        isAttending ? { sessionId } : undefined
-      ),
+      // DELETE doesn’t need a body, so we only JSON-stringify on POST
+      body: isAttending ? undefined : JSON.stringify({ sessionId }),
     });
 
     if (!res.ok) {
@@ -42,11 +44,9 @@ export default function ConfirmationClient({
       return;
     }
 
-    // update attendee list in this component
+    // Update our attendee list locally
     if (isAttending) {
-      setAttendees((prev) =>
-        prev.filter((u) => u.id !== ownerId)
-      );
+      setAttendees((prev) => prev.filter((u) => u.id !== ownerId));
     } else {
       setAttendees((prev) => [
         ...prev,
@@ -54,7 +54,7 @@ export default function ConfirmationClient({
       ]);
     }
 
-    // **force the course page to re‑fetch**  
+    // Refresh the page data
     router.refresh();
     setIsJoining(false);
   };
@@ -63,9 +63,7 @@ export default function ConfirmationClient({
     <div className="text-center mt-6">
       <button
         className={`btn ${
-          attendees.some((u) => u.id === ownerId)
-            ? 'btn-danger'
-            : 'btn-primary'
+          attendees.some((u) => u.id === ownerId) ? 'btn-danger' : 'btn-primary'
         }`}
         onClick={joinOrLeave}
         disabled={isJoining}
