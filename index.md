@@ -91,7 +91,7 @@ Clicking on the Sign Up link takes you to a registration page where new users ca
 
 ### Profile
 
-Clicking on the Profile link brings you to your personal dashboard. Here, you can upload a url image, choose courses you're taking or can help with.
+Clicking on the Profile link brings you to your personal dashboard. Here, you can input your first name and last name, upload a url image, and choose courses you're taking or can help with.
 
 ![](/public/images/profile1-guide.png)
 
