@@ -87,7 +87,7 @@ Clicking on the Sign In link brings you to a secure login page where returning u
 
 Clicking on the Sign Up link takes you to a registration page where new users can create an account by entering their name, email, password, and major—setting up their profile to start using Study-Palz.
 
-![](/public/images/contact-guide.png)
+![](/public/images/signup-guide.png)
 
 ### Profile
 
