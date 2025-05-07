@@ -18,7 +18,7 @@
 
 [Developer Guide](#developer-guide-)
 
-[Community Feedback](#community-feedback-)
+[Community Feedback](#community-feedback)
 
 ---
 
@@ -166,6 +166,6 @@ This will load the app on your local machine for development.
 
 ---
 
-## Community Feedback
+## 💬 Community Feedback
 
 
