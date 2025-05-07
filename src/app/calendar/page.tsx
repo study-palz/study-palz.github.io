@@ -33,7 +33,7 @@ const Home = () => {
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay',
               }}
-              events={[]} // Keep it empty for now
+              events={[]}
               editable
               selectable
               droppable
