@@ -91,7 +91,7 @@ Clicking on the Sign Up link takes you to a registration page where new users ca
 
 ### Profile
 
-Clicking on the Profile link brings you to your personal dashboard. Here, you can upload a photo, select your major, choose courses you're taking or can help with, and decide if you want to be a Sensei or Grasshopper.
+Clicking on the Profile link brings you to your personal dashboard. Here, you can upload a url image, choose courses you're taking or can help with.
 
 ![](/public/images/profile1-guide.png)
 
