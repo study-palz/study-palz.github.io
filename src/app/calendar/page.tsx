@@ -39,8 +39,8 @@ const Home = () => {
         <h1 className="font-bold text-lg text-light-700">Calendar</h1>
       </Nav>
       <main>
-        <div className="grid grid-cols-10 bg-light">
-          <div className="col-span-8">
+        <div className="grid grid-cols-12 gap-6 px-4">
+          <div className="col-span-12 md:col-span-8">
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
@@ -59,6 +59,13 @@ const Home = () => {
               initialDate={new Date()}
               eventClick={(info) => alert(`Event: ${info.event.title}`)}
             />
+          </div>
+          <div className="col-span-12 md:col-span-4">
+            <div className="p-4 bg-white shadow-lg rounded-lg">
+              <h2 className="font-semibold text-lg mb-4">Event Details</h2>
+              <p>Select an event to view its details here.</p>
+              {/* Placeholder for event details */}
+            </div>
           </div>
         </div>
       </main>
