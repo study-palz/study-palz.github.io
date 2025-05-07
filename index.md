@@ -91,7 +91,7 @@ Clicking on the Sign Up link takes you to a registration page where new users ca
 
 ### Change password
 
-The Change Password feature allows you to update your StudyPalz account password for enhanced security. By changing your password, you can ensure your account remains protected and that only you have access to it.
+Clicking on the Change Password allows you to update your StudyPalz account password for enhanced security. By changing your password, you can ensure your account remains protected and that only you have access to it.
 
 ![](/public/images/change-password-guide.png)
 
