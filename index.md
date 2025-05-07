@@ -169,7 +169,7 @@ This will load the app on your local machine for development.
 
 ## Community Feedback 💬
 
-### We will be collecting community feedback tomorrow. Stay tuned for updates!
+- ### We will be collecting community feedback tomorrow. Stay tuned for updates!
 
 
 
