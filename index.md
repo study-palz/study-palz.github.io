@@ -89,6 +89,12 @@ Clicking on the Sign Up link takes you to a registration page where new users ca
 
 ![](/public/images/signup-guide.png)
 
+### Change password
+
+The Change Password feature allows you to update your StudyPalz account password for enhanced security. By changing your password, you can ensure your account remains protected and that only you have access to it.
+
+![](/public/images/change-password-guide.png)
+
 ### Profile
 
 Clicking on the Profile link brings you to your personal dashboard. Here, you can input your first name and last name, upload a url image, and choose courses you're taking or can help with.
