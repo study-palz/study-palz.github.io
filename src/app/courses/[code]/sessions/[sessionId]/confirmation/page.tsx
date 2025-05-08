@@ -1,4 +1,4 @@
-// src/app/courses/[code]/sessions/[sessionId]/page.tsx
+// src/app/courses/[code]/sessions/[sessionId]/confirmation/page.tsx
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { format } from 'date-fns'
@@ -92,7 +92,7 @@ export default async function ConfirmationPage({ params }: Props) {
         sessionId={session.id}
         ownerId={session.owner.id}
         initialAttendees={attendeesForClient}
-        hasMarkedAttendance={hasMarkedAttendance}  {/* <-- 확인 */}
+        hasMarkedAttendance={hasMarkedAttendance}
       />
 
       <div className="text-center mt-5">
