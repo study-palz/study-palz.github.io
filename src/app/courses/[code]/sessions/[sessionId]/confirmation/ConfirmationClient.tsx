@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 interface Attendee {
@@ -30,6 +31,9 @@ export default function ConfirmationClient({
   hasMarkedAttendance,
 }: Props) {
   const router = useRouter()
+  const { data: session } = useSession()
+  const currentUserId = session?.user?.id
+
   const [attendees, setAttendees] = useState<Attendee[]>(initialAttendees)
   const [isLoading, setIsLoading] = useState(false)
   const [attendance, setAttendance] = useState<{ [id: number]: boolean }>({})
@@ -120,7 +124,6 @@ export default function ConfirmationClient({
   }
 
   const isAttending = attendees.some((u) => u.id === ownerId)
-  const isOwner = ownerId === ownerId
 
   return (
     <div className="text-center mt-6">
@@ -132,7 +135,7 @@ export default function ConfirmationClient({
         </span>
 
         <div className="mt-3 d-flex flex-column gap-2">
-          {isOwner && (
+          {ownerId === currentUserId && (
             <Link href={`/courses/${code}/sessions/${sessionId}/edit`} className="btn btn-warning">
               Edit Session
             </Link>
@@ -172,27 +175,28 @@ export default function ConfirmationClient({
         <div>
           <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
           <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
-            {attendees
-              .filter((attendee) => attendee.id !== ownerId)
-                .map((attendee) => (
-                  <div key={attendee.id} className="flex items-center gap-2 text-white">
-                    <label className="flex items-center gap-2 text-white">
-                      <input
-                        type="checkbox"
-                        checked={attendance[attendee.id] || false}
-                        onChange={(e) => handleAttendanceChange(attendee.id, e.target.checked)}
-                      />
-                      {attendee.name ?? attendee.email}
-                    </label>
-                  </div>
-                ))}
+            {attendees.map((attendee) => {
+              const isCurrentUser = attendee.id === currentUserId
+              return (
+                <div key={attendee.id} className="flex items-center gap-2 text-white">
+                  <label className="flex items-center gap-2 text-white">
+                    <input
+                      type="checkbox"
+                      checked={attendance[attendee.id] || false}
+                      onChange={(e) => handleAttendanceChange(attendee.id, e.target.checked)}
+                      disabled={isCurrentUser}
+                    />
+                    {attendee.name ?? attendee.email} {isCurrentUser && '(You)'}
+                  </label>
+                </div>
+              )
+            })}
           </div>
           <button className="btn btn-success mt-4" onClick={submitAttendance}>
             Submit Attendance
           </button>
-          </div>
-        </>
-      )}
+        </div>
+      </>)}
     </div>
   )
 }
