@@ -1,5 +1,4 @@
 'use client'
-
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
@@ -135,10 +134,10 @@ export default function ConfirmationClient({
         </span>
 
         <div className="mt-3 d-flex flex-column gap-2">
-          {ownerId === currentUserId && (
-            <Link href={`/courses/${code}/sessions/${sessionId}/edit`} className="btn btn-warning">
-              Edit Session
-            </Link>
+          {ownerId === Number(currentUserId) && (
+             <Link href={`/courses/${code}/sessions/${sessionId}/edit`} className="btn btn-warning">
+               Edit Session
+             </Link>
           )}
         </div>
       </div>
@@ -176,7 +175,7 @@ export default function ConfirmationClient({
           <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
           <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
             {attendees.map((attendee) => {
-              const isCurrentUser = attendee.id === currentUserId
+              const isCurrentUser = attendee.id === Number(currentUserId)
               return (
                 <div key={attendee.id} className="flex items-center gap-2 text-white">
                   <label className="flex items-center gap-2 text-white">
