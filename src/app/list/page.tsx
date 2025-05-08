@@ -7,7 +7,6 @@ export default async function ListPage() {
   const session: any = await getServerSession(authOptions)
   const owner = session?.user?.email ?? ""
 
-  // Once Prisma is generated, this will be correctly typed
   const items = await (prisma as any).item.findMany({
     where: { ownerEmail: owner },
   })

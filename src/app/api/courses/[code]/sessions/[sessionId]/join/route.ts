@@ -1,4 +1,3 @@
-// src/app/api/courses/[code]/sessions/[sessionId]/join/route.ts
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { prisma } from '@/lib/prisma'
@@ -16,25 +15,21 @@ export async function POST(
   const sid    = Number(params.sessionId)
 
   try {
-    // check if already joined
     const already = await prisma.studySession.findFirst({
       where: { id: sid, attendees: { some: { id: userId } } }
     })
 
     if (already) {
-      // leave
       await prisma.studySession.update({
         where: { id: sid },
         data:  { attendees: { disconnect: { id: userId } } }
       })
     } else {
-      // join
       await prisma.studySession.update({
         where: { id: sid },
         data:  { attendees: { connect: { id: userId } } }
       })
     }
-
     return NextResponse.json({ joined: !already })
   } catch (err: any) {
     console.error(err)

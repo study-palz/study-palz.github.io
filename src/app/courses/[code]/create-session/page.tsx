@@ -1,4 +1,3 @@
-// src/app/courses/[code]/create-session/page.tsx
 'use client';
 
 import { FormEvent, useState } from 'react';
@@ -10,7 +9,6 @@ export default function CreateSessionPage({
 }: {
   params: { code: string };
 }) {
-  // require an authenticated NextAuth session
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -19,23 +17,20 @@ export default function CreateSessionPage({
   });
   const router = useRouter();
 
-  // local form state
   const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  // show loading state while session is fetched
   if (status === 'loading') {
     return <p className="text-center text-white">Loading…</p>;
   }
 
-  // submit handler
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     const res = await fetch(
-      `/api/courses/${params.code}/sessions`, // raw code, no encoding
+      `/api/courses/${params.code}/sessions`, 
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -57,7 +52,7 @@ export default function CreateSessionPage({
 
     const created = await res.json();
     router.push(
-      `/courses/${params.code}/sessions/${created.id}/confirmation`  // raw code here too
+      `/courses/${params.code}/sessions/${created.id}/confirmation` 
     );
   }
 
@@ -67,32 +62,27 @@ export default function CreateSessionPage({
       <form
         onSubmit={handleSubmit}
         className="bg-dark p-4 rounded shadow mx-auto"
-        style={{ maxWidth: '600px' }}
-      >
-        {/* Topic */}
-        <div className="mb-3">
+        style={{ maxWidth: '600px' }}>
+
+      <div className="mb-3">
           <label className="form-label text-white">Topic</label>
           <input
             type="text"
             className="form-control bg-dark text-white border-secondary"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            required
-          />
+            required/>
         </div>
 
-        {/* Description */}
         <div className="mb-3">
           <label className="form-label text-white">Description</label>
           <textarea
             className="form-control bg-dark text-white border-secondary"
             rows={4}
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+            onChange={(e) => setDescription(e.target.value)}/>
         </div>
 
-        {/* Start Time */}
         <div className="mb-3">
           <label className="form-label text-white">Start Time</label>
           <input
@@ -104,7 +94,6 @@ export default function CreateSessionPage({
           />
         </div>
 
-        {/* End Time */}
         <div className="mb-4">
           <label className="form-label text-white">End Time</label>
           <input
@@ -116,7 +105,6 @@ export default function CreateSessionPage({
           />
         </div>
 
-        {/* Submit */}
         <div className="text-center">
           <button type="submit" className="btn btn-primary px-4 py-2">
             Create Session

@@ -4,10 +4,6 @@ export interface Course {
     description?: string 
   }
   
-  /**
-   * Master list of ICS courses.
-   * Keep **all** data inside this file—never inside a Page component.
-   */
   export const courseData: Course[] = [
     { code: 'ICS 101',  title: 'Digital Tools for the Information World' },
     { code: 'ICS 101A', title: 'Digital Tools for the Information World' },

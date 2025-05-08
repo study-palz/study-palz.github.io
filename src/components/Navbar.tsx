@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
@@ -71,17 +70,7 @@ const NavBar: React.FC = () => {
               <>
                 <Nav.Link href="/profile" className="me-3">
                   {profileImage ? (
-                    <img
-                      src={profileImage}
-                      alt="Profile"
-                      width={36}
-                      height={36}
-                      style={{
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                        border: '2px solid white',
-                      }}
-                    />
+                    <img src={profileImage} alt="Profile" width={36} height={36} style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid white',}}/>
                   ) : (
                     <PersonFill size={24} color="white" />
                   )}
