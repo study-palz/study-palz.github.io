@@ -1,5 +1,4 @@
 'use client'
-
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
@@ -18,7 +17,7 @@ interface Props {
   initialAttendees: Attendee[]
   topic: string
   description?: string
-  hasMarkedAttendance?: boolean
+  hasMarkedAttendance?: boolean 
 }
 
 export default function ConfirmationClient({
@@ -35,8 +34,8 @@ export default function ConfirmationClient({
   const currentUserId = session?.user?.id
 
   const [attendees, setAttendees] = useState<Attendee[]>(initialAttendees)
+  const [isLoading, setIsLoading] = useState(false)
   const [attendance, setAttendance] = useState<{ [id: number]: boolean }>({})
-  const [marked, setMarked] = useState<Set<number>>(new Set())
   const [submitted, setSubmitted] = useState(false)
   const attendeeRef = useRef<HTMLDivElement>(null)
 
@@ -48,45 +47,87 @@ export default function ConfirmationClient({
     setAttendance(initialAttendance)
   }, [initialAttendees])
 
+  useEffect(() => {
+    if (hasMarkedAttendance) {
+      setAttendance((prev) => {
+        const updated = { ...prev }
+        initialAttendees.forEach((attendee) => {
+          if (attendee.id === ownerId) {
+            updated[attendee.id] = true
+          }
+        })
+        return updated
+      })
+    }
+  }, [hasMarkedAttendance, initialAttendees, ownerId])
+
+  const scrollToAttendees = () => {
+    attendeeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+
+  const fetchAttendees = async () => {
+    const res = await fetch(`/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/attendees`)
+    if (res.ok) {
+      const updated = await res.json()
+      setAttendees(updated)
+    } else {
+      console.error('[Attendee Fetch Error]', await res.text())
+    }
+  }
+
   const handleAttendanceChange = (attendeeId: number, checked: boolean) => {
     setAttendance((prev) => ({ ...prev, [attendeeId]: checked }))
   }
 
   const submitAttendance = async () => {
-    const selectedIds = Object.entries(attendance)
+    const attendeeIds = Object.entries(attendance)
       .filter(([_, checked]) => checked)
       .map(([id]) => Number(id))
 
-    if (selectedIds.length === 0) return
+    if (attendeeIds.length === 0) return
 
     const res = await fetch(`/api/courses/${code}/sessions/${sessionId}/attendance`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ attendeeIds: selectedIds }),
+      body: JSON.stringify({ attendeeIds }),
     })
 
     if (!res.ok) {
       console.error('Failed to submit attendance')
+    } else {
+      const allMarked = attendees.length > 0 && attendeeIds.length === attendees.length
+      if (allMarked) {
+        setSubmitted(true)
+      }
+      // Attendees who were marked will be removed after submission
+      setAttendees((prev) => prev.filter((attendee) => !attendance[attendee.id]))
+    }
+  }
+
+  const handleJoinOrLeave = async () => {
+    setIsLoading(true)
+    const method = attendance[ownerId] ? 'DELETE' : 'POST'
+    const action = attendance[ownerId] ? 'leave' : 'join'
+
+    const res = await fetch(`/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/${action}`, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    })
+
+    if (!res.ok) {
+      console.error('[Join/Leave Error]', await res.text())
+      setIsLoading(false)
       return
     }
 
-    // Add submitted IDs to marked set
-    setMarked((prev) => new Set({...prev, ...selectedIds}))
-
-    // Reset checkboxes
-    setAttendance((prev) => {
-      const updated = { ...prev }
-      selectedIds.forEach((id) => (updated[id] = false))
-      return updated
-    })
-
-    // Hide UI only if all attendees are marked
-    const totalAttendeeIds = attendees.map((a) => a.id).filter((id) => id !== Number(currentUserId))
-    const allMarked = totalAttendeeIds.every((id) => marked.has(id) || selectedIds.includes(id))
-    if (allMarked) {
-      setSubmitted(true)
-    }
+    await fetchAttendees()
+    scrollToAttendees()
+    router.refresh()
+    setIsLoading(false)
   }
+
+  const isAttending = attendees.some((u) => u.id === ownerId)
 
   return (
     <div className="text-center mt-6">
@@ -106,6 +147,16 @@ export default function ConfirmationClient({
         </div>
       </div>
 
+      {isAttending ? (
+        <button className="btn btn-danger mb-4" onClick={handleJoinOrLeave} disabled={isLoading}>
+          Leave Session
+        </button>
+      ) : (
+        <button className="btn btn-primary mb-4" onClick={handleJoinOrLeave} disabled={isLoading}>
+          Join Session
+        </button>
+      )}
+
       <div ref={attendeeRef} className="bg-dark p-3 rounded text-white mx-auto mb-5" style={{ maxWidth: '500px' }}>
         <h5 className="mb-3">🧑‍🤝‍🧑 Attendees</h5>
         {attendees.length === 0 ? (
@@ -122,13 +173,14 @@ export default function ConfirmationClient({
         )}
       </div>
 
-      {!submitted && (
+      {submitted && <p className="text-white text-xl mt-7 mb-3">✅ Attendance recorded!</p>}
+
+      {!hasMarkedAttendance && (
         <>
-          <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
-          <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
-            {attendees
-              .filter((attendee) => !marked.has(attendee.id))
-              .map((attendee) => {
+          <div>
+            <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
+            <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
+              {attendees.map((attendee) => {
                 const isCurrentUser = attendee.id === Number(currentUserId)
                 return (
                   <div key={attendee.id} className="flex items-center gap-2 text-white">
@@ -144,16 +196,13 @@ export default function ConfirmationClient({
                   </div>
                 )
               })}
-          </div>
-          {attendees.filter((a) => !marked.has(a.id)).length > 0 && (
+            </div>
             <button className="btn btn-success mt-4" onClick={submitAttendance}>
               Submit Attendance
             </button>
-          )}
+          </div>
         </>
       )}
-
-      {submitted && <p className="text-white text-xl mt-7 mb-3">✅ Attendance complete!</p>}
     </div>
   )
 }
