@@ -1,21 +1,53 @@
-'use client';
+'use client'
 
-import { Nav } from 'react-bootstrap';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import { useEffect, useState } from 'react'
+import { Nav } from 'react-bootstrap'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import { EventInput } from '@fullcalendar/core'
+import { useRouter } from 'next/navigation'
 
-/** The Home page. */
-interface Event {
-  title: string;
-  start: Date | string;
-  allDay: boolean;
-  id: number;
-}
+const CalendarPage = () => {
+  const [events, setEvents] = useState<EventInput[]>([])
+  const router = useRouter()
 
-const Home = () => {
-  const events: Event[] = []; // Empty events array
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch('/api/calendar/sessions')
+        if (res.ok) {
+          const data = await res.json()
+          const formatted: EventInput[] = data.map((event: any) => ({
+            id: event.id.toString(),
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            allDay: event.allDay,
+            extendedProps: {
+              code: event.title.split(':')[0], // e.g., "ICS 101" → ICS 101
+            }
+          }))
+          setEvents(formatted)
+        } else {
+          console.error('Failed to fetch events')
+        }
+      } catch (err) {
+        console.error('Error loading calendar sessions:', err)
+      }
+    }
+
+    fetchEvents()
+  }, [])
+
+  const handleEventClick = (info: any) => {
+    const code = info.event.extendedProps.code?.trim()
+    const sessionId = info.event.id
+    if (code && sessionId) {
+      router.push(`/courses/${encodeURIComponent(code)}/sessions/${sessionId}/confirmation`)
+    }
+  }
 
   return (
     <>
@@ -33,7 +65,8 @@ const Home = () => {
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay',
               }}
-              events={[]} // Keep it empty for now
+              events={events}
+              eventClick={handleEventClick}
               editable
               selectable
               droppable
@@ -41,16 +74,15 @@ const Home = () => {
               dayMaxEvents
               weekends
               initialDate={new Date()}
-              // drop={} // If you need drag & drop functionality, you can enable it here
             />
-            {Array.isArray(events) && events.length === 0 && (
+            {events.length === 0 && (
               <div className="mt-4 text-center text-gray-500">No events scheduled yet.</div>
             )}
           </div>
         </div>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default CalendarPage
