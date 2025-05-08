@@ -84,9 +84,9 @@ export default async function ConfirmationPage({ params }: Props) {
       />
 
       <div className="text-center mt-5">
-        <Link href={`/courses/${course.code}`} className="btn btn-outline-light">
-          Back to {course.code}
-        </Link>
+      <Link href={`/courses/${course.code}`} className="btn btn-outline-light">
+  Back to {decodeURIComponent(course.code)}
+</Link>
       </div>
     </div>
   )
