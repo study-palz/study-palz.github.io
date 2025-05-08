@@ -1,31 +1,59 @@
-// src/app/api/courses/[code]/sessions/[sessionId]/attendees/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { authOptions } from '@/lib/authOptions';
 
-export async function GET(
-  _req: Request,
+export async function POST(
+  req: NextRequest,
   { params }: { params: { code: string; sessionId: string } }
 ) {
-  const sid = Number(params.sessionId);
-
   try {
+    const { attendeeIds }: { attendeeIds: number[] } = await req.json();
+    const sessionId = Number(params.sessionId);
+
+    if (!attendeeIds || attendeeIds.length === 0) {
+      return NextResponse.json({ error: 'No attendees provided' }, { status: 400 });
+    }
+
     const session = await prisma.studySession.findUnique({
-      where: { id: sid },
+      where: { id: sessionId },
       select: {
-        attendees: {
-          select: { id: true, name: true, email: true }
-        }
-      }
+        startTime: true,
+        endTime: true,
+        topic: true,
+      },
     });
 
     if (!session) {
       return NextResponse.json({ error: 'Session not found' }, { status: 404 });
     }
 
-    return NextResponse.json(session.attendees);
-  } catch (err: any) {
-    console.error('Error fetching attendees:', err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    const start = new Date(session.startTime);
+    const end = new Date(session.endTime);
+    const durationMinutes = Math.max(
+      Math.floor((end.getTime() - start.getTime()) / 60000),
+      1
+    );
+
+    const updatePromises = attendeeIds.map((userId) =>
+      prisma.$transaction([
+        prisma.user.update({
+          where: { id: userId },
+          data: { points: { increment: durationMinutes } },
+        }),
+        prisma.pointHistory.create({
+          data: {
+            userId,
+            points: durationMinutes,
+            description: `Attended session: ${session.topic}`,
+          },
+        }),
+      ])
+    );
+
+    await Promise.all(updatePromises);
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error('[ATTENDANCE ERROR]', err);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
