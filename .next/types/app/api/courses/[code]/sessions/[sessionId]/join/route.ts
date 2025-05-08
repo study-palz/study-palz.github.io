@@ -1,4 +1,4 @@
-// File: C:\Users\A\Documents\GitHub\study-palz.github.io\src\app\api\courses\[code]\sessions\[sessionId]\join\route.ts
+// File: /Users/dominicmolina/Desktop/github/study-palz.github.io/src/app/api/courses/[code]/sessions/[sessionId]/join/route.ts
 import * as entry from '../../../../../../../../../src/app/api/courses/[code]/sessions/[sessionId]/join/route.js'
 import type { NextRequest } from 'next/server.js'
 

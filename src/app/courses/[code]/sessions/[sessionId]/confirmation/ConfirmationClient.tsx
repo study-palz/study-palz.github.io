@@ -39,14 +39,13 @@ export default function ConfirmationClient({
   const [submitted, setSubmitted] = useState(false)
   const attendeeRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-      const initialAttendance: { [id: number]: boolean } = {}
-      initialAttendees.forEach((attendee) => {
-        initialAttendance[attendee.id] = (attendee as any).isPresent || false
-      })
-      setAttendance(initialAttendance)
-    }, [initialAttendees])
-
+  useEffect(() => {
+    const initialAttendance: { [id: number]: boolean } = {}
+    initialAttendees.forEach((attendee) => {
+      initialAttendance[attendee.id] = (attendee as any).isPresent || false
+    })
+    setAttendance(initialAttendance)
+  }, [initialAttendees])
 
   useEffect(() => {
     if (hasMarkedAttendance) {
@@ -105,8 +104,10 @@ export default function ConfirmationClient({
 
   const handleJoinOrLeave = async () => {
     setIsLoading(true)
-    const method = attendance[ownerId] ? 'DELETE' : 'POST'
-    const action = attendance[ownerId] ? 'leave' : 'join'
+
+    const isCurrentUserAttending = attendees.some((u) => u.id === Number(currentUserId))
+    const method = isCurrentUserAttending ? 'DELETE' : 'POST'
+    const action = isCurrentUserAttending ? 'leave' : 'join'
 
     const res = await fetch(`/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/${action}`, {
       method,
@@ -126,7 +127,7 @@ export default function ConfirmationClient({
     setIsLoading(false)
   }
 
-  const isAttending = attendees.some((u) => u.id === ownerId)
+  const isAttending = attendees.some((u) => u.id === Number(currentUserId))
 
   return (
     <div className="text-center mt-6">
@@ -172,36 +173,33 @@ export default function ConfirmationClient({
         )}
       </div>
 
+      <div>
+        <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
+        <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
+          {attendees.map((attendee) => {
+            const isCurrentUser = attendee.id === Number(currentUserId)
+            const isChecked = attendance[attendee.id] || false
+            const isDisabled = isChecked || isCurrentUser
 
-          <div>
-            <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
-            <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
-              {attendees.map((attendee) => {
-                const isCurrentUser = attendee.id === Number(currentUserId)
-                const isChecked = attendance[attendee.id] || false
-                const isDisabled = isChecked || isCurrentUser
-
-                return (
-                  <div key={attendee.id} className="flex items-center gap-2 text-white">
-                    <label className="flex items-center gap-2 text-white">
-                      <input
-                        type="checkbox"
-                        checked={attendance[attendee.id] || false}
-                        onChange={(e) => handleAttendanceChange(attendee.id, e.target.checked)}
-                        disabled={attendance[attendee.id] || isCurrentUser}
-                      />
-
-                      {attendee.name ?? attendee.email} {isCurrentUser && '(You)'}
-                    </label>
-                  </div>
-                )
-              })}
-            </div>
-            <button className="btn btn-success mt-4" onClick={submitAttendance}>
-              Submit Attendance
-            </button>
-          </div>
-        
+            return (
+              <div key={attendee.id} className="flex items-center gap-2 text-white">
+                <label className="flex items-center gap-2 text-white">
+                  <input
+                    type="checkbox"
+                    checked={attendance[attendee.id] || false}
+                    onChange={(e) => handleAttendanceChange(attendee.id, e.target.checked)}
+                    disabled={attendance[attendee.id] || isCurrentUser}
+                  />
+                  {attendee.name ?? attendee.email} {isCurrentUser && '(You)'}
+                </label>
+              </div>
+            )
+          })}
+        </div>
+        <button className="btn btn-success mt-4" onClick={submitAttendance}>
+          Submit Attendance
+        </button>
+      </div>
     </div>
   )
 }

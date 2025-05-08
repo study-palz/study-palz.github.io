@@ -1,8 +1,12 @@
 {
-  "/courses/[code]/sessions/[sessionId]/confirmation/page": "app/courses/[code]/sessions/[sessionId]/confirmation/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/leaderboard/route": "app/api/leaderboard/route.js",
-  "/leaderboard/page": "app/leaderboard/page.js",
-  "/api/courses/[code]/sessions/[sessionId]/attendance/route": "app/api/courses/[code]/sessions/[sessionId]/attendance/route.js"
+  "/page": "app/page.js",
+  "/api/courses/[code]/sessions/[sessionId]/attendees/route": "app/api/courses/[code]/sessions/[sessionId]/attendees/route.js",
+  "/api/courses/[code]/sessions/[sessionId]/join/route": "app/api/courses/[code]/sessions/[sessionId]/join/route.js",
+  "/courses/[code]/page": "app/courses/[code]/page.js",
+  "/api/profile/route": "app/api/profile/route.js",
+  "/api/calendar/sessions/route": "app/api/calendar/sessions/route.js",
+  "/courses/page": "app/courses/page.js",
+  "/calendar/page": "app/calendar/page.js",
+  "/courses/[code]/sessions/[sessionId]/page": "app/courses/[code]/sessions/[sessionId]/page.js"
 }
