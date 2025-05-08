@@ -48,4 +48,3 @@ settings.production.json
 /blob-report/
 /playwright/.cache/
 index.md
-.next

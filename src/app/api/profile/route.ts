@@ -1,38 +1,67 @@
-// @ts-nocheck
-import { NextResponse }     from "next/server"
-import { getServerSession } from "next-auth/next"
-import type { Session }     from "next-auth"           
-import { authOptions }      from "@/lib/authOptions"
-import { prisma }           from "@/lib/prisma"
+// app/api/profile/route.ts
+import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/lib/authOptions';
+import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
 
-export async function GET(req: Request) {
-  // annotate explicitly
-  const session: any = await getServerSession(authOptions)
+export async function GET(req: NextRequest) {
+  const session = await getServerSession({ req, ...authOptions });
 
-  if (!session?.user?.email) {
-    return NextResponse.json({ error: "Not signed in" }, { status: 401 })
+  if (!session || !session.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const profile = await prisma.profile.findUnique({
+  const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-  })
+  });
 
-  return NextResponse.json(profile)
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
+
+  const profile = await prisma.userProfile.findUnique({
+    where: { userId: user.id },
+  });
+
+  return NextResponse.json(profile);
 }
 
-export async function POST(req: Request) {
-  const session: any = await getServerSession(authOptions)
+export async function POST(req: NextRequest) {
+  const session = await getServerSession({ req, ...authOptions });
 
-  if (!session?.user?.email) {
-    return NextResponse.json({ error: "Not signed in" }, { status: 401 })
+  if (!session || !session.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const data = await req.json()
-  const upserted = await prisma.profile.upsert({
-    where:  { email: session.user.email },
-    create: { email: session.user.email, ...data },
-    update: { ...data },
-  })
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
 
-  return NextResponse.json(upserted)
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
+
+  const { firstName, lastName, profileImage, coursesTaken, coursesHelped } = await req.json();
+
+  const profile = await prisma.userProfile.upsert({
+    where: { userId: user.id },
+    update: {
+      firstName,
+      lastName,
+      profileImage,
+      coursesTaken,
+      coursesHelped,
+    },
+    create: {
+      userId: user.id,
+      firstName,
+      lastName,
+      profileImage,
+      coursesTaken,
+      coursesHelped,
+    },
+  });
+
+  return NextResponse.json(profile);
 }

@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-indent */
-/* eslint-disable react/self-closing-comp */
-
 'use client';
 
 import { Nav } from 'react-bootstrap';
@@ -9,34 +6,21 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
+/** The Home page. */
 interface Event {
   title: string;
   start: Date | string;
   allDay: boolean;
-  id: string;
+  id: number;
 }
 
 const Home = () => {
-  const events: Event[] = [
-    {
-      title: 'Study Group - ICS 311',
-      start: '2025-05-10T10:00:00',
-      allDay: false,
-      id: '1',
-    },
-    {
-      title: 'Meeting with Mentor',
-      start: '2025-05-12T14:00:00',
-      allDay: false,
-      id: '2',
-    },
-    // Add more events here
-  ];
+  const events: Event[] = []; // Empty events array
 
   return (
     <>
       <Nav className="flex justify-between bg-light mb-12 border-b border-violet-100 p-4">
-        <h1 className="font-bold text-lg text-light-700">Calendar</h1>
+        <h1 className="font-bold text-2xl text-gray-700">Calendar</h1>
       </Nav>
       <main>
         <div className="grid grid-cols-10 bg-light">
@@ -49,7 +33,7 @@ const Home = () => {
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay',
               }}
-              events={events}
+              events={[]} // Keep it empty for now
               editable
               selectable
               droppable
@@ -57,8 +41,11 @@ const Home = () => {
               dayMaxEvents
               weekends
               initialDate={new Date()}
-              eventClick={(info) => alert(`Event: ${info.event.title}`)}
+              // drop={} // If you need drag & drop functionality, you can enable it here
             />
+            {Array.isArray(events) && events.length === 0 && (
+              <div className="mt-4 text-center text-gray-500">No events scheduled yet.</div>
+            )}
           </div>
         </div>
       </main>

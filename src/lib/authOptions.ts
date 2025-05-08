@@ -4,7 +4,6 @@ import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/lib/prisma';
 
-/** Shared NextAuth settings for every route */
 export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt' },
 
@@ -29,7 +28,7 @@ export const authOptions: NextAuthOptions = {
         return {
           id: `${user.id}`,
           email: user.email,
-          randomKey: user.role,          // keep whatever extra field you need
+          randomKey: user.role,         
         };
       },
     }),
@@ -62,5 +61,4 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-/* optional default export so you can `import authOptions` too */
 export default authOptions;

@@ -4,8 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 
-
-export async function POST(
+export async function DELETE(
   _req: Request,
   { params }: { params: { sessionId: string } }
 ) {
@@ -15,12 +14,23 @@ export async function POST(
   }
 
   const userId = Number(session.user.id);
-  const id     = Number(params.sessionId);
+  const sessionId = Number(params.sessionId);
 
-  await prisma.studySession.update({
-    where: { id },
-    data: { attendees: { disconnect: { id: userId } } },
-  });
+  try {
+    await prisma.studySession.update({
+      where: { id: sessionId },
+      data: {
+        attendees: {
+          disconnect: {
+            id: userId,
+          },
+        },
+      },
+    });
 
-  return NextResponse.json({ left: true });
+    return NextResponse.json({ left: true });
+  } catch (error) {
+    console.error('Error leaving session:', error);
+    return NextResponse.json({ error: 'Failed to leave session' }, { status: 500 });
+  }
 }

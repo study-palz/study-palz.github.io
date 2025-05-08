@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getServerSession } from 'next-auth/next'
+import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/authOptions';
 import { revalidatePath } from 'next/cache'
 
@@ -16,6 +16,15 @@ export async function POST(
   const { topic, description, startTime, endTime } = await req.json()
 
   try {
+    const course = await prisma.course.findUnique({
+      where: { code: decodeURIComponent(params.code) },
+      select: { id: true },
+    })
+
+    if (!course) {
+      return NextResponse.json({ error: 'Course not found' }, { status: 404 })
+    }
+
     const created = await prisma.studySession.create({
       data: {
         topic,
@@ -23,11 +32,10 @@ export async function POST(
         startTime: new Date(startTime),
         endTime:   new Date(endTime),
         owner:     { connect: { id: Number(session.user.id) } },
-        course:    { connect: { code: params.code } },
+        course:    { connect: { id: course.id } }, // ✅ fixed
       },
     })
 
-    // 🚀 Invalidate the course page cache so it fetches fresh data
     revalidatePath(`/courses/${params.code}`)
 
     return NextResponse.json(created, { status: 201 })
@@ -47,10 +55,12 @@ export async function DELETE(
   }
 
   const { sessionId } = await req.json()
-  try {
-    await prisma.studySession.delete({ where: { id: sessionId } })
 
-    // also bust the cache after deleting
+  try {
+    await prisma.studySession.delete({
+      where: { id: sessionId }
+    })
+
     revalidatePath(`/courses/${params.code}`)
 
     return NextResponse.json({ ok: true }, { status: 200 })

@@ -1,7 +1,9 @@
 {
-  "/auth/signin/page": "app/auth/signin/page.js",
-  "/page": "app/page.js",
-  "/courses/page": "app/courses/page.js",
-  "/auth/signup/page": "app/auth/signup/page.js",
-  "/courses/[code]/page": "app/courses/[code]/page.js"
+  "/courses/[code]/sessions/[sessionId]/page": "app/courses/[code]/sessions/[sessionId]/page.js",
+  "/courses/[code]/create-session/page": "app/courses/[code]/create-session/page.js",
+  "/courses/[code]/sessions/[sessionId]/confirmation/page": "app/courses/[code]/sessions/[sessionId]/confirmation/page.js",
+  "/courses/[code]/sessions/[sessionId]/edit/page": "app/courses/[code]/sessions/[sessionId]/edit/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/calendar/page": "app/calendar/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }
