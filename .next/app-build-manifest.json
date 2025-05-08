@@ -1,9 +1,9 @@
 {
   "pages": {
-    "/page": [
+    "/courses/[code]/sessions/[sessionId]/confirmation/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/courses/[code]/sessions/[sessionId]/confirmation/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -15,11 +15,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
-    ],
-    "/courses/[code]/sessions/[sessionId]/confirmation/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/courses/[code]/sessions/[sessionId]/confirmation/page.js"
     ],
     "/leaderboard/page": [
       "static/chunks/webpack.js",

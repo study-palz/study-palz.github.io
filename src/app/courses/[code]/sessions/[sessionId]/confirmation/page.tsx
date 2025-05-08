@@ -50,7 +50,6 @@ export default async function ConfirmationPage({ params }: Props) {
     name: u.name ?? undefined,
   }))
 
-  // 첫 번째 버전의 출석 기록 체크 로직
   const pointRecord = await prisma.pointHistory.findFirst({
     where: {
       userId: owner.id,
@@ -82,7 +81,7 @@ export default async function ConfirmationPage({ params }: Props) {
         Confirmation number:{' '}
         <span className="font-mono text-lg text-blue-300">#{createdId}</span>
       </p>
-      
+
       <ConfirmationClient
         code={params.code}
         sessionId={createdId}

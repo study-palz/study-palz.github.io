@@ -17,7 +17,7 @@ interface Props {
   initialAttendees: Attendee[]
   topic: string
   description?: string
-  hasMarkedAttendance: boolean // 출석 여부
+  hasMarkedAttendance: boolean 
 }
 
 export default function ConfirmationClient({
@@ -37,7 +37,6 @@ export default function ConfirmationClient({
   const attendeeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // 출석 상태 초기화
     const initialAttendance: { [id: number]: boolean } = {}
     initialAttendees.forEach((attendee) => {
       initialAttendance[attendee.id] = false
@@ -46,7 +45,6 @@ export default function ConfirmationClient({
   }, [initialAttendees])
 
   useEffect(() => {
-    // 이미 출석을 체크한 경우 상태 반영
     if (hasMarkedAttendance) {
       setAttendance((prev) => {
         const updated = { ...prev }
@@ -152,9 +150,7 @@ export default function ConfirmationClient({
         </button>
       )}
 
-   
-
-      <div ref={attendeeRef} className="bg-dark p-3 rounded text-white mx-auto" style={{ maxWidth: '500px' }}>
+      <div ref={attendeeRef} className="bg-dark p-3 rounded text-white mx-auto mb-5" style={{ maxWidth: '500px' }}>
         <h5 className="mb-3">🧑‍🤝‍🧑 Attendees</h5>
         {attendees.length === 0 ? (
           <p className="text-secondary">No one has joined yet.</p>
@@ -170,7 +166,7 @@ export default function ConfirmationClient({
         )}
       </div>
 
-   {submitted && <p className="text-white text-xl mt-7 mb-3">✅ Attendance recorded!</p>}
+      {submitted && <p className="text-white text-xl mt-7 mb-3">✅ Attendance recorded!</p>}
 
       {!submitted && !hasMarkedAttendance && (<>
         <div>
