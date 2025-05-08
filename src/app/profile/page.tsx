@@ -82,22 +82,27 @@ export default function ProfilePage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(to right, #080808, #2a5298)',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      padding: '2rem 1rem 6rem', // Extra bottom padding for footer space
-    }}>
-      <Container style={{
-        background: 'rgba(255, 255, 255, 0.07)',
-        borderRadius: '15px',
-        padding: '2rem',
-        color: 'white',
-        maxWidth: '1000px',
-        backdropFilter: 'blur(10px)',
-      }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(to right, #080808, #2a5298)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        padding: '2rem 1rem',
+        paddingBottom: '10rem', // 👈 Added extra space for footer
+      }}
+    >
+      <Container
+        style={{
+          background: 'rgba(255, 255, 255, 0.07)',
+          borderRadius: '15px',
+          padding: '2rem',
+          color: 'white',
+          maxWidth: '1000px',
+          backdropFilter: 'blur(10px)',
+        }}
+      >
         <h2 className="text-center mb-4">🧑‍💻 Your Profile</h2>
         {message && <Alert variant="info">{message}</Alert>}
 
@@ -117,16 +122,20 @@ export default function ProfilePage() {
                 }}
               />
             ) : (
-              <div style={{
-                width: '200px',
-                height: '200px',
-                borderRadius: '50%',
-                backgroundColor: '#444',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#aaa'
-              }}>Image Preview</div>
+              <div
+                style={{
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '50%',
+                  backgroundColor: '#444',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#aaa',
+                }}
+              >
+                Image Preview
+              </div>
             )}
 
             <Form.Group className="mt-3">
@@ -182,19 +191,36 @@ export default function ProfilePage() {
               </Form.Group>
 
               <div className="text-end">
-                <Button type="submit" variant="primary">Save Profile</Button>
+                <Button type="submit" variant="primary">
+                  Save Profile
+                </Button>
               </div>
             </Form>
           </Col>
         </Row>
 
         {savedData && (
-          <Card className="mt-5 p-4" style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'white' }}>
+          <Card
+            className="mt-5 p-4"
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.05)',
+              color: 'white',
+              border: '1px solid #444',
+            }}
+          >
             <h4 className="mb-4">📋 Your Saved Profile</h4>
-            <p><strong>First Name:</strong> {savedData.firstName}</p>
-            <p><strong>Last Name:</strong> {savedData.lastName}</p>
-            <p><strong>Courses Taken:</strong> {savedData.coursesTaken}</p>
-            <p><strong>Courses You Can Help With:</strong> {savedData.coursesHelped}</p>
+            <p>
+              <strong>First Name:</strong> {savedData.firstName}
+            </p>
+            <p>
+              <strong>Last Name:</strong> {savedData.lastName}
+            </p>
+            <p>
+              <strong>Courses Taken:</strong> {savedData.coursesTaken}
+            </p>
+            <p>
+              <strong>Courses You Can Help With:</strong> {savedData.coursesHelped}
+            </p>
             {savedData.profileImage && (
               <img
                 src={savedData.profileImage}
