@@ -9,7 +9,7 @@ interface Props {
   sessionId: number
   ownerId: number
   initialAttendees: { id: number; name?: string; email: string }[]
-  hasMarkedAttendance: boolean
+  hasMarkedAttendance?: boolean
 }
 
 export default function ConfirmationClient({
@@ -77,9 +77,7 @@ export default function ConfirmationClient({
   return (
     <div className="text-center mt-6">
       <button
-        className={`btn ${
-          attendees.some((u) => u.id === ownerId) ? 'btn-danger' : 'btn-primary'
-        }`}
+        className={`btn ${attendees.some((u) => u.id === ownerId) ? 'btn-danger' : 'btn-primary'}`}
         onClick={joinOrLeave}
         disabled={isJoining}
       >
