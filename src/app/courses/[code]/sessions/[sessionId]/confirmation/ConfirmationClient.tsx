@@ -81,23 +81,26 @@ export default function ConfirmationClient({
 
   const submitAttendance = async () => {
     const attendeeIds = Object.entries(attendance)
-      .filter(([_, checked]) => checked)
-      .map(([id]) => Number(id))
+     .filter(([_, checked]) => checked)
+     .map(([id]) => Number(id));
 
-    if (attendeeIds.length === 0) return
+   if (attendeeIds.length === 0) return;
 
     const res = await fetch(`/api/courses/${code}/sessions/${sessionId}/attendance`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ attendeeIds }),
-    })
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({ attendeeIds }),
+   });
 
-    if (!res.ok) {
-      console.error('Failed to submit attendance')
-    } else {
-      setSubmitted(true)
-    }
-  }
+   if (!res.ok) {
+     console.error('Failed to submit attendance');
+   } else {
+     const allMarked = attendees.length > 0 && attendeeIds.length === attendees.length;
+     if (allMarked) {
+       setSubmitted(true);
+     }
+   }
+  };
 
   const handleJoinOrLeave = async () => {
     setIsLoading(true)
