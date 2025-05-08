@@ -17,7 +17,7 @@ interface Props {
   initialAttendees: Attendee[]
   topic: string
   description?: string
-  hasMarkedAttendance: boolean 
+  hasMarkedAttendance?: boolean 
 }
 
 export default function ConfirmationClient({
