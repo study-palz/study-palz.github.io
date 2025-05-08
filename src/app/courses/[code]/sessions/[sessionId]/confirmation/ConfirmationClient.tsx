@@ -173,8 +173,7 @@ export default function ConfirmationClient({
         )}
       </div>
 
-      {!hasMarkedAttendance && (
-        <>
+
           <div>
             <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
             <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
@@ -202,8 +201,7 @@ export default function ConfirmationClient({
               Submit Attendance
             </button>
           </div>
-        </>
-      )}
+        
     </div>
   )
 }
