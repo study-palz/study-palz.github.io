@@ -64,9 +64,9 @@ export default async function SessionDetailPage({
 
 
       <div className="text-center mt-5">
-        <Link href={`/courses/${params.code}`} className="btn btn-outline-light">
-          Back to {params.code}
-        </Link>
+      <Link href={`/courses/${ss.course.code}`} className="btn btn-outline-light">
+  Back to {decodeURIComponent(ss.course.code)}
+</Link>
       </div>
     </div>
   )
