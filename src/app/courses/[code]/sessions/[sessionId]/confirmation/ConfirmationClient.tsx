@@ -17,8 +17,6 @@ interface Props {
   initialAttendees: Attendee[];
   topic: string;
   description?: string;
-  startTime: string;
-  endTime: string;
 }
 
 export default function ConfirmationClient({
@@ -28,8 +26,6 @@ export default function ConfirmationClient({
   initialAttendees,
   topic,
   description,
-  startTime,
-  endTime,
 }: Props) {
   const router = useRouter();
   const [attendees, setAttendees] = useState<Attendee[]>(initialAttendees);
