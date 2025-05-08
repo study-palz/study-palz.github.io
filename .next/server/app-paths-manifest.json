@@ -1,8 +1,9 @@
 {
-  "/courses/[code]/page": "app/courses/[code]/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/courses/page": "app/courses/page.js",
+  "/courses/[code]/page": "app/courses/[code]/page.js",
   "/page": "app/page.js",
+  "/courses/[code]/sessions/[sessionId]/page": "app/courses/[code]/sessions/[sessionId]/page.js",
   "/calendar/page": "app/calendar/page.js",
-  "/courses/[code]/sessions/[sessionId]/page": "app/courses/[code]/sessions/[sessionId]/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
 }

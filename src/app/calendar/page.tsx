@@ -24,8 +24,8 @@ const CalendarPage = () => {
             return {
               id: event.id.toString(),
               title: event.title,
-              start: new Date(event.start), // convert ISO string to Date object
-              end: new Date(event.end),
+              start: event.start, // ISO string (do not convert to Date)
+              end: event.end,
               allDay: event.allDay,
               extendedProps: {
                 code: courseCode,
@@ -62,7 +62,7 @@ const CalendarPage = () => {
           <div className="col-span-8">
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              timeZone="local" // key setting to interpret times properly
+              timeZone="local"
               initialView="dayGridMonth"
               headerToolbar={{
                 left: 'prev,next today',
