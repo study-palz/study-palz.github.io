@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -46,7 +47,7 @@ export default function ProfilePage() {
           });
         }
       });
-  }, [session?.user?.email]); 
+  }, [session?.user?.email]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,12 +83,10 @@ export default function ProfilePage() {
 
   return (
     <div style={{
-      minHeight: '120vh',
+      minHeight: '100vh',
       background: 'linear-gradient(to right, #080808, #2a5298)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: '2rem'
+      paddingTop: '5rem',
+      paddingBottom: '5rem',
     }}>
       <Container style={{
         background: 'rgba(255, 255, 255, 0.07)',
@@ -103,8 +102,9 @@ export default function ProfilePage() {
         <Row>
           <Col md={5} className="text-center mb-4 mb-md-0">
             {profileImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={profileImage} alt="Preview"
+              <img
+                src={profileImage}
+                alt="Preview"
                 style={{
                   width: '200px',
                   height: '200px',
@@ -123,8 +123,10 @@ export default function ProfilePage() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#aaa'
-              }}>Image Preview</div>
+                color: '#aaa',
+              }}>
+                Image Preview
+              </div>
             )}
 
             <Form.Group className="mt-3">
@@ -194,8 +196,9 @@ export default function ProfilePage() {
             <p><strong>Courses Taken:</strong> {savedData.coursesTaken}</p>
             <p><strong>Courses You Can Help With:</strong> {savedData.coursesHelped}</p>
             {savedData.profileImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={savedData.profileImage} alt="Saved Profile"
+              <img
+                src={savedData.profileImage}
+                alt="Saved Profile"
                 style={{
                   width: '150px',
                   height: '150px',
