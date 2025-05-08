@@ -173,8 +173,6 @@ export default function ConfirmationClient({
         )}
       </div>
 
-      {submitted && <p className="text-white text-xl mt-7 mb-3">✅ Attendance recorded!</p>}
-
       {!hasMarkedAttendance && (
         <>
           <div>
@@ -182,14 +180,17 @@ export default function ConfirmationClient({
             <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
               {attendees.map((attendee) => {
                 const isCurrentUser = attendee.id === Number(currentUserId)
+                const isChecked = attendance[attendee.id] || false
+                const isDisabled = isChecked || isCurrentUser
+
                 return (
                   <div key={attendee.id} className="flex items-center gap-2 text-white">
                     <label className="flex items-center gap-2 text-white">
                       <input
                         type="checkbox"
-                        checked={attendance[attendee.id] || false}
+                        checked={isChecked}
                         onChange={(e) => handleAttendanceChange(attendee.id, e.target.checked)}
-                        disabled={isCurrentUser}
+                        disabled={isDisabled}
                       />
                       {attendee.name ?? attendee.email} {isCurrentUser && '(You)'}
                     </label>
