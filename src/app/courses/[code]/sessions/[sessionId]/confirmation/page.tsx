@@ -49,14 +49,16 @@ export default async function ConfirmationPage({ params }: Props) {
   let hasMarkedAttendance = false
 
   if (currentUserId) {
+    const userIdNum = parseInt(currentUserId);
+
     const existingPoints = await prisma.pointHistory.findFirst({
       where: {
-        userId: currentUserId,
+        userId: userIdNum,
         description: {
           contains: `Session #${sessionId}`,
         },
       },
-    })
+    });
 
     hasMarkedAttendance = !!existingPoints
   }
