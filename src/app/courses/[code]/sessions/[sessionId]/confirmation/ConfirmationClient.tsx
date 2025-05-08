@@ -127,6 +127,10 @@ export default function ConfirmationClient({
 
   const isAttending = attendees.some((u) => u.id === ownerId)
 
+  const remainingAttendees = attendees.filter(
+    (attendee) => !attendance[attendee.id]
+  );
+
   return (
     <div className="text-center mt-6">
       <div className="bg-light p-4 rounded mb-4 mx-auto" style={{ maxWidth: '600px' }}>
@@ -173,32 +177,32 @@ export default function ConfirmationClient({
 
       {submitted && <p className="text-white text-xl mt-7 mb-3">✅ Attendance recorded!</p>}
 
-      {!submitted && !hasMarkedAttendance && (
-      <>
-      <div>
+      {!submitted && !hasMarkedAttendance && (<>
+        <div>
           <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
           <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
-            {attendees
-              .filter((attendee) => !attendance[attendee.id])
-              .map((attendee) => (
+            {remainingAttendees.map((attendee) => {
+              const isCurrentUser = attendee.id === Number(currentUserId)
+              return (
                 <div key={attendee.id} className="flex items-center gap-2 text-white">
                   <label className="flex items-center gap-2 text-white">
-                  <input
-                     type="checkbox"
+                    <input
+                      type="checkbox"
                       checked={attendance[attendee.id] || false}
                       onChange={(e) => handleAttendanceChange(attendee.id, e.target.checked)}
+                      disabled={isCurrentUser}
                     />
-                    {attendee.name ?? attendee.email}
+                    {attendee.name ?? attendee.email} {isCurrentUser && '(You)'}
                   </label>
                 </div>
-              ))}
+              )
+            })}
           </div>
           <button className="btn btn-success mt-4" onClick={submitAttendance}>
             Submit Attendance
           </button>
         </div>
-      </>
-    )}
+      </>)}
     </div>
   )
 }
