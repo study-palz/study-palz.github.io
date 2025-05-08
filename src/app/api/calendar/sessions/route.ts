@@ -25,10 +25,10 @@ export async function GET() {
     });
 
     const events = sessions.map((s) => ({
-      id: String(s.id), 
+      id: String(s.id),
       title: `${s.course.code}: ${s.topic}`,
-      start: s.startTime.toISOString(),
-      end: s.endTime.toISOString(),
+      start: s.startTime, // return raw Date object
+      end: s.endTime,
       allDay: false,
     }));
 
