@@ -84,10 +84,8 @@ export default function ProfilePage() {
   return (
     <div
       style={{
-        minHeight: '100vh',
         background: 'linear-gradient(to right, #080808, #2a5298)',
-        padding: '2rem 1rem',
-        paddingBottom: '6rem',
+        padding: '2rem 1rem 6rem', // bottom padding for footer spacing
         color: 'white',
       }}
     >
@@ -96,27 +94,56 @@ export default function ProfilePage() {
           background: 'rgba(255, 255, 255, 0.07)',
           borderRadius: '15px',
           padding: '2rem',
-          maxWidth: '1100px',
           backdropFilter: 'blur(10px)',
         }}
       >
         <h2 className="text-center mb-4">🧑‍💻 Your Profile</h2>
         {message && <Alert variant="info">{message}</Alert>}
 
-        <Row>
-          {/* Left side: Form */}
-          <Col md={6}>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3">
-                <Form.Label>Profile Image URL</Form.Label>
+        <Row xs={1} md={2} className="g-4">
+          <Col>
+            <div className="text-center mb-4">
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="Preview"
+                  style={{
+                    width: '200px',
+                    height: '200px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '4px solid #00ffe7',
+                    boxShadow: '0 0 15px #00ffe7',
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: '200px',
+                    height: '200px',
+                    borderRadius: '50%',
+                    backgroundColor: '#444',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#aaa',
+                  }}
+                >
+                  Image Preview
+                </div>
+              )}
+
+              <Form.Group className="mt-3">
                 <Form.Control
                   type="text"
-                  value={profileImage}
-                  onChange={(e) => setProfileImage(e.target.value)}
                   placeholder="https://example.com/photo.jpg"
+                  value={profileImage.startsWith('data:image') ? '' : profileImage}
+                  onChange={(e) => setProfileImage(e.target.value)}
                 />
               </Form.Group>
+            </div>
 
+            <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
@@ -165,19 +192,18 @@ export default function ProfilePage() {
             </Form>
           </Col>
 
-          {/* Right side: Saved Profile Preview */}
-          <Col md={6}>
+          <Col>
             {savedData && (
               <Card
-                className="p-4"
+                className="h-100"
                 style={{
                   backgroundColor: 'rgba(255,255,255,0.05)',
                   color: 'white',
-                  border: '1px solid #444',
-                  height: '100%',
+                  padding: '1.5rem',
+                  borderRadius: '12px',
                 }}
               >
-                <h4 className="mb-3">📋 Saved Profile</h4>
+                <h4 className="mb-4">📋 Your Saved Profile</h4>
                 <p>
                   <strong>First Name:</strong> {savedData.firstName}
                 </p>
@@ -188,21 +214,19 @@ export default function ProfilePage() {
                   <strong>Courses Taken:</strong> {savedData.coursesTaken}
                 </p>
                 <p>
-                  <strong>Can Help With:</strong> {savedData.coursesHelped}
+                  <strong>Courses You Can Help With:</strong> {savedData.coursesHelped}
                 </p>
-
                 {savedData.profileImage && (
                   <img
                     src={savedData.profileImage}
-                    alt="Saved"
+                    alt="Saved Profile"
                     style={{
-                      width: '120px',
-                      height: '120px',
+                      width: '150px',
+                      height: '150px',
                       borderRadius: '50%',
                       objectFit: 'cover',
                       marginTop: '1rem',
                       border: '3px solid #00ffe7',
-                      boxShadow: '0 0 10px #00ffe7',
                     }}
                   />
                 )}
