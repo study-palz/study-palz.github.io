@@ -1,8 +1,8 @@
-// src/app/courses/[code]/sessions/[sessionId]/confirmation/page.tsx
+// src/app/courses/[code]/sessions/[sessionId]/page.tsx
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { format } from 'date-fns'
-import ConfirmationClient from './confirmation/ConfirmationClient'
+import ConfirmationClient from './ConfirmationClient'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
