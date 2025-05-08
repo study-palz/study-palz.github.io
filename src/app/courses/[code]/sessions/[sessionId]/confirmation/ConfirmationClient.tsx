@@ -17,6 +17,7 @@ interface Props {
   initialAttendees: Attendee[]
   topic: string
   description?: string
+  hasMarkedAttendance: boolean // 출석 여부
 }
 
 export default function ConfirmationClient({
@@ -26,28 +27,38 @@ export default function ConfirmationClient({
   initialAttendees,
   topic,
   description,
+  hasMarkedAttendance,
 }: Props) {
   const router = useRouter()
   const [attendees, setAttendees] = useState<Attendee[]>(initialAttendees)
   const [isLoading, setIsLoading] = useState(false)
-  const [showConfirmModal, setShowConfirmModal] = useState(false)
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-  const [currentUserId, setCurrentUserId] = useState<number | null>(null)
+  const [attendance, setAttendance] = useState<{ [id: number]: boolean }>({})
+  const [submitted, setSubmitted] = useState(false)
   const attendeeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    fetch('/api/auth/session')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.user?.id) {
-          setCurrentUserId(Number(data.user.id))
-        }
-      })
-      .catch((err) => console.error('Session fetch failed:', err))
-  }, [])
+    // 출석 상태 초기화
+    const initialAttendance: { [id: number]: boolean } = {}
+    initialAttendees.forEach((attendee) => {
+      initialAttendance[attendee.id] = false
+    })
+    setAttendance(initialAttendance)
+  }, [initialAttendees])
 
-  const isAttending = attendees.some((u) => u.id === currentUserId)
-  const isOwner = currentUserId === ownerId
+  useEffect(() => {
+    // 이미 출석을 체크한 경우 상태 반영
+    if (hasMarkedAttendance) {
+      setAttendance((prev) => {
+        const updated = { ...prev }
+        initialAttendees.forEach((attendee) => {
+          if (attendee.id === ownerId) {
+            updated[attendee.id] = true
+          }
+        })
+        return updated
+      })
+    }
+  }, [hasMarkedAttendance, initialAttendees, ownerId])
 
   const scrollToAttendees = () => {
     attendeeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -63,10 +74,34 @@ export default function ConfirmationClient({
     }
   }
 
+  const handleAttendanceChange = (attendeeId: number, checked: boolean) => {
+    setAttendance((prev) => ({ ...prev, [attendeeId]: checked }))
+  }
+
+  const submitAttendance = async () => {
+    const attendeeIds = Object.entries(attendance)
+      .filter(([_, checked]) => checked)
+      .map(([id]) => Number(id))
+
+    if (attendeeIds.length === 0) return
+
+    const res = await fetch(`/api/courses/${code}/sessions/${sessionId}/attendance`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ attendeeIds }),
+    })
+
+    if (!res.ok) {
+      console.error('Failed to submit attendance')
+    } else {
+      setSubmitted(true)
+    }
+  }
+
   const handleJoinOrLeave = async () => {
     setIsLoading(true)
-    const method = isAttending ? 'DELETE' : 'POST'
-    const action = isAttending ? 'leave' : 'join'
+    const method = attendance[ownerId] ? 'DELETE' : 'POST'
+    const action = attendance[ownerId] ? 'leave' : 'join'
 
     const res = await fetch(`/api/courses/${encodeURIComponent(code)}/sessions/${sessionId}/${action}`, {
       method,
@@ -84,31 +119,13 @@ export default function ConfirmationClient({
     scrollToAttendees()
     router.refresh()
     setIsLoading(false)
-    setShowConfirmModal(false)
   }
 
-  const handleDeleteSession = async () => {
-    setIsLoading(true)
-    const res = await fetch(`/api/courses/${encodeURIComponent(code)}/sessions`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ sessionId }),
-    })
-
-    if (!res.ok) {
-      console.error('[Delete Error]', await res.text())
-      setIsLoading(false)
-      return
-    }
-
-    router.push(`/courses/${code}`)
-    router.refresh()
-  }
+  const isAttending = attendees.some((u) => u.id === ownerId)
+  const isOwner = ownerId === ownerId
 
   return (
     <div className="text-center mt-6">
-      {/* Session Info */}
       <div className="bg-light p-4 rounded mb-4 mx-auto" style={{ maxWidth: '600px' }}>
         <h3 className="mb-3">{topic}</h3>
         {description && <p className="text-muted">{description}</p>}
@@ -122,16 +139,11 @@ export default function ConfirmationClient({
               Edit Session
             </Link>
           )}
-          {isOwner && (
-            <button className="btn btn-danger" onClick={() => setShowDeleteConfirm(true)}>
-              Delete Session
-            </button>
-          )}
         </div>
       </div>
 
       {isAttending ? (
-        <button className="btn btn-danger mb-4" onClick={() => setShowConfirmModal(true)} disabled={isLoading}>
+        <button className="btn btn-danger mb-4" onClick={handleJoinOrLeave} disabled={isLoading}>
           Leave Session
         </button>
       ) : (
@@ -139,40 +151,8 @@ export default function ConfirmationClient({
           Join Session
         </button>
       )}
-      {showConfirmModal && (
-        <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header">
-                <h5 className="modal-title">Confirm Leave</h5>
-                <button className="btn-close btn-close-white" onClick={() => setShowConfirmModal(false)} />
-              </div>
-              <div className="modal-body">Are you sure you want to leave this session?</div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setShowConfirmModal(false)}>Cancel</button>
-                <button className="btn btn-danger" onClick={handleJoinOrLeave} disabled={isLoading}>Yes, Leave</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {showDeleteConfirm && (
-        <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header">
-                <h5 className="modal-title">Delete Session</h5>
-                <button className="btn-close btn-close-white" onClick={() => setShowDeleteConfirm(false)} />
-              </div>
-              <div className="modal-body">This action cannot be undone. Delete this session?</div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setShowDeleteConfirm(false)}>Cancel</button>
-                <button className="btn btn-danger" onClick={handleDeleteSession} disabled={isLoading}>Yes, Delete</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
+   
 
       <div ref={attendeeRef} className="bg-dark p-3 rounded text-white mx-auto" style={{ maxWidth: '500px' }}>
         <h5 className="mb-3">🧑‍🤝‍🧑 Attendees</h5>
@@ -189,6 +169,32 @@ export default function ConfirmationClient({
           </ul>
         )}
       </div>
+
+   {submitted && <p className="text-white text-xl mt-7 mb-3">✅ Attendance recorded!</p>}
+
+      {!submitted && !hasMarkedAttendance && (<>
+        <div>
+          <p className="text-white text-xl mt-7 mb-3">Who Showed Up?</p>
+          <div className="flex flex-col items-start gap-2 max-w-md mx-auto">
+            {attendees.map((attendee) => (
+              <div key={attendee.id} className="flex items-center gap-2 text-white">
+                <label key={attendee.id} className="flex items-center gap-2 text-white">
+                  <input
+                    type="checkbox"
+                    checked={attendance[attendee.id] || false}
+                    onChange={(e) => handleAttendanceChange(attendee.id, e.target.checked)}
+                  />
+                  {attendee.name ?? attendee.email}
+                </label>
+              </div>
+            ))}
+          </div>
+          <button className="btn btn-success mt-4" onClick={submitAttendance}>
+            Submit Attendance
+          </button>
+          </div>
+        </>
+      )}
     </div>
   )
 }

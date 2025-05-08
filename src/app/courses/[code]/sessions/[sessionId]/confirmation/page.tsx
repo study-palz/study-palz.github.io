@@ -50,14 +50,22 @@ export default async function ConfirmationPage({ params }: Props) {
     name: u.name ?? undefined,
   }))
 
+  // 첫 번째 버전의 출석 기록 체크 로직
+  const pointRecord = await prisma.pointHistory.findFirst({
+    where: {
+      userId: owner.id,
+      description: `Attended session: ${topic}`,
+    },
+  })
+
+  const hasMarkedAttendance = !!pointRecord
+
   return (
     <div className="container py-5">
       <h1 className="text-white text-center mb-4">🎉 Session Created!</h1>
 
       <p className="text-white text-center mb-3">
-        {description
-          ? description
-          : <em className="text-gray-400">No description provided.</em>}
+        {description ? description : <em className="text-gray-400">No description provided.</em>}
       </p>
 
       <p className="text-white text-center mb-2">
@@ -65,7 +73,8 @@ export default async function ConfirmationPage({ params }: Props) {
       </p>
 
       <p className="text-white text-center mb-4">
-        📅 {format(start, 'PPp')} – {format(end, 'PPp')}<br />
+        📅 {format(start, 'PPp')} – {format(end, 'PPp')}
+        <br />
         ⏳ Duration: {hrs}h {mins}m
       </p>
 
@@ -73,20 +82,21 @@ export default async function ConfirmationPage({ params }: Props) {
         Confirmation number:{' '}
         <span className="font-mono text-lg text-blue-300">#{createdId}</span>
       </p>
-
+      
       <ConfirmationClient
         code={params.code}
         sessionId={createdId}
         ownerId={owner.id}
         initialAttendees={attendeesForClient}
+        hasMarkedAttendance={hasMarkedAttendance}
         topic={topic}
         description={description ?? ''}
       />
 
       <div className="text-center mt-5">
-      <Link href={`/courses/${course.code}`} className="btn btn-outline-light">
-  Back to {decodeURIComponent(course.code)}
-</Link>
+        <Link href={`/courses/${course.code}`} className="btn btn-outline-light">
+          Back to {decodeURIComponent(course.code)}
+        </Link>
       </div>
     </div>
   )
