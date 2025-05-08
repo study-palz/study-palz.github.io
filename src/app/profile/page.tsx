@@ -86,11 +86,9 @@ export default function ProfilePage() {
       style={{
         minHeight: '100vh',
         background: 'linear-gradient(to right, #080808, #2a5298)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
         padding: '2rem 1rem',
-        paddingBottom: '10rem', // 👈 Added extra space for footer
+        paddingBottom: '6rem',
+        color: 'white',
       }}
     >
       <Container
@@ -98,8 +96,7 @@ export default function ProfilePage() {
           background: 'rgba(255, 255, 255, 0.07)',
           borderRadius: '15px',
           padding: '2rem',
-          color: 'white',
-          maxWidth: '1000px',
+          maxWidth: '1100px',
           backdropFilter: 'blur(10px)',
         }}
       >
@@ -107,49 +104,19 @@ export default function ProfilePage() {
         {message && <Alert variant="info">{message}</Alert>}
 
         <Row>
-          <Col md={5} className="text-center mb-4 mb-md-0">
-            {profileImage ? (
-              <img
-                src={profileImage}
-                alt="Preview"
-                style={{
-                  width: '200px',
-                  height: '200px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  border: '4px solid #00ffe7',
-                  boxShadow: '0 0 15px #00ffe7',
-                }}
-              />
-            ) : (
-              <div
-                style={{
-                  width: '200px',
-                  height: '200px',
-                  borderRadius: '50%',
-                  backgroundColor: '#444',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#aaa',
-                }}
-              >
-                Image Preview
-              </div>
-            )}
-
-            <Form.Group className="mt-3">
-              <Form.Control
-                type="text"
-                placeholder="https://example.com/photo.jpg"
-                value={profileImage.startsWith('data:image') ? '' : profileImage}
-                onChange={(e) => setProfileImage(e.target.value)}
-              />
-            </Form.Group>
-          </Col>
-
-          <Col md={7}>
+          {/* Left side: Form */}
+          <Col md={6}>
             <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>Profile Image URL</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={profileImage}
+                  onChange={(e) => setProfileImage(e.target.value)}
+                  placeholder="https://example.com/photo.jpg"
+                />
+              </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
@@ -197,46 +164,52 @@ export default function ProfilePage() {
               </div>
             </Form>
           </Col>
-        </Row>
 
-        {savedData && (
-          <Card
-            className="mt-5 p-4"
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.05)',
-              color: 'white',
-              border: '1px solid #444',
-            }}
-          >
-            <h4 className="mb-4">📋 Your Saved Profile</h4>
-            <p>
-              <strong>First Name:</strong> {savedData.firstName}
-            </p>
-            <p>
-              <strong>Last Name:</strong> {savedData.lastName}
-            </p>
-            <p>
-              <strong>Courses Taken:</strong> {savedData.coursesTaken}
-            </p>
-            <p>
-              <strong>Courses You Can Help With:</strong> {savedData.coursesHelped}
-            </p>
-            {savedData.profileImage && (
-              <img
-                src={savedData.profileImage}
-                alt="Saved Profile"
+          {/* Right side: Saved Profile Preview */}
+          <Col md={6}>
+            {savedData && (
+              <Card
+                className="p-4"
                 style={{
-                  width: '150px',
-                  height: '150px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  marginTop: '1rem',
-                  border: '3px solid #00ffe7',
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  color: 'white',
+                  border: '1px solid #444',
+                  height: '100%',
                 }}
-              />
+              >
+                <h4 className="mb-3">📋 Saved Profile</h4>
+                <p>
+                  <strong>First Name:</strong> {savedData.firstName}
+                </p>
+                <p>
+                  <strong>Last Name:</strong> {savedData.lastName}
+                </p>
+                <p>
+                  <strong>Courses Taken:</strong> {savedData.coursesTaken}
+                </p>
+                <p>
+                  <strong>Can Help With:</strong> {savedData.coursesHelped}
+                </p>
+
+                {savedData.profileImage && (
+                  <img
+                    src={savedData.profileImage}
+                    alt="Saved"
+                    style={{
+                      width: '120px',
+                      height: '120px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      marginTop: '1rem',
+                      border: '3px solid #00ffe7',
+                      boxShadow: '0 0 10px #00ffe7',
+                    }}
+                  />
+                )}
+              </Card>
             )}
-          </Card>
-        )}
+          </Col>
+        </Row>
       </Container>
     </div>
   );
