@@ -39,13 +39,14 @@ export default function ConfirmationClient({
   const [submitted, setSubmitted] = useState(false)
   const attendeeRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const initialAttendance: { [id: number]: boolean } = {}
-    initialAttendees.forEach((attendee) => {
-      initialAttendance[attendee.id] = false
-    })
-    setAttendance(initialAttendance)
-  }, [initialAttendees])
+    useEffect(() => {
+      const initialAttendance: { [id: number]: boolean } = {}
+      initialAttendees.forEach((attendee) => {
+        initialAttendance[attendee.id] = (attendee as any).isPresent || false
+      })
+      setAttendance(initialAttendance)
+    }, [initialAttendees])
+
 
   useEffect(() => {
     if (hasMarkedAttendance) {
@@ -99,8 +100,6 @@ export default function ConfirmationClient({
       if (allMarked) {
         setSubmitted(true)
       }
-      // Attendees who were marked will be removed after submission
-      setAttendees((prev) => prev.filter((attendee) => !attendance[attendee.id]))
     }
   }
 
@@ -187,10 +186,11 @@ export default function ConfirmationClient({
                     <label className="flex items-center gap-2 text-white">
                       <input
                         type="checkbox"
-                        checked={isChecked}
+                        checked={attendance[attendee.id] || false}
                         onChange={(e) => handleAttendanceChange(attendee.id, e.target.checked)}
-                        disabled={isDisabled}
+                        disabled={attendance[attendee.id] || isCurrentUser}
                       />
+
                       {attendee.name ?? attendee.email} {isCurrentUser && '(You)'}
                     </label>
                   </div>
