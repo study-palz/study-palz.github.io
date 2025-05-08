@@ -85,8 +85,10 @@ export default function ProfilePage() {
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(to right, #080808, #2a5298)',
-      paddingTop: '5rem',
-      paddingBottom: '5rem',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      padding: '2rem 1rem 6rem', // Extra bottom padding for footer space
     }}>
       <Container style={{
         background: 'rgba(255, 255, 255, 0.07)',
@@ -123,10 +125,8 @@ export default function ProfilePage() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#aaa',
-              }}>
-                Image Preview
-              </div>
+                color: '#aaa'
+              }}>Image Preview</div>
             )}
 
             <Form.Group className="mt-3">
