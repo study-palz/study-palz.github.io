@@ -19,16 +19,19 @@ const CalendarPage = () => {
         const res = await fetch('/api/calendar/sessions')
         if (res.ok) {
           const data = await res.json()
-          const formatted: EventInput[] = data.map((event: any) => ({
-            id: event.id.toString(),
-            title: event.title,
-            start: event.start,
-            end: event.end,
-            allDay: event.allDay,
-            extendedProps: {
-              code: event.title.split(':')[0], // e.g., "ICS 101" → ICS 101
+          const formatted: EventInput[] = data.map((event: any) => {
+            const courseCode = event.title?.split(':')[0]?.trim() ?? 'Unknown'
+            return {
+              id: event.id.toString(),
+              title: event.title,
+              start: new Date(event.start), // convert ISO string to Date object
+              end: new Date(event.end),
+              allDay: event.allDay,
+              extendedProps: {
+                code: courseCode,
+              },
             }
-          }))
+          })
           setEvents(formatted)
         } else {
           console.error('Failed to fetch events')
@@ -42,7 +45,7 @@ const CalendarPage = () => {
   }, [])
 
   const handleEventClick = (info: any) => {
-    const code = info.event.extendedProps.code?.trim()
+    const code = info.event.extendedProps.code
     const sessionId = info.event.id
     if (code && sessionId) {
       router.push(`/courses/${encodeURIComponent(code)}/sessions/${sessionId}/confirmation`)
@@ -59,6 +62,7 @@ const CalendarPage = () => {
           <div className="col-span-8">
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              timeZone="local" // key setting to interpret times properly
               initialView="dayGridMonth"
               headerToolbar={{
                 left: 'prev,next today',
