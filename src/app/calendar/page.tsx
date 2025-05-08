@@ -1,42 +1,58 @@
-/* eslint-disable react/jsx-indent */
-/* eslint-disable react/self-closing-comp */
+'use client'
 
-'use client';
+import { useEffect, useState } from 'react'
+import { Nav } from 'react-bootstrap'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import { EventInput } from '@fullcalendar/core'
+import { useRouter } from 'next/navigation'
 
-import { Nav } from 'react-bootstrap';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+const CalendarPage = () => {
+  const [events, setEvents] = useState<EventInput[]>([])
+  const router = useRouter()
 
-interface Event {
-  title: string;
-  start: Date | string;
-  allDay: boolean;
-  id: string;
-}
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch('/api/calendar/sessions')
+        if (res.ok) {
+          const data = await res.json()
+          const formatted: EventInput[] = data.map((event: any) => ({
+            id: event.id.toString(),
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            allDay: event.allDay,
+            extendedProps: {
+              code: event.title.split(':')[0], // e.g., "ICS 101" → ICS 101
+            }
+          }))
+          setEvents(formatted)
+        } else {
+          console.error('Failed to fetch events')
+        }
+      } catch (err) {
+        console.error('Error loading calendar sessions:', err)
+      }
+    }
 
-const Home = () => {
-  const events: Event[] = [
-    {
-      title: 'Study Group - ICS 311',
-      start: '2025-05-10T10:00:00',
-      allDay: false,
-      id: '1',
-    },
-    {
-      title: 'Meeting with Mentor',
-      start: '2025-05-12T14:00:00',
-      allDay: false,
-      id: '2',
-    },
-    // Add more events here
-  ];
+    fetchEvents()
+  }, [])
+
+  const handleEventClick = (info: any) => {
+    const code = info.event.extendedProps.code?.trim()
+    const sessionId = info.event.id
+    if (code && sessionId) {
+      router.push(`/courses/${encodeURIComponent(code)}/sessions/${sessionId}/confirmation`)
+    }
+  }
 
   return (
     <>
       <Nav className="flex justify-between bg-light mb-12 border-b border-violet-100 p-4">
-        <h1 className="font-bold text-lg text-light-700">Calendar</h1>
+        <h1 className="font-bold text-2xl text-gray-700">Calendar</h1>
       </Nav>
       <main>
         <div className="grid grid-cols-10 bg-light">
@@ -50,6 +66,7 @@ const Home = () => {
                 right: 'dayGridMonth,timeGridWeek,timeGridDay',
               }}
               events={events}
+              eventClick={handleEventClick}
               editable
               selectable
               droppable
@@ -57,13 +74,15 @@ const Home = () => {
               dayMaxEvents
               weekends
               initialDate={new Date()}
-              eventClick={(info) => alert(`Event: ${info.event.title}`)}
             />
+            {events.length === 0 && (
+              <div className="mt-4 text-center text-gray-500">No events scheduled yet.</div>
+            )}
           </div>
         </div>
       </main>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default CalendarPage

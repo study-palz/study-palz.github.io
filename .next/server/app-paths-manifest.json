@@ -1,9 +1,9 @@
 {
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/courses/[code]/page": "app/courses/[code]/page.js",
-  "/courses/page": "app/courses/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/courses/[code]/create-session/page": "app/courses/[code]/create-session/page.js",
   "/page": "app/page.js",
-  "/auth/signin/page": "app/auth/signin/page.js"
+  "/courses/page": "app/courses/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/profile/route": "app/api/profile/route.js",
+  "/courses/[code]/sessions/[sessionId]/page": "app/courses/[code]/sessions/[sessionId]/page.js",
+  "/courses/[code]/page": "app/courses/[code]/page.js"
 }

@@ -9,12 +9,12 @@ export async function DELETE(
   _req: Request,
   { params }: { params: { code: string; sessionId: string } }
 ) {
-  
+  // 1) only the session owner can delete
   const nextAuth = await getServerSession(authOptions);
   const userId = Number(nextAuth?.user?.id);
   const sid    = Number(params.sessionId);
 
-  
+  // make sure it exists and belongs to you
   const ss = await prisma.studySession.findUnique({
     where: { id: sid },
     select: { ownerId: true }
@@ -26,6 +26,7 @@ export async function DELETE(
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
+  // 2) actually delete it
   await prisma.studySession.delete({ where: { id: sid } });
 
   return NextResponse.json({ deleted: true });
