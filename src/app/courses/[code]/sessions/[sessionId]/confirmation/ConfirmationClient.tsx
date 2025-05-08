@@ -9,7 +9,7 @@ interface Props {
   sessionId: number;
   ownerId: number;
   initialAttendees: { id: number; name?: string; email: string }[];
-  hasMarkedAttendance: boolean;
+  hasMarkedAttendance?: boolean;
 }
 
 export default function ConfirmationClient({
