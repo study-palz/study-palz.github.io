@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { retry } from '@/lib/retry'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const users = await retry(() =>
