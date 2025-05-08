@@ -81,8 +81,6 @@ export default async function ConfirmationPage({ params }: Props) {
         initialAttendees={attendeesForClient}
         topic={topic}
         description={description ?? ''}
-        startTime={startTime.toISOString()}
-        endTime={endTime.toISOString()}
       />
 
       <div className="text-center mt-5">
