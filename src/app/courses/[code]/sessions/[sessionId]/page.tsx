@@ -54,11 +54,14 @@ export default async function SessionDetailPage({
       </p>
 
       <ConfirmationClient
-        code={params.code}
-        sessionId={id}
-        ownerId={ss.owner.id}
-        initialAttendees={attendeesForClient}
-      />
+  code={params.code}
+  sessionId={id}
+  ownerId={ss.owner.id}
+  initialAttendees={attendeesForClient}
+  topic={ss.topic}
+  description={ss.description ?? ''}
+/>
+
 
       <div className="text-center mt-5">
         <Link href={`/courses/${params.code}`} className="btn btn-outline-light">
