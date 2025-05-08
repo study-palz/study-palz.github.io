@@ -95,12 +95,8 @@ export default function ConfirmationClient({
     if (!res.ok) {
       console.error('Failed to submit attendance')
     } else {
-      const allMarked = attendees.length > 0 && attendeeIds.length === attendees.length
-      if (allMarked) {
-        setSubmitted(true)
-      }
-      // Attendees who were marked will be removed after submission
-      setAttendees((prev) => prev.filter((attendee) => !attendance[attendee.id]))
+      setSubmitted(true)
+      await fetchAttendees()
     }
   }
 
