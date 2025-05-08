@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { prisma } from '@/lib/prisma'
-import { getClassByCode } from '../../../lib/class-data'
+import { getClassByCode } from '@/lib/class-data'
 
 export default async function CoursePage({
   params,

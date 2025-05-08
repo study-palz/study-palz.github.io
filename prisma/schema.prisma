@@ -26,70 +26,63 @@ enum SessionStatus {
 }
 
 model User {
-  id                   Int             @id @default(autoincrement())
-  email                String          @unique
-  password             String
-  role                 Role            @default(USER)
-  name                 String?
-  profilePicture       String?
+  id             Int     @id @default(autoincrement())
+  email          String  @unique
+  password       String
+  role           Role    @default(USER)
+  name           String?
+  profilePicture String?
 
-  // courses the user teaches or needs help in
-  courseRoles          CourseRole[]
+  courseRoles       CourseRole[]
+  sessionsHosted    StudySession[] @relation("OwnerSessions")
+  sessionsAttending StudySession[] @relation("AttendeeSessions")
 
-  // study sessions
-  sessionsHosted       StudySession[]  @relation("OwnerSessions")
-  sessionsAttending    StudySession[]  @relation("AttendeeSessions")
+  points       Int            @default(0)
+  pointHistory PointHistory[]
 
-  // points
-  points               Int             @default(0)
-  pointHistory         PointHistory[]
+  resetToken          String?   @unique
+  resetTokenExpiresAt DateTime?
 
-  // password reset
-  resetToken           String?         @unique
-  resetTokenExpiresAt  DateTime?
-
-  // one-to-one profile metadata
-  userProfile          UserProfile?    @relation("UserProfileRelation")
+  userProfile UserProfile? @relation("UserProfileRelation")
 }
 
 model Course {
-  id             Int            @id @default(autoincrement())
-  code           String         @unique
-  title          String
+  id          Int     @id @default(autoincrement())
+  code        String  @unique
+  title       String
+  description String?
 
-  // who can teach or needs help
-  roles          CourseRole[]
-
-  // sessions under this course
-  studySessions  StudySession[]
+  roles         CourseRole[]
+  studySessions StudySession[]
 }
 
 model CourseRole {
-  id         Int     @id @default(autoincrement())
-  user       User    @relation(fields: [userId], references: [id])
-  userId     Int
-  course     Course  @relation(fields: [courseId], references: [id])
-  courseId   Int
-  isSensei   Boolean
+  id       Int     @id @default(autoincrement())
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int
+  course   Course  @relation(fields: [courseId], references: [id])
+  courseId Int
+  isSensei Boolean
 
   @@unique([userId, courseId, isSensei])
 }
 
 model StudySession {
-  id          Int           @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   topic       String
   description String?
-  owner       User          @relation("OwnerSessions", fields: [ownerId], references: [id])
-  ownerId     Int
 
-  course      Course        @relation(fields: [courseId], references: [id])
-  courseId    Int
+  owner   User @relation("OwnerSessions", fields: [ownerId], references: [id])
+  ownerId Int
 
-  status      SessionStatus @default(PENDING)
-  startTime   DateTime
-  endTime     DateTime
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
 
-  attendees   User[]        @relation("AttendeeSessions")
+  status    SessionStatus @default(PENDING)
+  startTime DateTime
+  endTime   DateTime
+
+  attendees User[] @relation("AttendeeSessions")
 }
 
 model PointHistory {
@@ -112,5 +105,5 @@ model UserProfile {
   updatedAt     DateTime @updatedAt
   createdAt     DateTime @default(now())
 
-  user          User     @relation("UserProfileRelation", fields: [userId], references: [id])
+  user User @relation("UserProfileRelation", fields: [userId], references: [id])
 }

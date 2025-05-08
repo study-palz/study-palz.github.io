@@ -1,7 +1,9 @@
 // src/app/api/auth/[...nextauth]/route.ts
+import NextAuth from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
 
-import NextAuth from "next-auth/next"
-import { authOptions } from "@/lib/authOptions"
+/* Create the handler once with shared options */
+const handler = NextAuth(authOptions);
 
-const handler = NextAuth(authOptions)
-export { handler as GET, handler as POST }
+/* App‑Router requires exporting only HTTP methods */
+export { handler as GET, handler as POST };

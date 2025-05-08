@@ -17,6 +17,7 @@ export default async function ConfirmationPage({ params }: Props) {
       course: true,
       owner: { select: { id: true, email: true } },
       attendees: { select: { id: true, name: true, email: true } },
+      // ← remove `description: true` from here!
     },
   })
 
@@ -28,6 +29,7 @@ export default async function ConfirmationPage({ params }: Props) {
     )
   }
 
+  // now `ss.description` is available as a string | null
   const {
     course,
     topic,
@@ -45,7 +47,7 @@ export default async function ConfirmationPage({ params }: Props) {
   const hrs   = Math.floor(ms / 36e5)
   const mins  = Math.floor((ms % 36e5) / 6e4)
 
-
+  // normalize `name: string | null` → `name?: string`
   const attendeesForClient = attendees.map((u) => ({
     id:    u.id,
     email: u.email,

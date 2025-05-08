@@ -16,16 +16,19 @@ export async function POST(
   const sid    = Number(params.sessionId)
 
   try {
+    // check if already joined
     const already = await prisma.studySession.findFirst({
       where: { id: sid, attendees: { some: { id: userId } } }
     })
 
     if (already) {
+      // leave
       await prisma.studySession.update({
         where: { id: sid },
         data:  { attendees: { disconnect: { id: userId } } }
       })
     } else {
+      // join
       await prisma.studySession.update({
         where: { id: sid },
         data:  { attendees: { connect: { id: userId } } }
