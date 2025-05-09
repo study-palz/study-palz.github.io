@@ -18,9 +18,9 @@ const Footer = () => {
       <Container>
         <Row className="justify-content-center">
           <Col xs={12} md={6} className="text-center">
-            <h5>Studymate</h5>
+            <h5>StudyPalz</h5>
             <p>
-              Studymate helps students at UH Manoa connect face-to-face for real-time study sessions.
+              StudyPalz helps students at UH Manoa connect face-to-face for real-time study sessions.
             </p>
           </Col>
           <Col xs={12} md={6} className="text-center">
