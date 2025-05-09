@@ -1,4 +1,3 @@
-// src/app/courses/[code]/sessions/[sessionId]/page.tsx
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { format } from 'date-fns'
@@ -11,14 +10,12 @@ export default async function SessionDetailPage({
 }) {
   const id = Number(params.sessionId)
 
-  // ↓ remove `description: true` from here!
   const ss = await prisma.studySession.findUnique({
     where: { id },
     include: {
-      course: true,                              // relation
-      owner:    { select: { id: true, email: true } },  // relation
-      attendees:{ select: { id: true, name: true, email: true } }, // relation
-      // description: true  ← DELETE THIS
+      course: true,                              
+      owner:    { select: { id: true, email: true } },  
+      attendees:{ select: { id: true, name: true, email: true } }, 
     },
   })
 
@@ -26,7 +23,6 @@ export default async function SessionDetailPage({
     return <p className="text-center text-white py-5">Session not found.</p>
   }
 
-  // now `ss.description` is available as a string | null
   const start = new Date(ss.startTime)
   const end   = new Date(ss.endTime)
   const durMs = end.getTime() - start.getTime()
@@ -54,16 +50,19 @@ export default async function SessionDetailPage({
       </p>
 
       <ConfirmationClient
-        code={params.code}
-        sessionId={id}
-        ownerId={ss.owner.id}
-        initialAttendees={attendeesForClient}
-      />
+  code={params.code}
+  sessionId={id}
+  ownerId={ss.owner.id}
+  initialAttendees={attendeesForClient}
+  topic={ss.topic}
+  description={ss.description ?? ''}
+/>
+
 
       <div className="text-center mt-5">
-        <Link href={`/courses/${params.code}`} className="btn btn-outline-light">
-          Back to {params.code}
-        </Link>
+      <Link href={`/courses/${ss.course.code}`} className="btn btn-outline-light">
+  Back to {decodeURIComponent(ss.course.code)}
+</Link>
       </div>
     </div>
   )

@@ -7,7 +7,6 @@ import Link from 'next/link';
 const Footer = () => {
   const pathname = usePathname();
 
-  // hide footer on these routes
   const hiddenRoutes = ['/auth/signup', '/auth/signin', '/auth/signout'];
   if (hiddenRoutes.includes(pathname)) {
     return null;

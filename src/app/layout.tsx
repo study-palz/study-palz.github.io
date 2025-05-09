@@ -22,7 +22,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={classString}>
         <Providers>
-          {/* Sync NextAuth session into Supabase */}
           <SyncSupabaseSession />
 
           <NavBar />

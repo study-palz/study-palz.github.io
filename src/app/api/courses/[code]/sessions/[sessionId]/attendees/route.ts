@@ -1,11 +1,9 @@
-// src/app/api/courses/[code]/sessions/[sessionId]/attendees/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { authOptions } from '@/lib/authOptions';
 
 export async function GET(
   _req: Request,
-  { params }: { params: { code: string; sessionId: string } }
+  { params }: { params: { sessionId: string } }
 ) {
   const sid = Number(params.sessionId);
 
@@ -14,9 +12,9 @@ export async function GET(
       where: { id: sid },
       select: {
         attendees: {
-          select: { id: true, name: true, email: true }
-        }
-      }
+          select: { id: true, name: true, email: true },
+        },
+      },
     });
 
     if (!session) {

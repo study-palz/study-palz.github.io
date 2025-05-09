@@ -1,10 +1,9 @@
-// src/app/courses/[code]/page.tsx
 export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { prisma } from '@/lib/prisma'
-import { getClassByCode } from '../../../lib/class-data'
+import { getClassByCode } from '@/lib/class-data'
 
 export default async function CoursePage({
   params,
@@ -13,7 +12,6 @@ export default async function CoursePage({
 }) {
   const code = decodeURIComponent(params.code)
 
-  // 1) static course data
   const staticCourse = await getClassByCode(code)
   if (!staticCourse) {
     return (
@@ -23,7 +21,6 @@ export default async function CoursePage({
     )
   }
 
-  // 2) upcoming sessions (startTime ≥ now)
   const now = new Date()
   const upcoming = await prisma.studySession.findMany({
     where: {
@@ -35,7 +32,6 @@ export default async function CoursePage({
     take: 5,
   })
 
-  // ——— DEBUG: inspect what we're filtering on
   console.log(
     '[CoursePage]',
     'now=', now.toISOString(),
@@ -44,7 +40,6 @@ export default async function CoursePage({
 
   return (
     <div className="container py-5 text-white">
-      {/* Course header */}
       <h1 className="text-4xl font-bold">{staticCourse.title}</h1>
       <p className="mt-2 text-gray-400">{staticCourse.description}</p>
 
@@ -54,7 +49,6 @@ export default async function CoursePage({
         </Link>
       </div>
 
-      {/* Upcoming Sessions */}
       <h2 className="mt-8 mb-4 text-2xl">Upcoming Sessions</h2>
       {upcoming.length === 0 ? (
         <p className="text-gray-500">No upcoming sessions.</p>

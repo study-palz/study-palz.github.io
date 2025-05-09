@@ -233,7 +233,6 @@ body {
 .page_logo__7fc9l {
   position: relative;
 }
-/* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .page_card__QV0Om:hover {
     background: rgba(var(--card-rgb), 0.1);
@@ -356,8 +355,8 @@ body {
 }
 
 .page_navbar-toggler-icon__nDjrf {
-  background-color: white !important; /* Force the blue background */
-  background-image: none !important; /* Remove default image */
-  border: 1px solid white; /* Add a border if you want it to be more visible */
+  background-color: white !important; 
+  background-image: none !important; 
+  border: 1px solid white; 
 }
 

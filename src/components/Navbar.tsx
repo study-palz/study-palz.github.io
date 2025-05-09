@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-// NavBar.tsx
 'use client';
 
 import { useSession, signOut } from 'next-auth/react';
@@ -23,11 +21,14 @@ const NavBar: React.FC = () => {
     const email = session.user.email;
     const fetchProfileImage = async () => {
       try {
-        const res = await fetch(`/api/profile?email=${encodeURIComponent(email)}`);
+        const res = await fetch(
+          `/api/profile?email=${encodeURIComponent(email)}`,
+          { credentials: 'include' }
+        );
         const data = await res.json();
-        setProfileImage(data.profileImage || null); // Set profile image if exists, else null
+        setProfileImage(data.profileImage || null);
       } catch (error) {
-        setProfileImage(null); // Reset if there's an error fetching the image
+        setProfileImage(null);
       }
     };
 
@@ -69,17 +70,7 @@ const NavBar: React.FC = () => {
               <>
                 <Nav.Link href="/profile" className="me-3">
                   {profileImage ? (
-                    <img
-                      src={profileImage}
-                      alt="Profile"
-                      width={36}
-                      height={36}
-                      style={{
-                        borderRadius: '50%',
-                        objectFit: 'cover',
-                        border: '2px solid white',
-                      }}
-                    />
+                    <img src={profileImage} alt="Profile" width={36} height={36} style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid white',}}/>
                   ) : (
                     <PersonFill size={24} color="white" />
                   )}
