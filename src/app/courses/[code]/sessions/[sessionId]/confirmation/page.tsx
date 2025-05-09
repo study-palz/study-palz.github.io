@@ -1,4 +1,3 @@
-// src/app/courses/[code]/sessions/[sessionId]/confirmation/page.tsx
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { format } from 'date-fns'

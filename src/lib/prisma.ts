@@ -9,7 +9,6 @@ const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
     log: ['query'],
-    // ✅ Disable prepared statements (avoids "$x already exists" error)
     datasources: {
       db: {
         url: process.env.DATABASE_URL + '?pgbouncer=true',

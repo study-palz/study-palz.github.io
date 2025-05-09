@@ -1,4 +1,3 @@
-// src/utils/syncSupabaseSession.tsx
 'use client';
 
 import { useEffect } from 'react';
@@ -11,7 +10,6 @@ type ExtendedSession = {
 };
 
 export default function SyncSupabaseSession() {
-  // tell TS that our session may have those two extra props
   const { data: rawSession } = useSession();
   const session = rawSession as (ExtendedSession & typeof rawSession);
 
