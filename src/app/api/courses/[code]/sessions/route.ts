@@ -32,7 +32,7 @@ export async function POST(
         startTime: new Date(startTime),
         endTime:   new Date(endTime),
         owner:     { connect: { id: Number(session.user.id) } },
-        course:    { connect: { id: course.id } }, // ✅ fixed
+        course:    { connect: { id: course.id } },
       },
     })
 
