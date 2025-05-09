@@ -17,13 +17,13 @@ const About = () => (
     }}
   >
     <div style={{ maxWidth: '800px', width: '100%' }}>
-      <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>About Study Palz</h1>
+      <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>About StudyPalz</h1>
       <p style={{ fontSize: '1.25rem', marginBottom: '1.5rem', lineHeight: '1.6' }}>
-        <strong>Study Palz</strong> is a student-driven platform created for ICS students at the University of Hawai‘i at Mānoa.
+        <strong>StudyPalz</strong> is a student-driven platform created for ICS students at the University of Hawai‘i at Mānoa.
         Our goal is to make it easier for students to connect, collaborate, and succeed together by forming face-to-face study groups in <strong>ICSpace</strong>.
       </p>
       <p style={{ fontSize: '1.25rem', lineHeight: '1.6' }}>
-        Whether you're preparing for exams, tackling tough projects, or just want to meet classmates in your course, Study Palz helps you find the right people at the right time.
+        Whether you're preparing for exams, tackling tough projects, or just want to meet classmates in your course, StudyPalz helps you find the right people at the right time.
       </p>
     </div>
   </div>
