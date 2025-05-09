@@ -1,6 +1,6 @@
 # Welcome to Study-Palz 👋
 
-**A face-to-face study group platform for all students at UH Mānoa**
+**A face-to-face study group platform for ICS students at UH Mānoa**
 
 ---
 
