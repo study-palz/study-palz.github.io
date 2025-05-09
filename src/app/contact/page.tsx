@@ -37,7 +37,7 @@ const Contact = () => (
             rel="noopener noreferrer"
             style={{ color: '#58a6ff', textDecoration: 'none' }}
           >
-            Join our Study-Palz Community
+            Join our StudyPalz Community
           </a>
         </p>
         <p>
