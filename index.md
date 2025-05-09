@@ -1,4 +1,4 @@
-# Welcome to Study-Palz 👋
+# Welcome to StudyPalz 👋
 
 **A face-to-face study group platform for ICS students at UH Mānoa**
 
@@ -25,7 +25,7 @@
 
 ## Overview
 
-UH students often struggle to complete homework efficiently or understand material deeply—mainly because they study alone. Study Palz helps fix that by making it easy for students to self-organize real-time, face-to-face study groups on campus.
+UH students often struggle to complete homework efficiently or understand material deeply—mainly because they study alone. StudyPalz helps fix that by making it easy for students to self-organize real-time, face-to-face study groups on campus.
 
 ---
 
