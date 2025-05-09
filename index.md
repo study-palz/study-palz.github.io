@@ -116,6 +116,13 @@ The Calendar page shows all scheduled study sessions. You can view upcoming sess
 ![](/public/images/calender-guide.png)
 
 
+### Session and Course Page
+
+To create a session, start by browsing and selecting the specific course. On the course page, you can view upcoming sessions or choose to create a new one. After creating a session, you’ll be directed to a confirmation page displaying the session details and current attendees. Below the confirmation, an attendance sheet must be completed to earn points. This helps prevent point farming and ensures participation is verified.
+
+
+
+
 ## Developer Guide 🔧
 
 ### 1. Clone the Repository
