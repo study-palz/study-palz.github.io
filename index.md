@@ -116,12 +116,28 @@ The Calendar page shows all scheduled study sessions. You can view upcoming sess
 ![](/public/images/calender-guide.png)
 
 
-### Session and Course Page
+### Homepage Browser
+The browser lets you browse through different ICS courses which are linked to their respective course pages.
 
-To create a session, start by browsing and selecting the specific course. On the course page, you can view upcoming sessions or choose to create a new one. After creating a session, you’ll be directed to a confirmation page displaying the session details and current attendees. Below the confirmation, an attendance sheet must be completed to earn points. This helps prevent point farming and ensures participation is verified.
+![](/public/images/HOMEPAGE%20BROWSE.png)
+
+![](/public/images/ICS%20COURSES.png)
 
 
+### Course Page
+On the course page, you can view upcoming sessions or choose to create a new one.
 
+![](/public/images/CoursePage.png)
+
+
+### Session
+After creating a session, you’ll be directed to a confirmation page displaying the session details and current attendees. Below the confirmation, an attendance sheet must be completed to earn points. This helps prevent point farming and ensures participation is verified.
+
+![](/public/images/STUDYSESSIONCREATION.png)
+
+![](/public/images/Confirmation.png)
+
+![](/public/images/Attendees.png)
 
 ## Developer Guide 🔧
 
