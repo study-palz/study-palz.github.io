@@ -198,7 +198,16 @@ This will load the app on your local machine for development.
 
 ## Community Feedback 💬
 
-- ### We will be collecting community feedback tomorrow. Stay tuned for updates!
+We asked Five ICS students to test our program. Here were their feedbacks.
+
+| Names       | Comments |
+|-------------|----------|
+| **Jaira Pader** | - During sign‑in, the “credential sign” error needs a space in between<br>- When my photo was empty, the placeholder sat left, after adding a picture it centered<br>- Course page could be enhanced by adding buttons next to the courses<br>- “Change password” should be inside profile, not the navbar<br>- "I like the authorization API you guys implemented" |
+| **Marcus Prudencio** | "I think the "About" and "Contact" page should be included in the home/landing page. I don't think it makes much sense to have 2 separate pages dedicated for things that don't serve much purpose." <br> "You could place the contact stuff in the footer, and the "about" section somewhere in the home page."|
+| **Kyle Mones** | "The formatting on mobile could be a bit better, idk if it’s supposed to be viewed on a phone but that’s all I got." |
+| **Jiawen Chen** | - when logging in, if given the wrong password, it'll show "CredentialsSignin" instead of a clear error message<br> - Searchbar needs to read in the space in between ICS and the course number, it should ignore all spaces when given the query information from the searchbar. <br> - It would be nice to see other people's profiles so you can see what courses they have taken and get a better idea of how they can help you <br> - It isn't really clear how you earn points and get on the leaderboard, and the attendance submission system isn't that well thought out, as anyone can go in and change the results <br> - When viewing a study session, the course name blends in with the background because of the color of the text, and the description seems to still use some test7 text. <br> - When clicking the checkbox for attendance, you can't unclick the checkbox, and you can't mark yourself present, idk if that's intended. <br> - The submit attendance button also seems to not do anything. <br> -  It would be good to separate the list of all ICS courses into two or even three columns instead of just one, so users don't have to scroll all the way to the bottom, and it makes it so that you have way less white-space. |
+| **Jerome Demesillo** | - Phone Ui is a bit weird <br> - I couldn't figure out how to create a session|
+
 
 
 
